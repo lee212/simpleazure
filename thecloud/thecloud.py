@@ -41,9 +41,12 @@ class TheCloud:
         clist = c.readlines()
         for x in clist:
             v = x.replace('export ','').split('=')
-            res[v[0]] = v[1]
+            res[v[0]] = self._strip_spaces(v[1])
 
         return res
+
+    def _strip_spaces(self, name):
+        return "".join(name.replace("'", "").split())
 
     def create_vm(self):
         subscription_id = self.subscription_id
@@ -88,7 +91,8 @@ class TheCloud:
             print(location.name)
 
 if __name__ == "__main__":
-    ipya = TheCloud()
-    ipya.load_certificate()
+    c = TheCloud()
+    c.load_certificate()
+    c.test()
     # create vm didnt work...
     #ipya.create_vm()
