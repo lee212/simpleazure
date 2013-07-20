@@ -1,12 +1,12 @@
 IPython plugin
 ==============
 
-The Cloud plans to support ipython parallel module on Windows Azure. It is a simply functionality which StarCluster + Ipython has.
+The SimpleAzure plans to support ipython parallel module on Windows Azure. It is a simply functionality which StarCluster + Ipython has.
 
 Example
 ----------
 ```
-import thecloud
+from simpleazure.simpleazure import simpleazure as saz
 from IPython.parallel import Client
 
 c = Client()

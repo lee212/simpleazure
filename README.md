@@ -1,35 +1,35 @@
-The cloud
-==========
+Simple Azure
+============
 
-The cloud supports cloud computing management in the Python Programming Language. It plans to support WIndows Azure, OpenStack, etc.
+Simple Azure supports cloud computing management in the Python Programming Language. It plans to support WIndows Azure, OpenStack, etc.
 
 Example
 -------
 ```
-import thecloud
+from simpleazure.simpleazure import simpleazure as saz
 
 def square(x):
     return x*x
 
-c = thecloud()
+c = saz()
 res = c.call(square, 3) # square(3) evaluated on the cloud (Azure, OpenStack, etc)
 
 print res # 9
 ```
 
-The cloud with ipython notebook
---------------------------------
+The Simple Azure with ipython notebook
+---------------------------------------
 The simple JSON typed ipython notebook file (*.ipynb) can be easily shared and can be found at http://nbviewer.ipython.org/.
 We can probably provide a simple command line tools to execute the notebook files on Azure like StarCluster.
 
 Example #2
 ----------
 ```
-$ thecloud start -n 4 azure.ipynb
+$ simpleazure start -n 4 azure.ipynb
 
 or
 
-$ thecloud start -n 4 http://raw.github.com/lee212/thecloud/gh-pages/azure.ipynb
+$ simpleazure start -n 4 http://raw.github.com/lee212/simpleazure/gh-pages/azure.ipynb
 ```
 
 Description
