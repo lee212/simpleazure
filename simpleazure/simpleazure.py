@@ -128,7 +128,9 @@ class SimpleAzure:
     def list_storage_accounts(self):
         return self.sms.list_storage_accounts()
 
-    def get_status(self):
+    def get_status(self, request_id=None):
+        if not request_id:
+            request_id = self.result.request_id
         return self.sms.get_operation_status(request_id)
 
     def get_deployment(self):
