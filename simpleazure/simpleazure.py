@@ -133,7 +133,7 @@ class SimpleAzure:
     def get_deployment(self):
         return self.sms.get_deployment_by_name(service_name=self.name, deployment_name=self.name)
 
-    def get_imagename(self):
+    def get_image_name(self):
         '''Return OS Image name'''
         '''temporarily fixed image is set'''
         return "b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu_DAILY_BUILD-precise-12_04_2-LTS-amd64-server-20130711-en-us-30GB"
