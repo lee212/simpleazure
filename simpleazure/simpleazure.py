@@ -30,7 +30,6 @@ class SimpleAzure:
     public_key_path = azure_config + '/.ssh/myCert.pem'
     private_key_path = azure_config + '/.ssh/myPrivateKey.key'
     key_pair_path = private_key_path
-    thumbprint=open(thumbprint_path, 'r').readline().split('\n')[0]
 
     def __init__(self):
         self.set_name()
@@ -96,6 +95,7 @@ class SimpleAzure:
             self.sms.create_hosted_service(service_name=name, label=name, location=location)
 
     def set_ssh_keys(self, config):
+        self.thumbprint = open(self.thumbprint_path, 'r').readline().split('\n')[0]
         publickey = PublicKey(self.thumbprint, self.public_key_path)
         keypair = KeyPair(self.thumbprint, self.key_pair_path)
         config.ssh.public_keys.public_keys.append(publickey)
