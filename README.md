@@ -44,7 +44,28 @@ print vars(azure.get_deployment())
  'upgrade_status': None,
  'url': u'http://myvm-20735.cloudapp.net/'}
  ```
- 
+
+Example for multiple deployment
+-------------------------------
+cluster() function helps to deploy several VMs at once.
+
+```
+azure = saz()
+azure.get_config()
+azure.create_cluster()
+```
+
+```
+my-cluster-vm-0-87412
+{'request_id': '88c94c00288d42acaf877783f09c4558'}
+my-cluster-vm-1-61293
+{'request_id': 'abfd563c2c4f4926872b6b1dba27a93b'}
+my-cluster-vm-2-96085
+{'request_id': '29b55f6cb5e94cfdbf244a7c848c854d'}
+my-cluster-vm-3-46927
+{'request_id': 'b1a3446ebafe47a295df4c9d1b7d743c'}
+```
+
 Description
 -----------
 * This development is planned to support ipython clustering modules/plugines like the StarCluster project (which is supporting Amazon EC2).
