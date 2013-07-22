@@ -19,10 +19,10 @@ class SimpleAzure:
 
     # Storage
     storage_account = ""
-    container = ""
+    container = "os-image"
     blob = ""
     windows_blob_url = "blob.core.windows.net"
-    media_link = "http://" + storage_account + "." + windows_blob_url + "/" + container + "/" + blob
+    media_link = ""
 
     #SSH Keys
     azure_config = os.environ["HOME"] + '/.azure'
@@ -61,6 +61,7 @@ class SimpleAzure:
         self.load_service()
         self.create_cloud_service()
         self.get_image_name()
+        self.get_media_link()
 
         os_hd = OSVirtualHardDisk(self.image_name, self.media_link)
         linux_user_id = 'azureuser'
@@ -136,4 +137,26 @@ class SimpleAzure:
     def get_image_name(self):
         '''Return OS Image name'''
         '''temporarily fixed image is set'''
-        self.image_name = "b39f27a8b8c64d52b05eac6a62ebad85__Ubuntu_DAILY_BUILD-precise-12_04_2-LTS-amd64-server-20130711-en-us-30GB"
+        result = self.sms.list_os_images()
+        #Let's find images and pick the last one which might be the latest.
+        for image in result:
+            if image.os == "Linux":
+                if image.category == "Canonical":
+                try:
+                    if image.label.index("12.04"):
+                        image_name = image.name
+                        os_name = image.os
+                except:
+                    pass
+        self.image_name = image_name
+        self.os_name = os_name
+
+    def get_media_link(self):
+        result = self.sms.list_storage_accounts()
+        for account in result:
+            storage_account = account.service_name
+        blob_prefix = self.os_name
+        blob = blob_prefix + "-" + self.name 
+        media_link = "http://" + storage_account + "." + self.windows_blob_url +
+        "/" + self.container + "/" + blob
+        self.media_link = media_link
