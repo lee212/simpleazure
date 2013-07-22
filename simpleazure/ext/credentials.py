@@ -25,6 +25,7 @@ class Credentials(object):
             return self.ns[u'managementcertfile']
         except:
             return self.config_path + "/managementCertificate.pem"
+
     def getSubscriptionId(self):
         return self.ns[u'subscriptionid']
 

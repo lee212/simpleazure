@@ -55,27 +55,27 @@ class SimpleAzure:
         self.load_service()
         self.create_cloud_service()
 
-            os_hd = OSVirtualHardDisk(self.image_name, self.media_link)
-            linux_user_id = 'azureuser'
-            linux_user_passwd = 'mypassword1234@'
-            linux_config = LinuxConfigurationSet(self.name, linux_user_id, linux_user_passwd, False)
+        os_hd = OSVirtualHardDisk(self.image_name, self.media_link)
+        linux_user_id = 'azureuser'
+        linux_user_passwd = 'mypassword1234@'
+        linux_config = LinuxConfigurationSet(self.name, linux_user_id, linux_user_passwd, False)
 
-            self.set_ssh_keys(linux_config)
-            self.set_network()
-            self.set_service_certs()
+        self.set_ssh_keys(linux_config)
+        self.set_network()
+        self.set_service_certs()
 
-            result = self.sms.create_virtual_machine_deployment(service_name=self.name,
-                                                                deployment_name=self.name,
-                                                                deployment_slot='production',
-                                                                label=self.name,
-                                                                role_name=self.name,
-                                                                system_config=linux_config,
-                                                                os_virtual_hard_disk=os_hd,
-                                                                network_config=self.network,
-                                                                role_size='Small')
+        result = self.sms.create_virtual_machine_deployment(service_name=self.name,
+                                                            deployment_name=self.name,
+                                                            deployment_slot='production',
+                                                            label=self.name,
+                                                            role_name=self.name,
+                                                            system_config=linux_config,
+                                                            os_virtual_hard_disk=os_hd,
+                                                            network_config=self.network,
+                                                            role_size='Small')
 
-            self.result = result
-            return result
+        self.result = result
+        return result
 
     def load_service(self):
         self.sms = ServiceManagementService(self.subscription_id, self.certificate_path)
@@ -83,9 +83,9 @@ class SimpleAzure:
     def create_cloud_service(self, name=None, location=None):
         if not name:
             name = self.name
-            if not location:
-                location = self.location
-                self.sms.create_hosted_service(service_name=name, label=name, location=location)
+        if not location:
+            location = self.location
+            self.sms.create_hosted_service(service_name=name, label=name, location=location)
 
     def set_ssh_keys(self, config):
         publickey = PublicKey(self.thumbprint, self.public_key_path)
@@ -104,14 +104,13 @@ class SimpleAzure:
         with open(cert_data_path, "rb") as bfile:
             cert_data = base64.b64encode(bfile.read())
 
-            cert_format = 'pfx'
-            cert_password = ''
-            cert_res = self.sms.add_service_certificate(service_name=self.name,
-                                                        data=cert_data,
-                                                        certificate_format=cert_format,
-                                                        password=cert_password)
-
-            self.cert_return = cert_res
+        cert_format = 'pfx'
+        cert_password = ''
+        cert_res = self.sms.add_service_certificate(service_name=self.name,
+                                                    data=cert_data,
+                                                    certificate_format=cert_format,
+                                                    password=cert_password)
+        self.cert_return = cert_res
 
     def list_images(self):
         return self.sms.list_os_images()
