@@ -71,15 +71,16 @@ class SimpleAzure:
         self.set_network()
         self.set_service_certs()
 
-        result = self.sms.create_virtual_machine_deployment(service_name=self.name,
-                                                            deployment_name=self.name,
-                                                            deployment_slot='production',
-                                                            label=self.name,
-                                                            role_name=self.name,
-                                                            system_config=linux_config,
-                                                            os_virtual_hard_disk=os_hd,
-                                                            network_config=self.network,
-                                                            role_size='Small')
+        result =
+        self.sms.create_virtual_machine_deployment(service_name=self.name, \
+                                                   deployment_name=self.name, \
+                                                   deployment_slot='production',\
+                                                   label=self.name, \
+                                                   role_name=self.name, \
+                                                   system_config=linux_config, \
+                                                   os_virtual_hard_disk=os_hd, \
+                                                   network_config=self.network,\
+                                                   role_size='Small')
 
         self.result = result
         return result
