@@ -18,12 +18,12 @@ azure.create_vm()
 
 Status can be seen here.
 ```
-vars(azure.get_status())
+print vars(azure.get_status())
 {'error': None, 'http_status_code': u'200', 'id': u'', 'status': u'Succeeded'}
 ```
 or
 ```
-vars(azure.get_deployment())
+print vars(azure.get_deployment())
 {'configuration': u'<ServiceConfiguration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration">\r\n  <Role name="myvm-20735">\r\n    <Instances count="1" />\r\n  </Role>\r\n</ServiceConfiguration>',
  'created_time': u'2013-07-22T16:10:18Z',
  'deployment_slot': u'Production',
