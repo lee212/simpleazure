@@ -157,6 +157,6 @@ class SimpleAzure:
             storage_account = account.service_name
         blob_prefix = self.os_name
         blob = blob_prefix + "-" + self.name 
-        media_link = "http://" + storage_account + "." + self.windows_blob_url +
-        "/" + self.container + "/" + blob
+        media_link = "http://" + storage_account + "." + self.windows_blob_url \
+                + "/" + self.container + "/" + blob
         self.media_link = media_link
