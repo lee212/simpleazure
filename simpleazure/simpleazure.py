@@ -142,12 +142,12 @@ class SimpleAzure:
         for image in result:
             if image.os == "Linux":
                 if image.category == "Canonical":
-                try:
-                    if image.label.index("12.04"):
-                        image_name = image.name
-                        os_name = image.os
-                except:
-                    pass
+                    try:
+                        if image.label.index("12.04"):
+                            image_name = image.name
+                            os_name = image.os
+                    except:
+                        pass
         self.image_name = image_name
         self.os_name = os_name
 
