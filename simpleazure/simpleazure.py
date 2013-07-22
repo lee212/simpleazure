@@ -204,8 +204,8 @@ class SimpleAzure:
         results = []
         # It is supposed to use multi-processing instead of for loop
         for cnt in range(cluster_count):
-            new_name = self.get_name() + str(cnt)
-            result = self.create_vm(new_name)
+            self.set_name("my-cluster-vm-" + str(cnt) + "-" + self.get_random())
+            result = self.create_vm(self.get_name())
             sleep(10)
             results.append(result)
 
