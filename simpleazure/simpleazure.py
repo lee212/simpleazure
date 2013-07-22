@@ -71,7 +71,7 @@ class SimpleAzure:
         self.set_network()
         self.set_service_certs()
 
-        result =
+        result = \
         self.sms.create_virtual_machine_deployment(service_name=self.name, \
                                                    deployment_name=self.name, \
                                                    deployment_slot='production',\
