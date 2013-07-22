@@ -40,8 +40,8 @@ class SimpleAzure:
         def get_creds(self):
                 self.cert = Credentials()
 
-                self.subscription_id = cert.getSubscription()
-                self.certificate_path = cert.getManagementCertFile()
+                self.subscription_id = self.cert.getSubscription()
+                self.certificate_path = self.cert.getManagementCertFile()
 
         def create_vm(self):
                 self.load_service()
