@@ -1,6 +1,7 @@
 import os
 import base64
 import random
+from time import sleep
 from azure import *
 from azure.servicemanagement import *
 from ext.credentials import Credentials
@@ -16,11 +17,15 @@ class SimpleAzure:
     location = "Central US"
 
     image_name = ""
+    _image_name = { "os" : "Linux",
+                   "category" : "Canonical",
+                   "label" : "12.04" }
 
     # Storage
     storage_account = ""
     container = "os-image"
     blob = ""
+    blob_ext = ".vhd"
     windows_blob_url = "blob.core.windows.net"
     media_link = ""
 
@@ -31,13 +36,23 @@ class SimpleAzure:
     private_key_path = azure_config + '/.ssh/myPrivateKey.key'
     key_pair_path = private_key_path
 
+    #Adding for cluster
+    num_4_win = 0
+    num_4_lin = 4
+    cluster_count = num_4_win + num_4_lin
+
     def __init__(self):
         self.set_name()
         self.set_location()
         return
 
-    def set_name(self):
-        self.name = 'myvm-' + self.get_random()
+    def set_name(self, name=None):
+        if not name:
+            name = 'myvm-' + self.get_random()
+        self.name = name
+
+    def get_name(self):
+        return self.name
         
     def get_random(self):
         return ''.join(str(x) for x in random.sample(range(0,10), 5))
@@ -57,27 +72,28 @@ class SimpleAzure:
         self.subscription_id = self.cert.getSubscription()
         self.certificate_path = self.cert.getManagementCertFile()
 
-    def create_vm(self):
-        self.load_service()
-        self.create_cloud_service()
+    def create_vm(self, name=None, location=None):
+        self.set_name(name)
+        self.connect_service()
+        self.create_cloud_service(name, location)
         self.get_image_name()
-        self.get_media_link()
+        self.get_media_link(blobname=name)
 
         os_hd = OSVirtualHardDisk(self.image_name, self.media_link)
         linux_user_id = 'azureuser'
         linux_user_passwd = 'mypassword1234@'
-        linux_config = LinuxConfigurationSet(self.name, linux_user_id, linux_user_passwd, False)
+        linux_config = LinuxConfigurationSet(self.get_name(), linux_user_id, linux_user_passwd, False)
 
         self.set_ssh_keys(linux_config)
         self.set_network()
         self.set_service_certs()
 
         result = \
-        self.sms.create_virtual_machine_deployment(service_name=self.name, \
-                                                   deployment_name=self.name, \
+        self.sms.create_virtual_machine_deployment(service_name=self.get_name(), \
+                                                   deployment_name=self.get_name(), \
                                                    deployment_slot='production',\
-                                                   label=self.name, \
-                                                   role_name=self.name, \
+                                                   label=self.get_name(), \
+                                                   role_name=self.get_name(), \
                                                    system_config=linux_config, \
                                                    os_virtual_hard_disk=os_hd, \
                                                    network_config=self.network,\
@@ -86,15 +102,16 @@ class SimpleAzure:
         self.result = result
         return result
 
-    def load_service(self):
-        self.sms = ServiceManagementService(self.subscription_id, self.certificate_path)
+    def connect_service(self, refresh=False):
+        if not self.sms or refresh:
+            self.sms = ServiceManagementService(self.subscription_id, self.certificate_path)
 
     def create_cloud_service(self, name=None, location=None):
         if not name:
-            name = self.name
+            name = self.get_name()
         if not location:
             location = self.location
-            self.sms.create_hosted_service(service_name=name, label=name, location=location)
+        self.sms.create_hosted_service(service_name=name, label=name, location=location)
 
     def set_ssh_keys(self, config):
         self.thumbprint = open(self.thumbprint_path, 'r').readline().split('\n')[0]
@@ -116,7 +133,7 @@ class SimpleAzure:
 
         cert_format = 'pfx'
         cert_password = ''
-        cert_res = self.sms.add_service_certificate(service_name=self.name,
+        cert_res = self.sms.add_service_certificate(service_name=self.get_name(),
                                                     data=cert_data,
                                                     certificate_format=cert_format,
                                                     password=cert_password)
@@ -134,7 +151,8 @@ class SimpleAzure:
         return self.sms.get_operation_status(request_id)
 
     def get_deployment(self):
-        return self.sms.get_deployment_by_name(service_name=self.name, deployment_name=self.name)
+        return self.sms.get_deployment_by_name(service_name=self.get_name(),
+                                               deployment_name=self.get_name())
 
     def get_image_name(self):
         '''Return OS Image name'''
@@ -153,12 +171,42 @@ class SimpleAzure:
         self.image_name = image_name
         self.os_name = os_name
 
-    def get_media_link(self):
-        result = self.sms.list_storage_accounts()
-        for account in result:
-            storage_account = account.service_name
+    def get_media_link(self, storage_account=None, container=None, blobname=None):
+        '''Return a media link'''
+        if not storage_account:
+            storage_account = self.get_storage_account()
+        if not blobname:
+            blobname = self.get_name()
         blob_prefix = self.os_name
-        blob = blob_prefix + "-" + self.name 
+        blob = blob_prefix + "-" + blobname + self.blob_ext
         media_link = "http://" + storage_account + "." + self.windows_blob_url \
                 + "/" + self.container + "/" + blob
         self.media_link = media_link
+        return media_link
+
+    def get_storage_account(self, refresh=False):
+        '''Return the last storage account name'''
+        if not self.storage_account or refresh:
+            result = self.sms.list_storage_accounts()
+            for account in result:
+                storage_account = account.service_name
+            self.storage_account = storage_account
+        return self.storage_account
+
+    def crate_cluster(self, num=None, option=None):
+        '''Create multiple VMs to support cluster computing'''
+
+        if not num:
+            cluster_count = self.cluster_count
+        results = []
+        # It is supposed to use multi-processing instead of for loop
+        for cnt in range(cluster_count):
+            new_name = self.get_name() + str(cnt)
+            result = self.create_vm(new_name)
+            sleep(10)
+            results.append(result)
+
+            #media_link = self.get_media_link(blobname=new_name)
+            #self.create_cloud_service(name=new_name)
+            #temporarily added waiting time for deploying cloud service
+
