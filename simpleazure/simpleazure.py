@@ -12,6 +12,9 @@ class SimpleAzure:
     subscription_id = ""
     certificate_path = ""
 
+    #ServiceManagementService
+    sms = None
+
     #default value
     name = "myvm-12345"
     location = "Central US"
@@ -193,7 +196,7 @@ class SimpleAzure:
             self.storage_account = storage_account
         return self.storage_account
 
-    def crate_cluster(self, num=None, option=None):
+    def create_cluster(self, num=None, option=None):
         '''Create multiple VMs to support cluster computing'''
 
         if not num:
