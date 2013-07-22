@@ -11,8 +11,9 @@ class SimpleAzure:
     subscription_id = ""
     certificate_path = ""
 
-    name = ""
-    location = ""
+    #default value
+    name = "myvm-12345"
+    location = "Central US"
 
     image_name = ""
 
@@ -33,6 +34,7 @@ class SimpleAzure:
 
     def __init__(self):
         self.set_name()
+        self.set_location()
         return
 
     def set_name(self):
@@ -40,6 +42,11 @@ class SimpleAzure:
         
     def get_random(self):
         return ''.join(str(x) for x in random.sample(range(0,10), 5))
+
+    def set_location(self):
+        '''This is temporary. the location should be defined in the azure.config
+        file.'''
+        self.location = "Central US"
 
     def get_config(self):
         self.get_creds()
