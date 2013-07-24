@@ -63,6 +63,7 @@ class SimpleAzure:
     linux_user_passwd = 'mypassword1234@' #Not used in ssh
 
     #SSH Keys
+    # http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx#SSH
     azure_config = os.environ["HOME"] + '/.azure'
     thumbprint_path = azure_config + '/.ssh/thumbprint'
     authorized_keys = "/home/" + linux_user_id + "/.ssh/authorized_keys"
