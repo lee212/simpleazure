@@ -58,12 +58,17 @@ class SimpleAzure:
     windows_blob_url = "blob.core.windows.net"
     media_link = ""
 
+    # Linux
+    linux_user_id = 'azureuser'
+    linux_user_passwd = 'mypassword1234@' #Not used in ssh
+
     #SSH Keys
     azure_config = os.environ["HOME"] + '/.azure'
     thumbprint_path = azure_config + '/.ssh/thumbprint'
-    public_key_path = azure_config + '/.ssh/myCert.pem'
-    private_key_path = azure_config + '/.ssh/myPrivateKey.key'
-    key_pair_path = private_key_path
+    authorized_keys = "/home/" + linux_user_id + "/.ssh/authorized_keys"
+    #public_key_path = azure_config + '/.ssh/myCert.pem'
+    #private_key_path = azure_config + '/.ssh/myPrivateKey.key'
+    #key_pair_path = private_key_path
 
     #Adding for cluster
     num_4_win = 0
@@ -147,9 +152,8 @@ class SimpleAzure:
         self.get_media_link(blobname=name)
 
         os_hd = OSVirtualHardDisk(self.image_name, self.media_link)
-        linux_user_id = 'azureuser'
-        linux_user_passwd = 'mypassword1234@'
-        linux_config = LinuxConfigurationSet(self.get_name(), linux_user_id, linux_user_passwd, False)
+        linux_config = LinuxConfigurationSet(self.get_name(), self.linux_user_id,
+                                             self.linux_user_passwd, True)
 
         self.set_ssh_keys(linux_config)
         self.set_network()
@@ -206,8 +210,11 @@ class SimpleAzure:
         """
 
         self.thumbprint = open(self.thumbprint_path, 'r').readline().split('\n')[0]
-        publickey = PublicKey(self.thumbprint, self.public_key_path)
-        keypair = KeyPair(self.thumbprint, self.key_pair_path)
+        publickey = PublicKey(self.thumbprint, self.authorized_keys)
+        # KeyPair is a SSH kay pair both a public and a private key to be stored
+        # on the virtual machine.
+        # http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx#SSH
+        # keypair = KeyPair(self.thumbprint, self.key_pair_path)
         config.ssh.public_keys.public_keys.append(publickey)
         config.ssh.key_pairs.key_pairs.append(keypair)
 
