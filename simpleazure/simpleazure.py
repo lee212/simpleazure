@@ -210,6 +210,9 @@ class SimpleAzure:
 
         """
 
+        # fingerprint captured by 'openssl x509 -in myCert.pem -fingerprint
+        # -noout|cut -d"=" -f2|sed 's/://g'> thumbprint'
+        # (Sample output) C453D10B808245E0730CD023E88C5EB8A785ED6B
         self.thumbprint = open(self.thumbprint_path, 'r').readline().split('\n')[0]
         publickey = PublicKey(self.thumbprint, self.authorized_keys)
         # KeyPair is a SSH kay pair both a public and a private key to be stored
@@ -217,7 +220,26 @@ class SimpleAzure:
         # http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx#SSH
         # keypair = KeyPair(self.thumbprint, self.key_pair_path)
         config.ssh.public_keys.public_keys.append(publickey)
-        config.ssh.key_pairs.key_pairs.append(keypair)
+        #config.ssh.key_pairs.key_pairs.append(keypair)
+
+        # Note
+        # Since PKCS#10 X.509 is not fully supported by pycrypto, paramiko can
+        # not use the key generated with PKCS, for example, openssl req ...
+        # To do bypass, ssh-keygen can be used in the following order
+        #
+        # Generate a key pair
+        # 1. ssh-keygen -f myPrivateKey.key (default is rsa and 2048 bits)
+        #
+        # Get certificate from a private key
+        # 2. openssl req -x509 -nodes -days 365 -new -key myPrivateKey.key
+        # -out myCert.pem
+        #
+        # .cer can be generated
+        # openssl x509 -outform der -in public_key_file.pem -out myCert.cer
+        #
+        # .pfx
+        # openssl pkcs12 -in public_key_file.pem -inkey private_key_file.key
+        # -export -out myCert.pfx
 
     def set_network(self):
         """Configure network for a virtual machine.
@@ -237,6 +259,9 @@ class SimpleAzure:
         .pfx at this time.
 
         """
+        # command used: 
+        # openssl pkcs12 -in myCert.pem -inkey myPrivateKey.key
+        # -export -out myCert.pfx
         cert_data_path = self.azure_config + "/.ssh/myCert.pfx"
         with open(cert_data_path, "rb") as bfile:
             cert_data = base64.b64encode(bfile.read())
