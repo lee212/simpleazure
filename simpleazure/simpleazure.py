@@ -374,6 +374,7 @@ class SimpleAzure:
         :returns: str.
 
         """
+        self.connect_service()
         if not self.storage_account or refresh:
             result = self.sms.list_storage_accounts()
             for account in result:
