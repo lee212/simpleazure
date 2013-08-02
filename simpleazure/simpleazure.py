@@ -18,6 +18,7 @@ from time import sleep
 from azure import *
 from azure.servicemanagement import *
 from ext.credentials import Credentials
+from . import config
 
 class SimpleAzure:
     """Constructs a :class:`SimpleAzure <SimpleAzure>`.
@@ -32,7 +33,6 @@ class SimpleAzure:
         <azure.servicemanagement.AsynchronousOperationResult at 0x2945e10>
     """
 
-    config_path = os.environ["HOME"] + "/.azure/"
     subscription_id = ""
     certificate_path = ""
 
@@ -64,7 +64,7 @@ class SimpleAzure:
 
     #SSH Keys
     # http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx#SSH
-    azure_config = os.environ["HOME"] + '/.azure'
+    azure_config = config.azure_path()
     thumbprint_path = azure_config + '/.ssh/thumbprint'
     authorized_keys = "/home/" + linux_user_id + "/.ssh/authorized_keys"
     #public_key_path = azure_config + '/.ssh/myCert.pem'

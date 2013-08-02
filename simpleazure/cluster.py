@@ -17,8 +17,11 @@ class Cluster(object):
 
     def __init__(self):
 
+        # Virtual Machines
         self.azure = saz()
         self.azure.get_config()
+
+        # cluster info
         
     
     def cli(self, args=None, opts=None, **kwargs):
@@ -39,6 +42,17 @@ class Cluster(object):
 
     def start(self, sub_cmd=None, **kwargs):
         self.azure.create_vm()
+
+    def sshmaster(self, sub_cmd=None, **kwargs):
+        self.get_selected_cluster(sub_cmd)
+        return
+
+    def get_selected_cluster(self, name=None):
+        self.get_info()
+
+    def get_info(self):
+
+
 
     def _none(self, sub_cmd=None, **kwargs):
         return
