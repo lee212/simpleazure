@@ -31,6 +31,7 @@ def set_cluster_conf(name, data):
     f.close()
 
 def get_cluster_conf(name):
+    utils.ensure_dir_exists(cluster_path())
     yaml_name = name + ".yaml"
     f = open(cluster_path() + "/" + yaml_name)
     data = yaml.load(f)
