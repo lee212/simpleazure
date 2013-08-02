@@ -47,11 +47,15 @@ class Cluster(object):
         self.update_cluster_info(sub_cmd)
 
     def sshmaster(self, sub_cmd=None, **kwargs):
-        self.get_cluster_info(sub_cmd)
-        return
+        try:
+            cluster_name = sub_cmd[0]
+        except:
+            cluster_name = sub_cmd
+        cluster_info = self.get_cluster_info(cluster_name)
+        #SSH to cluster_info['master']
 
     def get_cluster_info(self, name=None):
-        self.get_conf(name)
+        return self.get_conf(name)
 
     def set_cluster_info(self, name=None):
         data = {'master': None, \
