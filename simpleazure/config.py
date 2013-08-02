@@ -20,6 +20,9 @@ CLUSTER_DIR = '/cluster'
 def config_path():
     return DEFAULT_AZURE_CONFIG_PATH
 
+def azure_path():
+    return config_path()
+
 def cluster_path():
     return config_path() + CLUSTER_DIR
 
