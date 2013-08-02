@@ -280,6 +280,7 @@ class SimpleAzure:
         :returns: dict.
 
         """
+        self.connect_service()
         return self.sms.list_os_images()
 
     def list_storage_accounts(self):
@@ -288,6 +289,7 @@ class SimpleAzure:
         :returns: dict.
 
         """
+        self.connect_service()
         return self.sms.list_storage_accounts()
 
     def get_status(self, request_id=None):
@@ -300,6 +302,7 @@ class SimpleAzure:
         """
         if not request_id:
             request_id = self.result.request_id
+        self.connect_service()
         return self.sms.get_operation_status(request_id)
 
     def get_deployment(self):
@@ -308,12 +311,23 @@ class SimpleAzure:
         :returns: dict.
 
         """
+        self.connect_service()
         return self.sms.get_deployment_by_name(service_name=self.get_name(),
                                                deployment_name=self.get_name())
+
+    def list_deployments(self):
+        """Return a list of deployments
+
+        :returns: dict.
+
+        """
+        self.connect_service()
+        return self.sms.list_hosted_services()
 
     def get_image_name(self):
         """Return OS Image name"""
         """temporarily fixed image is set"""
+        self.connect_service()
         result = self.sms.list_os_images()
         #Let's find images and pick the last one which might be the latest.
         for image in result:

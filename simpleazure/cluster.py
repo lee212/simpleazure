@@ -11,11 +11,15 @@ This module provides a Python library for Windows Azure Virtual Machines.
 
 """
 import sys
-from simpleazure import SimpleAzure
+from simpleazure import SimpleAzure as saz
 
 class Cluster(object):
+
     def __init__(self):
-        return
+
+        self.azure = saz()
+        self.azure.get_config()
+        
     
     def cli(self, args=None, opts=None, **kwargs):
         self.args = args
@@ -25,11 +29,16 @@ class Cluster(object):
         try:
             main_cmd = self.args[0]
             sub_cmd = self.args[1:]
-            func = getattr(self, main_cmd)
-            func(sub_cmd)
         except:
-            print sys.exc_info()
+            main_cmd = '_none'
+            sub_cmd = None
             pass
 
+        func = getattr(self, main_cmd)
+        func(sub_cmd)
+
     def start(self, sub_cmd=None, **kwargs):
+        self.azure.create_vm()
+
+    def _none(self, sub_cmd=None, **kwargs):
         return
