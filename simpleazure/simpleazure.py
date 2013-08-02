@@ -397,13 +397,17 @@ class SimpleAzure:
 
         if not num:
             cluster_count = self.cluster_count
-        results = []
+        #results = []
+        results = {}
         # It is supposed to use multi-processing instead of for loop
         for cnt in range(cluster_count):
             self.set_name(self.cluster_name_prefix + str(cnt) + "-" + self.get_random())
             result = self.create_vm(self.get_name())
             sleep(10)
-            results.append(result)
+            #results.append(result)
+            results[self.get_name()] = result
+            if cnt == 0:
+                results["master"] = self.get_name()
 
             #media_link = self.get_media_link(blobname=new_name)
             #self.create_cloud_service(name=new_name)

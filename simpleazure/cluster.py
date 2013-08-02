@@ -12,6 +12,7 @@ This module provides a Python library for Windows Azure Virtual Machines.
 """
 import sys
 from simpleazure import SimpleAzure as saz
+from . import config
 
 class Cluster(object):
 
@@ -41,18 +42,44 @@ class Cluster(object):
         func(sub_cmd)
 
     def start(self, sub_cmd=None, **kwargs):
-        self.azure.create_vm()
+        self.get_cluster_info(sub_cmd)
+        self.azure.create_cluster(num=self.get_cluster_size())
+        self.update_cluster_info(sub_cmd)
 
     def sshmaster(self, sub_cmd=None, **kwargs):
-        self.get_selected_cluster(sub_cmd)
+        self.get_cluster_info(sub_cmd)
         return
 
-    def get_selected_cluster(self, name=None):
-        self.get_info()
+    def get_cluster_info(self, name=None):
+        self.get_conf(name)
 
-    def get_info(self):
+    def set_cluster_info(self, name=None):
+        data = {'master': None, \
+                'engines': None, \
+                'sshkey': None }
+        config.set_cluster_conf(name, data)
 
+    def update_cluster_info(self, name=None):
+        engines = []
+        for node_name, result in self.azure.results.iteritems():
+            if node_name == "master":
+                master = result
+            else:
+                engines.append(node_name)
+        engines.remove(master)
 
+        data = {'master': master, \
+                'engines': engines, \
+                'sshkey': None }
+        config.set_cluster_conf(name, data)
+
+    def get_conf(self, name):
+        return config.get_cluster_conf(name)
+
+    def get_cluster_size(self):
+        '''Return a number of VM instances to deploy'''
+        '''Temporarily returns 2'''
+        return 2
 
     def _none(self, sub_cmd=None, **kwargs):
         return
