@@ -13,6 +13,7 @@ This module provides a Python library for Windows Azure Virtual Machines.
 import sys
 from simpleazure import SimpleAzure as saz
 from . import config
+from . import ssh
 
 class Cluster(object):
 
@@ -53,6 +54,9 @@ class Cluster(object):
             cluster_name = sub_cmd
         cluster_info = self.get_cluster_info(cluster_name)
         #SSH to cluster_info['master']
+        sshmaster = SSH()
+        sshmaster.setup(host=cluster_info['master'], pkey=cluster_info['pkey'])
+        sshmaster.shell()
 
     def get_cluster_info(self, name=None):
         return self.get_conf(name)
