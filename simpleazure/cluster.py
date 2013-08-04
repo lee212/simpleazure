@@ -54,8 +54,9 @@ class Cluster(object):
             cluster_name = sub_cmd
         cluster_info = self.get_cluster_info(cluster_name)
         #SSH to cluster_info['master']
-        sshmaster = SSH()
-        sshmaster.setup(host=cluster_info['master'], pkey=cluster_info['pkey'])
+        hostname = config.get_azure_domain(cluster_info['master'])
+        sshmaster = ssh.SSH()
+        sshmaster.setup(host=hostname, pkey=cluster_info['pkey'])
         sshmaster.shell()
 
     def get_cluster_info(self, name=None):

@@ -16,6 +16,7 @@ from . import utils
 
 DEFAULT_AZURE_CONFIG_PATH = os.environ["HOME"] + '/.azure'
 CLUSTER_DIR = '/cluster'
+AZURE_CLOUD_DOMAIN = 'cloudapp.net'
 
 def config_path():
     return DEFAULT_AZURE_CONFIG_PATH
@@ -40,3 +41,11 @@ def get_cluster_conf(name):
     data = yaml.load(f)
     f.close
     return data
+
+def get_azure_domain(name=None):
+    if name:
+        hostname = str(name) + "." + AZURE_CLOUD_DOMAIN
+    else:
+        hostname = AZURE_CLOUD_DOMAIN
+
+    return hostname
