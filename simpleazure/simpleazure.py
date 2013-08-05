@@ -14,6 +14,7 @@ This module provides a Python library for Windows Azure Virtual Machines.
 import os
 import base64
 import random
+from urlparse import urlparse
 from time import sleep
 from azure import *
 from azure.servicemanagement import *
@@ -396,14 +397,33 @@ class SimpleAzure:
             storage_account = self.get_storage_account()
         if not blobname:
             blobname = self.get_name()
+        if not container:
+            container = self.container
         blob_prefix = self.os_name
         blob = blob_prefix + "-" + blobname + self.blob_ext
         media_link = "http://" + storage_account + "." + self.windows_blob_url \
-                + "/" + self.container + "/" + blob
+                + "/" + container + "/" + blob
         self.media_link = media_link
         return media_link
 
     def get_storage_account(self, refresh=False):
+        """Return a storage account.
+
+        If there is a selected image to deploy, the same storage account will be
+        used with the image's one.
+        Otherwise, the last storage account of a subscription id will be used.
+
+        """
+
+        if self.image and self.image.media_link:
+            account_name = self.get_account_from_link(self.image.media_link)
+        else:
+            account_name = self.get_last_storage_account()
+        
+        self.storage_account = account_name
+        return account_name
+
+    def get_last_storage_account(self):
         """Return the last storage account name of a subscription id
  
         :param refesh: (optional) the storage account name will be update if
@@ -417,9 +437,24 @@ class SimpleAzure:
             result = self.sms.list_storage_accounts()
             for account in result:
                 storage_account = account.service_name
-            self.storage_account = storage_account
-        return self.storage_account
+        return storage_account
 
+    def get_account_from_link(self, url):
+        """Return hostname from a link.
+        top hostname indicates a storage account name
+
+        :param url: a media_link
+        :type url: str.
+
+        """
+        try:
+            o = urlparse(url)
+            host = o.hostname.split(".")[0]
+        except:
+            host = None
+
+        return host
+        
     def create_cluster(self, num=None, option=None):
         """Create multiple virtual machines to support cluster computing
         
