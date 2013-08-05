@@ -41,10 +41,10 @@ class SimpleAzure:
     sms = None
 
     #default value
-    name = "myvm-12345"
+    name = "sazvm-12345"
     location = "Central US"
 
-    cluster_name_prefix = "myvm-cluster-"
+    cluster_name_prefix = "sazvm-cluster-"
 
     image = None
     image_name = ""
@@ -86,14 +86,14 @@ class SimpleAzure:
 
     def set_name(self, name=None):
         """Set a name of virtual machine. If name is not specified, random name
-        will be generated in form of 'myvm-' following with five digits.
+        will be generated in form of 'sazvm-' following with five digits.
         
         :param name: the name to use for a virtual machine
         :type name: str.
 
         """
         if not name:
-            name = 'myvm-' + self.get_random()
+            name = 'sazvm-' + self.get_random()
         self.name = name
 
     def get_name(self):
