@@ -82,7 +82,7 @@ class SimpleAzure:
     def __init__(self):
         """Initialize variables"""
         self.set_name()
-        self.set_location()
+        self.set_location(config.DEFAULT_LOCATION)
 
     def set_name(self, name=None):
         """Set a name of virtual machine. If name is not specified, random name
@@ -120,9 +120,7 @@ class SimpleAzure:
 
         """
 
-        '''This is temporary. the location should be defined in the azure.config
-        file or be selected from available locations.'''
-        self.location = "Central US"
+        self.location = location
 
     def get_config(self):
         """Load configurations for the virtual machine. For example, credentials
@@ -162,6 +160,8 @@ class SimpleAzure:
         self.set_ssh_keys(linux_config)
         self.set_network()
         self.set_service_certs()
+        # can't find certificate right away.
+        sleep(3)
 
         result = \
         self.sms.create_virtual_machine_deployment(service_name=self.get_name(), \
