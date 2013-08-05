@@ -24,6 +24,23 @@ class Community:
     service_host = 'vmdepot.msopentech.com'
     service_url = '/OData.svc'
 
+    def create_vm_by_nodejs(self):
+        """Create a vm by executing azure cli
+
+        example command:
+        $ azure vm create DNS_PREFIX -o vmdepot-2440-1-2 -l "East US" USER_NAME
+          [PASSWORD] [--ssh] [other_options]
+
+        The azure -o option calls creating community image by node.js
+
+        for example,
+        node cli.js vm create %s %s communityUser PassW0rd$ -o --json --ssh
+        --location', vmName, communityImageId
+        For more detail, see
+        at: https://github.com/WindowsAzure/azure-sdk-tools-xplat/blob/master/test/commands/cli.vm-tests.js
+        """
+        return
+
     def get_blob_url(self, uid):
         """Return BlobUrl for a uid
 
@@ -71,6 +88,9 @@ class Community:
         #return parser.parseString( toursurl_string )
         root = ET.fromstring(toursurl_string)
         return root
+
+    # references for test
+    # https://github.com/WindowsAzure/azure-sdk-tools-xplat/blob/master/test/recordings/cli.vm-tests.nock.js
 
 if __name__ == "__main__":
     comm = Community()
