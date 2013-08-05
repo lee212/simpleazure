@@ -413,6 +413,11 @@ class SimpleAzure:
         used with the image's one.
         Otherwise, the last storage account of a subscription id will be used.
 
+        Note. 
+        The disk's VHD must be in the same account as the VHD of the source
+        image (source account: xxx.blob.core.windows.net, target
+        account: xxx.blob.core.windows.net).
+
         """
 
         if self.image and self.image.media_link:
