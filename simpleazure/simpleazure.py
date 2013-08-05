@@ -280,8 +280,36 @@ class SimpleAzure:
         :returns: dict.
 
         """
+        return self.get_image()
+
+    def get_image(self, label=None, name=None):
+        """Return available operating systems images on Windows Azure
+
+        :param label: (optional) a simple description of images. not unique
+        value
+        :type label: str.
+        :param name: (optional) a unique name of images.
+        :type name: str.
+        :returns: dict.
+
+        """
+
+        # Establish connection, if not exist
         self.connect_service()
-        return self.sms.list_os_images()
+        images = self.sms.list_os_images()
+        if not label and not name:
+            return images
+
+        for image in images:
+            if name and image.name == name:
+                return image
+            if label and image.label == label:
+                lastone = image
+
+        if lastone:
+            return lastone
+
+        return images
 
     def list_storage_accounts(self):
         """List available storage accounts for the subscription id.
@@ -327,20 +355,9 @@ class SimpleAzure:
     def get_image_name(self):
         """Return OS Image name"""
         """temporarily fixed image is set"""
-        self.connect_service()
-        result = self.sms.list_os_images()
-        #Let's find images and pick the last one which might be the latest.
-        for image in result:
-            if image.os == "Linux":
-                if image.category == "Canonical":
-                    try:
-                        if image.label.index("12.04"):
-                            image_name = image.name
-                            os_name = image.os
-                    except:
-                        pass
-        self.image_name = image_name
-        self.os_name = os_name
+        image = self.get_image(label="Ubuntu Server 12.04.2 LTS")
+        self.image_name = image.name
+        self.os_name = image.os
 
     def get_media_link(self, storage_account=None, container=None, blobname=None):
         """Return a media link in http URL.
