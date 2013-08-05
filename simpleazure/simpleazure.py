@@ -473,6 +473,7 @@ class SimpleAzure:
 
         """
 
+        cluster_count = num
         if not num:
             cluster_count = self.cluster_count
         #results = []
