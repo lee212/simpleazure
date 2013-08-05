@@ -18,6 +18,8 @@ DEFAULT_AZURE_CONFIG_PATH = os.environ["HOME"] + '/.azure'
 CLUSTER_DIR = '/cluster'
 AZURE_CLOUD_DOMAIN = 'cloudapp.net'
 
+DEFAULT_IMAGE_LABEL = "Ubuntu Server 12.04.2 LTS"
+
 def config_path():
     return DEFAULT_AZURE_CONFIG_PATH
 

@@ -49,6 +49,7 @@ class SimpleAzure:
     _image_name = { "os" : "Linux",
                    "category" : "Canonical",
                    "label" : "12.04" }
+    os_name = None
 
     # Storage
     storage_account = ""
@@ -149,7 +150,7 @@ class SimpleAzure:
         self.set_name(name)
         self.connect_service()
         self.create_cloud_service(name, location)
-        self.get_image_name()
+        self.set_image()
         self.get_media_link(blobname=name)
 
         os_hd = OSVirtualHardDisk(self.image_name, self.media_link)
@@ -352,12 +353,27 @@ class SimpleAzure:
         self.connect_service()
         return self.sms.list_hosted_services()
 
-    def get_image_name(self):
-        """Return OS Image name"""
-        """temporarily fixed image is set"""
-        image = self.get_image(label="Ubuntu Server 12.04.2 LTS")
-        self.image_name = image.name
-        self.os_name = image.os
+    def set_image(self, name=None, image=None, refresh=False):
+        """Set os image to deploy virtual machines.
+        self.image_name and self.os_name will be set
+
+        :param name: (optional) an image name to set
+        :type name: str.
+        :param image: (optional) an oject of an image
+        :type image: obj. (azure.servicemanagement.OSImage) 
+        :param refresh: (optional) reset an image name
+        :type refresh: bool.
+
+        """
+        if self.image_name and not refresh:
+            return
+
+        if not name and not image:
+            #get a default image
+            image = self.get_image(label=config.DEFAULT_IMAGE_LABEL)
+        if image:
+            self.image_name = image.name
+            self.os_name = image.os
 
     def get_media_link(self, storage_account=None, container=None, blobname=None):
         """Return a media link in http URL.
