@@ -45,6 +45,7 @@ class SimpleAzure:
 
     cluster_name_prefix = "myvm-cluster-"
 
+    image = None
     image_name = ""
     _image_name = { "os" : "Linux",
                    "category" : "Canonical",
@@ -365,13 +366,17 @@ class SimpleAzure:
         :type refresh: bool.
 
         """
+        # if set then skip unless it's forced.
         if self.image_name and not refresh:
             return
 
+        #get a default image
         if not name and not image:
-            #get a default image
             image = self.get_image(label=config.DEFAULT_IMAGE_LABEL)
+
+        # set image
         if image:
+            self.image = image
             self.image_name = image.name
             self.os_name = image.os
 
