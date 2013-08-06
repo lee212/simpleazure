@@ -66,6 +66,20 @@ my-cluster-vm-3-46927
 {'request_id': 'b1a3446ebafe47a295df4c9d1b7d743c'}
 ```
 
+Example for multiple deployment with Azure Data Science Core
+-------------------------------------------------------------
+Deploy 5 VMs with Azure Data Science Core at West Europe 
+
+```
+azure = saz()
+azure.get_config()
+q = azure.get_image(name="Azure-Data-Science-Core")
+azure.set_image(image=q,refresh=True)
+a.set_location("West Europe")
+a.create_cluster(num=5)
+```
+
+
 Description
 -----------
 * This development is planned to support ipython clustering modules/plugines like the StarCluster project (which is supporting Amazon EC2).
