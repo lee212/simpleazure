@@ -20,6 +20,7 @@ from azure import *
 from azure.servicemanagement import *
 from ext.credentials import Credentials
 from . import config
+from . import ssh
 
 class SimpleAzure:
     """Constructs a :class:`SimpleAzure <SimpleAzure>`.
@@ -71,7 +72,7 @@ class SimpleAzure:
     thumbprint_path = azure_config + '/.ssh/thumbprint'
     authorized_keys = "/home/" + linux_user_id + "/.ssh/authorized_keys"
     #public_key_path = azure_config + '/.ssh/myCert.pem'
-    #private_key_path = azure_config + '/.ssh/myPrivateKey.key'
+    private_key_path = azure_config + '/.ssh/myPrivateKey.key'
     #key_pair_path = private_key_path
 
     #Adding for cluster
@@ -493,4 +494,22 @@ class SimpleAzure:
             #temporarily added waiting time for deploying cloud service
         self.results = results
         return results
+
+    def login_to(self, name=None):
+        """SSH to a virtual machine
+        
+        :param name: (optional) the hostname of a virtual machine
+        :type name: str.
+        :returns: ssh object.
+        
+        """
+
+        if not name:
+            name = self.name
+        hostname = config.get_azure_domain(name)
+
+        sshmaster = ssh.SSH()
+        sshmaster.setup(host=hostname, pkey=self.private_key_path)
+        sshmaster.shell()
+ 
 
