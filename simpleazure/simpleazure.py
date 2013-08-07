@@ -428,7 +428,7 @@ class SimpleAzure:
         self.storage_account = account_name
         return account_name
 
-    def get_last_storage_account(self):
+    def get_last_storage_account(self, refresh=False):
         """Return the last storage account name of a subscription id
  
         :param refesh: (optional) the storage account name will be update if
