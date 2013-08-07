@@ -22,8 +22,8 @@ You can change an operating system image by the ``set_image()`` function. For ex
 
 This allows you to create a vm with the selected image. Note that ``set_image()`` must be used before calling the ``create_vm()`` function.
 
-Deploying several Virtual Machines
-----------------------------------
+Deploying several machines
+---------------------------
 ``create_cluster()`` function allows you to create multiple machines at once. ``num=`` parameter can be used to specify the number of nodes.
 
 .. code-block:: python
