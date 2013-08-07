@@ -53,12 +53,6 @@ Contribute
 * Mailinglist
 * `issues <https://github.com/lee212/simpleazure/issues>`_
 
-.. Prerequisite
-   ============
-
-   * azure-sdk-for-python
-   * azure-cli
-
    Indices and tables
    ==================
 
