@@ -54,4 +54,11 @@ This example explains as how to deploy a virtual machine with the community imag
    azure.set_image(image=q)
    azure.create_vm()
    
+Simple Azure on Command Line Interface (CLI)
+-----------------------------------------------
+Simple Azure supports commands on a linux shell. For example, you can create clusters of virtual machines on Windows Azure like `StarCluster <http://star.mit.edu/cluster/index.html>`_ like as follows:
+(StarCluster is a cluster-computing toolkit for Amazon Cloud)
 
+::
+
+   $ simpleazure-cluster start mycluster
