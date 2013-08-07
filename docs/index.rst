@@ -38,6 +38,10 @@ Three lines are required to deploy Window Azure Virtual Machine in Python.
    azure = saz()
    azure.get_config()
    azure.create_vm()
+   
+.. raw:: html
+
+   <iframe width="560" height="315" src="//www.youtube.com/embed/pHG_gmnc6qI" frameborder="0" allowfullscreen></iframe>
 
 Installation (TBD)
 ------------------
