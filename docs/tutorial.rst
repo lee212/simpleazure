@@ -10,7 +10,7 @@ You can also have an interactive python tutorial via IPython Notebook to learn S
 
 Tutorial by IPython Notebook
 ----------------------------
-nbviewer.org supports sharing and viewing ipython notebook files. Simple Azure's tutorial can be viewed through nbviewer.org.
+`IPython Notebook Viewer <http://nbviewer.org>`_ supports sharing and viewing ipython notebook files. Simple Azure's tutorial can be viewed through the ipynb viewer.
 
 * `Tutorial - Deploying Windows Azure Virtual Machines with Python SDK <http://nbviewer.ipython.org/urls/raw.github.com/lee212/simpleazure/master/ipynb/Tutorial%2520-%2520Deploying%2520Windows%2520Azure%2520Virtual%2520Machines%2520with%2520Python%2520SDK.ipynb>`_
 * `Tutorial - Deploying Windows and Linux VMs <http://nbviewer.ipython.org/urls/raw.github.com/lee212/simpleazure/master/ipynb/Tutorial%2520-%2520Deploying%2520Windows%2520and%2520Linux%2520VMs.ipynb>`_
