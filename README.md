@@ -1,7 +1,8 @@
 Simple Azure
 ============
 
-Simple Azure supports cloud computing management in the Python Programming Language. It plans to support WIndows Azure, OpenStack, etc.
+Simple Azure supports cloud computing management in the Python Programming Language. It plans to support WIndows Azure, OpenStack, etc.  
+[Documentation](https://simple-azure.readthedocs.org/)
 
 Example
 --------
@@ -78,7 +79,6 @@ azure.set_image(image=q,refresh=True)
 azure.set_location("West Europe")
 azure.create_cluster(num=5)
 ```
-
 
 Description
 -----------
