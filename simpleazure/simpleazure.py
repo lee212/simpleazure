@@ -162,7 +162,7 @@ class SimpleAzure:
         self.set_network()
         self.set_service_certs()
         # can't find certificate right away.
-        sleep(3)
+        sleep(5)
 
         result = \
         self.sms.create_virtual_machine_deployment(service_name=self.get_name(), \
