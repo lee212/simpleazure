@@ -16,6 +16,18 @@ IPython cluster is also supported.
 * IPython cluster with the plugin
 * Access to the open VM image repository (VM Depot)
 
+Content
+=======
+
+.. toctree::
+   :maxdepth: 1
+
+   index
+   quickstart
+   tutorial
+   installation
+   deliverables
+
 Deploying Azure Virtual Machines
 ---------------------------------
 Three lines are required to deploy Window Azure Virtual Machine in Python.
