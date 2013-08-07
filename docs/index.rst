@@ -6,11 +6,15 @@
 Simple Azure - python library for Windows Azure
 ================================================
 
-Simple Azure is a python library for Windows Azure and provides a simple Azure service management with other features. Simple Azure enables cluster computing on Windows Azure with the azure-sdk-for-python library. Linux distributions on VM Depot are accessible with the Azure node.js SDK. IPython cluster is also supported with the Simple Azure plugin.
+Simple Azure is a python library for Windows Azure. 
+It provides a service management with clustering. 
+Simple Azure enables ipython notebook on Windows Azure based on the azure-sdk-for-python and its plugin. 
+Linux distributions on VM Depot are accessible with the Azure node.js SDK. 
+IPython cluster is also supported.
 
 * cluster computing (like StarCluster)
 * IPython cluster with the plugin
-* Access to open VM image repository (VM Depot)
+* Access to the open VM image repository (VM Depot)
 
 Prerequisite
 ============
@@ -18,10 +22,6 @@ Prerequisite
 * azure-sdk-for-python
 * azure-cli
 
-Contents:
-
-.. toctree::
-   :maxdepth: 2
 
 
 
