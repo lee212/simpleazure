@@ -53,7 +53,8 @@ Contribute
 * Mailinglist
 * `issues <https://github.com/lee212/simpleazure/issues>`_
 
-   Indices and tables
+
+.. Indices and tables
    ==================
 
    * :ref:`genindex`
