@@ -16,14 +16,23 @@ IPython cluster is also supported.
 * IPython cluster with the plugin
 * Access to the open VM image repository (VM Depot)
 
+Deploying Azure Virtual Machines
+---------------------------------
+Three lines are required to deploy Window Azure Virtual Machine in Python.
+
+.. code-block:: python
+
+   from simpleazure.simpleazure import SimpleAzure as saz
+
+   azure = saz()
+   azure.get_config()
+   azure.create_vm()
+
 Prerequisite
 ============
 
 * azure-sdk-for-python
 * azure-cli
-
-
-
 
 Indices and tables
 ==================
