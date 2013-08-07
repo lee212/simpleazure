@@ -49,6 +49,7 @@ On Windows, *easy_install* help install Simple Azure. `distribute_setup.py <http
 Once you have easy_install, you can install simple azure:
 
 :: 
+
   > easy_install pip
   > pip install simpleazure
 
