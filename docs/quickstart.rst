@@ -18,7 +18,7 @@ You can change an operating system image by the ``set_image()`` function. For ex
 
 .. code-block:: python
 
-   azure.set_image(label="azure.Ubuntu Server 12.04.2 LTS")
+   azure.set_image(label="Ubuntu Server 12.04.2 LTS")
 
 This allows you to create a vm with the selected image. Note that ``set_image()`` must be used before calling the ``create_vm()`` function.
 
