@@ -75,8 +75,8 @@ azure = saz()
 azure.get_config()
 q = azure.get_image(name="Azure-Data-Science-Core")
 azure.set_image(image=q,refresh=True)
-a.set_location("West Europe")
-a.create_cluster(num=5)
+azure.set_location("West Europe")
+azure.create_cluster(num=5)
 ```
 
 
