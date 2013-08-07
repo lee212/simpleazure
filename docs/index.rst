@@ -26,6 +26,7 @@ Content
    tutorial
    installation
    command
+   configuration
    deliverables
 
 Deploying Azure Virtual Machines
