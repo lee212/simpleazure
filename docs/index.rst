@@ -36,23 +36,6 @@ Installation (TBD)
   $ pip install simpleazure
   $ simpleazure-cluster start mycluster
 
-Content
-=======
-
-.. toctree::
-   :maxdepth: 1
-
-   quickstart
-
-Deliverables
-============
-
-* `Documentation <https://simple-azure.readthedocs.org/en/latest/>`_
-* `Source code <https://github.com/lee212/simpleazure/>`_
-* Report 
-* Tutorial (IPython Notebook)
-* Tutorial (Youtube)
-
 Contribute
 ===========
 
