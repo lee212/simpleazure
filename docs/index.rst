@@ -28,16 +28,39 @@ Three lines are required to deploy Window Azure Virtual Machine in Python.
    azure.get_config()
    azure.create_vm()
 
-Prerequisite
+Installation (TBD)
+------------------
+
+::
+
+  $ pip install simpleazure
+  $ simpleazure-cluster start mycluster
+
+Deliverables
 ============
 
-* azure-sdk-for-python
-* azure-cli
+* `Documentation <https://simple-azure.readthedocs.org/en/latest/>`_
+* `Source code <https://github.com/lee212/simpleazure/>`_
+* Report 
+* Tutorial (IPython Notebook)
+* Tutorial (Youtube)
 
-Indices and tables
-==================
+Contribute
+===========
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+* Mailinglist
+* `issues <https://github.com/lee212/simpleazure/issues>`_
+
+.. Prerequisite
+   ============
+
+   * azure-sdk-for-python
+   * azure-cli
+
+   Indices and tables
+   ==================
+
+   * :ref:`genindex`
+   * :ref:`modindex`
+   * :ref:`search`
 
