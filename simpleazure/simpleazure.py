@@ -511,5 +511,3 @@ class SimpleAzure:
         sshmaster = ssh.SSH()
         sshmaster.setup(host=hostname, pkey=self.private_key_path)
         sshmaster.shell()
- 
-
