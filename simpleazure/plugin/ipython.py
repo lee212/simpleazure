@@ -27,7 +27,7 @@ class IPython:
         self.ssh_master = master 
 
         ssh_engines = {}
-        for engine in engines:
+        for engine in self.engines:
             ssh_engines[engine] = paramiko.SSHClient()
             ssh_engines[engine].set_missing
             ssh_engines[engine].set_missing_host_key_policy(paramiko.AutoAddPolicy())
