@@ -16,18 +16,7 @@ IPython cluster is also supported.
 * IPython cluster with the plugin
 * Access to the open VM image repository (VM Depot)
 
-Content
-=======
-
-.. toctree::
-   :maxdepth: 1
-
-   quickstart
-   tutorial
-   installation
-   command
-   configuration
-   deliverables
+You can get started with :doc:`Quickstart`
 
 Deploying Azure Virtual Machines
 ---------------------------------
@@ -60,10 +49,22 @@ Contribute
 * `issues <https://github.com/lee212/simpleazure/issues>`_
 
 
-.. Indices and tables
-   ==================
+Content
+=======
 
-   * :ref:`genindex`
-   * :ref:`modindex`
-   * :ref:`search`
+.. toctree::
+   :maxdepth: 1
 
+   quickstart
+   tutorial
+   installation
+   command
+   configuration
+   deliverables
+   
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
