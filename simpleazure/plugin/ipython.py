@@ -41,6 +41,12 @@ class IPython:
     def set_engines(self, hostnames):
         self.engines = hostnames
 
+    def set_username(self, username):
+        self.username = username
+
+    def set_private_key(self, pkey):
+        self.pkey = pkey
+
     def connect_nodes(self):
         self.ssh_master.connect(self.master, username=self.username, pkey=self.pkey)
 
