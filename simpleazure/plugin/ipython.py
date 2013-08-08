@@ -44,8 +44,20 @@ class IPython:
     def set_username(self, username):
         self.username = username
 
-    def set_private_key(self, pkey):
+    def set_private_key(self, pkey_path):
+        pkey = self._get_pkey(pkey_path)
         self.pkey = pkey
+
+    def _get_pkey(self, path):
+        """Return a new Paramiko key object based on the given private key
+
+        :param path: the private key's path
+        :type path: str
+        :returns: a new key object
+
+        """
+
+        return paramiko.RSAKey.from_private_key_file(path)
 
     def connect_nodes(self):
         self.ssh_master.connect(self.master, username=self.username, pkey=self.pkey)
@@ -94,11 +106,11 @@ class IPython:
     def get_ipcontroller_engine_json(self, profile=None):
         if not profile:
             profile = self.profile_name
-        return "~/.ipython/profile_%s/security/ipcontroller-engine.json" % \
+        return "~/.config/ipython/profile_%s/security/ipcontroller-engine.json" % \
                 profile
 
 
     def get_targeted_json(self, profile=None):
         if not profile:
             profile = self.profile_name
-        return "~/.ipython/%s-ipcontroller-engine.json" % self.profile_name
+        return "~/.config/ipython/%s-ipcontroller-engine.json" % self.profile_name
