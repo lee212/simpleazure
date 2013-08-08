@@ -64,7 +64,7 @@ class IPython:
         # With a paramiko channel (socket) function
         transport = self.ssh_master.get_transport()
         channel = transport.open_session()
-        channel.exec_command('ipcontroller --ip=`%s` --profile=%s
+        channel.exec_command('ipcontroller --ip=`%s` --profile=%s \
                              --enginessh=%s' % (local_ip, profile, ssh_master_info))
 
     def run_ipengine(self):
