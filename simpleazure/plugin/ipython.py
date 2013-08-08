@@ -129,4 +129,4 @@ class IPython:
             self.scp_file(ssh_info, source, target)
 
     def scp_file(self, ssh_info, source, target):
-        os.system("scp %s %s:%s" % (source, ssh_info, target))
+        os.system("scp -i %s %s %s:%s" % (self.pkey_path, source, ssh_info, target))
