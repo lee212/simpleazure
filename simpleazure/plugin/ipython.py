@@ -50,8 +50,10 @@ class IPython:
                                              pkey=self.pkey)
 
     def create_profile(self):
-        stdin, stdout, stderr = self.ssh_master.exec_command('ipython profile create
-                                                             --parallel --profile=%s'
+        stdin, stdout, stderr = self.ssh_master.exec_command('ipython profile \
+                                                             create \
+                                                             --parallel \
+                                                             --profile=%s' \
                                                              % self.profile_name)
 
     def run_ipcontroller(self):
