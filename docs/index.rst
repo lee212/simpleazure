@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Simple Azure - python library for Windows Azure
+Simple Azure - Python library for Windows Azure
 ================================================
 
 Simple Azure is a python library for Windows Azure. 
@@ -16,7 +16,9 @@ IPython cluster is also supported.
 * IPython cluster with the plugin
 * Access to the open VM image repository (VM Depot)
 
-You can get started with :doc:`Quickstart`
+You can get started with :doc:`Quickstart </quickstart>` and then learn more through :doc:`Tutorial </tutorial>` that shows how to deploy and utilize Windows Azure with Simple Azure.
+:doc:`Installation </installation>` and :doc:`Configuration </configuration>` helps you get Simple Azure installed on your machine and :doc:`Command </command>` describes how to use Simple Azure on the shell.
+You can find resources :doc:`here </deliverables>`.
 
 Deploying Azure Virtual Machines
 ---------------------------------
