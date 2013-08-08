@@ -81,7 +81,7 @@ class IPython:
         targeted_json_path = self.get_targeted_json()
         stdins, stdouts, stderrs = {}, {}, {}
         for engine_name, ssh_engine in self.ssh_engines.iteritems():
-            stdins[engine_name], stdouts[engine_name], stderrs[engine_name] =
+            stdins[engine_name], stdouts[engine_name], stderrs[engine_name] = \
             ssh_engine.exec_command('scp %s:%s %s' % (self.ssh_master_info,
                                                       ipengine_json_path,
                                                       targeted_json_path))
