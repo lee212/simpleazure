@@ -97,9 +97,10 @@ class IPython:
         ipengine_json_path = self.get_ipcontroller_engine_json()
         targeted_json_path = self.get_targeted_json()
         stdins, stdouts, stderrs = {}, {}, {}
+        ssh_master_info = "%s@%s" % (self.username, self.master)
         for engine_name, ssh_engine in self.ssh_engines.iteritems():
             stdins[engine_name], stdouts[engine_name], stderrs[engine_name] = \
-            ssh_engine.exec_command('scp %s:%s %s' % (self.ssh_master_info,
+            ssh_engine.exec_command('scp %s:%s %s' % (ssh_master_info,
                                                       ipengine_json_path,
                                                       targeted_json_path))
 
@@ -113,4 +114,4 @@ class IPython:
     def get_targeted_json(self, profile=None):
         if not profile:
             profile = self.profile_name
-        return "~/.config/ipython/%s-ipcontroller-engine.json" % self.profile_name
+        return "~/.config/%s-ipcontroller-engine.json" % self.profile_name
