@@ -73,7 +73,7 @@ class SimpleAzure:
     authorized_keys = "/home/" + linux_user_id + "/.ssh/authorized_keys"
     #public_key_path = azure_config + '/.ssh/myCert.pem'
     private_key_path = azure_config + '/.ssh/myPrivateKey.key'
-    #key_pair_path = private_key_path
+    key_pair_path = private_key_path
 
     #Adding for cluster
     num_4_win = 0
@@ -222,9 +222,9 @@ class SimpleAzure:
         # KeyPair is a SSH kay pair both a public and a private key to be stored
         # on the virtual machine.
         # http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx#SSH
-        # keypair = KeyPair(self.thumbprint, self.key_pair_path)
+        keypair = KeyPair(self.thumbprint, self.key_pair_path)
         config.ssh.public_keys.public_keys.append(publickey)
-        #config.ssh.key_pairs.key_pairs.append(keypair)
+        config.ssh.key_pairs.key_pairs.append(keypair)
 
         # Note
         # Since PKCS#10 X.509 is not fully supported by pycrypto, paramiko can
