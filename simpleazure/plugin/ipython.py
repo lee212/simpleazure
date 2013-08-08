@@ -45,6 +45,7 @@ class IPython:
         self.username = username
 
     def set_private_key(self, pkey_path):
+        self.pkey_path = pkey_path
         pkey = self._get_pkey(pkey_path)
         self.pkey = pkey
 
@@ -115,3 +116,17 @@ class IPython:
         if not profile:
             profile = self.profile_name
         return "~/.config/%s-ipcontroller-engine.json" % self.profile_name
+
+    def copy_pkey_to_nodes(self):
+        """THIS IS TEMPORARY FUNCTION TO ENABLE SSH"""
+        source = self.pkey_path
+        target = "~/.ssh/id_rsa"
+        ssh_info = "%s@%s" % (self.username, self.master)
+        self.scp_file(ssh_info, source, target)
+
+        for engine in self.engines:
+            ssh_info = "%s@%s" % (self.username, engine)
+            self.scp_file(ssh_info, source, target)
+
+    def scp_file(self, ssh_info, source, target):
+        os.system("scp %s %s:%s" % (source, ssh_info, target))
