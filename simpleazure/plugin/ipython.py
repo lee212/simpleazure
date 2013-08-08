@@ -130,3 +130,25 @@ class IPython:
 
     def scp_file(self, ssh_info, source, target):
         os.system("scp -i %s %s %s:%s" % (self.pkey_path, source, ssh_info, target))
+
+    def apply_ipcluster(self, saz_obj):
+        azure = saz_obj
+        self.set_username(azure.get_username())
+        self.set_private_key(azure.get_pkey())
+
+        master = azure.results['master'] + ".cloudapp.net"
+        engines = [ x + ".cloudapp.net" for x in azure.results.keys()]
+
+        self.set_master(master)
+        self.set_engines(engines)
+
+        self.init_ssh()
+        self.connect_nodes()
+        self.create_profile()
+        self.run_ipcontroller()
+        self.copy_pkey_to_nodes() # Temporary function to distribute id_rsa
+                                    # private key to node(s)
+        self.copy_json2engines()
+        self.run_ipengine()
+
+
