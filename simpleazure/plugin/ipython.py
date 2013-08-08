@@ -57,7 +57,7 @@ class IPython:
                                                              % self.profile_name)
 
     def run_ipcontroller(self):
-        local_ip = "/sbin/ifconfig eth0 | grep \"inet addr\" | awk -F: '{print
+        local_ip = "/sbin/ifconfig eth0 | grep \"inet addr\" | awk -F: '{print \
         $2}' | awk '{print $1}'"
         ssh_master_info = "%s@%s" % (self.username, self.master)
         profile = self.profile_name
