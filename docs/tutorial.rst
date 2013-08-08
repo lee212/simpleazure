@@ -16,6 +16,7 @@ Simple Azure
 ^^^^^^^^^^^^^
 * `Simplified Windows Azure SDK for Python (Simple Azure) <http://nbviewer.ipython.org/urls/raw.github.com/lee212/simpleazure/master/ipynb/Tutorial%2520-%2520Simplified%2520Windows%2520Azure%2520SDK%2520for%2520Python.ipynb>`_
 * `Deploying a community image, Azure Data Science Core <http://nbviewer.ipython.org/urls/raw.github.com/lee212/simpleazure/master/ipynb/Deploy%2520ADSC%2520by%2520Simple%2520Azure.ipynb>`_
+* `Enabling IPython Cluster with Simple Azure <http://nbviewer.ipython.org/urls/raw.github.com/lee212/simpleazure/master/ipynb/Tutorial%2520-%2520Enabling%2520IPython%2520cluster%2520with%2520Simple%2520Azure.ipynb>`_
 
 azure-sdk-for-python
 ^^^^^^^^^^^^^^^^^^^^^
@@ -38,3 +39,4 @@ IPython
 This tutorial shows how to have IPython installed on Windows Azure with a normal linux distribution.
 
 * `Installing IPython on Windows Azure Virtual Machines and configuring clustering <http://nbviewer.ipython.org/urls/raw.github.com/lee212/simpleazure/master/ipynb/Tutorial%2520-%2520Installing%2520IPython%2520on%2520Windows%2520Azure%2520Virtual%2520Machines%2520and%2520configuring%2520clustering.ipynb>`_
+* `Enabling IPython Cluster with Simple Azure <http://nbviewer.ipython.org/urls/raw.github.com/lee212/simpleazure/master/ipynb/Tutorial%2520-%2520Enabling%2520IPython%2520cluster%2520with%2520Simple%2520Azure.ipynb>`_
