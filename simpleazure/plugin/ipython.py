@@ -101,9 +101,9 @@ class IPython:
         ssh_master_info = "%s@%s" % (self.username, self.master)
         for engine_name, ssh_engine in self.ssh_engines.iteritems():
             stdins[engine_name], stdouts[engine_name], stderrs[engine_name] = \
-            ssh_engine.exec_command('scp %s:%s %s' % (ssh_master_info,
-                                                      ipengine_json_path,
-                                                      targeted_json_path))
+            ssh_engine.exec_command('scp -o "StrictHostKeyChecking=no" %s:%s %s' % (ssh_master_info,
+                                                                                    ipengine_json_path,
+                                                                                    targeted_json_path))
 
     def get_ipcontroller_engine_json(self, profile=None):
         if not profile:
