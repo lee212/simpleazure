@@ -27,6 +27,14 @@ azure-sdk-for-python is the official python library for azure
 
 Galaxy workflow toolkit
 ^^^^^^^^^^^^^^^^^^^^^^^^
+`Galaxy project <galaxyproject.org>`_ provides a web-based platform and a python library for scientific research.
+Here, the tutorials below introduce use cases of Galaxy on IPython Notebook.
+
 * `BioBlend (Galaxy Python library) with IPython <http://nbviewer.ipython.org/urls/raw.github.com/lee212/simpleazure/master/ipynb/Tutorial%2520-%2520BioBlend%2520%28Galaxy%2520Python%2520library%29%2520with%2520IPython.ipynb>`_
 * `Finding coding exon which has the highest number of single nucleotide polymorphisms on chromosome 22 <http://nbviewer.ipython.org/urls/raw.github.com/lee212/simpleazure/master/ipynb/%28Galaxy%29%2520Example%25201.%2520finding%2520coding%2520exon%2520which%2520has%2520the%2520highest%2520number%2520of%2520single%2520nucleotide%2520polymorphisms%2520on%2520chromosome%252022.ipynb>`_
 
+IPython
+^^^^^^^^^
+This tutorial shows how to have IPython installed on Windows Azure with a normal linux distribution.
+
+* `Installing IPython on Windows Azure Virtual Machines and configuring clustering <http://nbviewer.ipython.org/urls/raw.github.com/lee212/simpleazure/master/ipynb/Tutorial%2520-%2520Installing%2520IPython%2520on%2520Windows%2520Azure%2520Virtual%2520Machines%2520and%2520configuring%2520clustering.ipynb>`_
