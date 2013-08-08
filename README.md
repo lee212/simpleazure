@@ -74,7 +74,7 @@ Deploy 5 VMs with Azure Data Science Core at West Europe
 ```
 azure = saz()
 azure.get_config()
-q = azure.get_image(name="Azure-Data-Science-Core")
+q = azure.get_registered_image(name="Azure-Data-Science-Core")
 azure.set_image(image=q,refresh=True)
 azure.set_location("West Europe")
 azure.create_cluster(num=5)

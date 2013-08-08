@@ -50,7 +50,7 @@ This example explains as how to deploy a virtual machine with the community imag
 
    azure = saz()
    azure.get_config()
-   q = azure.get_image(name="Azure-Data-Science-Core")
+   q = azure.get_registered_image(name="Azure-Data-Science-Core")
    azure.set_image(image=q)
    azure.create_vm()
    

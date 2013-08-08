@@ -284,9 +284,9 @@ class SimpleAzure:
         :returns: dict.
 
         """
-        return self.get_image()
+        return self.get_registered_image()
 
-    def get_image(self, label=None, name=None):
+    def get_registered_image(self, label=None, name=None):
         """Return available operating systems images on Windows Azure
 
         :param label: (optional) a simple description of images. not unique
@@ -374,7 +374,7 @@ class SimpleAzure:
 
         #get a default image
         if not name and not image:
-            image = self.get_image(label=config.DEFAULT_IMAGE_LABEL)
+            image = self.get_registered_image(label=config.DEFAULT_IMAGE_LABEL)
 
         # set image
         if image:
