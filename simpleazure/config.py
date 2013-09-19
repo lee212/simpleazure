@@ -20,6 +20,7 @@ AZURE_CLOUD_DOMAIN = 'cloudapp.net'
 
 DEFAULT_IMAGE_LABEL = "Ubuntu Server 12.04.2 LTS"
 DEFAULT_LOCATION = "Central US"
+DEFAULT_ROLE_SIZE = "Small" # ExtraSmall|Small|Medium|Large|ExtraLarge
 
 def config_path():
     return DEFAULT_AZURE_CONFIG_PATH

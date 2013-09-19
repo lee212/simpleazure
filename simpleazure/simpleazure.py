@@ -83,7 +83,8 @@ class SimpleAzure:
     def __init__(self):
         """Initialize variables"""
         self.set_name()
-        self.set_location(config.DEFAULT_LOCATION)
+        self.set_location()
+        self.set_role_size()
 
     def set_name(self, name=None):
         """Set a name of virtual machine. If name is not specified, random name
@@ -98,7 +99,7 @@ class SimpleAzure:
         self.name = name
 
     def get_name(self):
-        """Return a name of virtual machine.
+        """Return a name of the virtual machine.
 
         :returns: str
 
@@ -113,7 +114,7 @@ class SimpleAzure:
         """
         return ''.join(str(x) for x in random.sample(range(0,10), 5))
 
-    def set_location(self, location=None):
+    def set_location(self, location=config.DEFAULT_LOCATION):
         """Set a location for the virtual machine among available locations.
 
         :param location: the name of a location to use
@@ -122,6 +123,27 @@ class SimpleAzure:
         """
 
         self.location = location
+
+    def set_role_size(self, size=config.DEFAULT_ROLE_SIZE):
+        """Set a role size for the virtual machine among ExtraSmall, Small,
+        Medium, Large, ExtraLarge
+
+        :param size: the name of a role size to create
+        :type size: str.
+
+        ref:
+        http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx#bk_role
+
+        """
+        self.role_size = size
+
+    def get_role_size(self):
+        """Return a role size of the virtual machine.
+
+        "returns: str
+
+        """
+        return self.role_size
 
     def get_config(self):
         """Load configurations for the virtual machine. For example, credentials
@@ -173,7 +195,7 @@ class SimpleAzure:
                                                    system_config=linux_config, \
                                                    os_virtual_hard_disk=os_hd, \
                                                    network_config=self.network,\
-                                                   role_size='Small')
+                                                   role_size=self.get_role_size())
 
         self.result = result
         return result
