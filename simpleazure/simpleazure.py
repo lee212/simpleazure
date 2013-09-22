@@ -267,6 +267,9 @@ class SimpleAzure:
         # openssl pkcs12 -in public_key_file.pem -inkey private_key_file.key
         # -export -out myCert.pfx
 
+        # Reference:
+        # http://www.sslshopper.com/article-most-common-openssl-commands.html
+
     def set_network(self):
         """Configure network for a virtual machine.
         End Points (ports) can be opened through this function.
