@@ -479,7 +479,7 @@ class SimpleAzure:
             return storage_account
 
     def create_storage_account(self):
-        name = self.get_name()
+        name = self.get_name()[:24].replace("-","")
         description = name + "description"
         label = name + "label"
         self.sms.create_storage_account(service_name=name,
