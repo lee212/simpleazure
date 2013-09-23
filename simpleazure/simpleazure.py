@@ -43,7 +43,7 @@ class SimpleAzure:
 
     #default value
     name = "sazvm-12345"
-    location = "Central US"
+    location = "East US"
 
     cluster_name_prefix = "sazvm-cluster-"
 
@@ -123,6 +123,9 @@ class SimpleAzure:
         """
 
         self.location = location
+
+    def get_location(self):
+        return self.location
 
     def set_role_size(self, size=config.DEFAULT_ROLE_SIZE):
         """Set a role size for the virtual machine among ExtraSmall, Small,
@@ -468,7 +471,20 @@ class SimpleAzure:
             result = self.sms.list_storage_accounts()
             for account in result:
                 storage_account = account.service_name
-        return storage_account
+        try:
+            return storage_account
+        except:
+            self.create_storage_account()
+            storage_account = self.get_name()
+            return storage_account
+
+    def create_storage_account(self):
+        name = self.get_name()
+        description = name + "description"
+        label = name + "label"
+        self.sms.create_storage_account(service_name=name,
+                                        description=description, label=label,
+                                        location=self.get_location())
 
     def get_account_from_link(self, url):
         """Return hostname from a link.
