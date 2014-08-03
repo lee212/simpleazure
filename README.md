@@ -84,3 +84,6 @@ Description
 -----------
 * This development is planned to support ipython clustering modules/plugines like the StarCluster project (which is supporting Amazon EC2).
 * This development is planned to support command-line tools to launch / execute .ipynb files in parallel.
+
+Contact
+----------
