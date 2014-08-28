@@ -80,6 +80,9 @@ azure.set_location("West Europe")
 azure.create_cluster(num=5)
 ```
 
+Clustering
+-----------
+
 Description
 -----------
 * This development is planned to support ipython clustering modules/plugines like the StarCluster project (which is supporting Amazon EC2).
@@ -87,3 +90,4 @@ Description
 
 Contact
 --------
+
