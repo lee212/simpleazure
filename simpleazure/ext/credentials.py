@@ -9,7 +9,7 @@ class Credentials(object):
     Azure credentials needed to run Azure.
     '''
     def __init__(self):
-        configFilename = os.environ["HOME"] + "/.azure/config.json"
+        configFilename = os.environ["HOME"] + "/.azure/azureProfile.json"
         tmpName = os.path.join(os.getcwd(), configFilename)
 
         if not os.path.exists(tmpName):
@@ -27,10 +27,10 @@ class Credentials(object):
             return self.config_path + "/managementCertificate.pem"
 
     def getSubscriptionId(self):
-        return self.ns[u'subscriptionid']
+        return self.ns[u'subscriptions'][0][u'id']
 
     def getSubscription(self):
-        return self.ns[u'subscription']
+        return self.ns[u'subscriptions']
 
     def getServiceBusKey(self):
         return self.ns[u'servicebuskey']

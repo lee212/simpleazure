@@ -159,7 +159,7 @@ class SimpleAzure:
         a local system. These information should be set by the azure-cli
         tool."""
         self.cert = Credentials()
-        self.subscription_id = self.cert.getSubscription()
+        self.subscription_id = self.cert.getSubscriptionId()
         self.certificate_path = self.cert.getManagementCertFile()
 
     def create_vm(self, name=None, location=None):
@@ -183,9 +183,9 @@ class SimpleAzure:
         linux_config = LinuxConfigurationSet(self.get_name(), self.linux_user_id,
                                              self.linux_user_passwd, True)
 
-        self.set_ssh_keys(linux_config)
+        #self.set_ssh_keys(linux_config)
         self.set_network()
-        self.set_service_certs()
+        #self.set_service_certs()
         # can't find certificate right away.
         sleep(5)
 
@@ -332,6 +332,7 @@ class SimpleAzure:
         if not label and not name:
             return images
 
+	lastone = None
         for image in images:
             if name and image.name == name:
                 return image

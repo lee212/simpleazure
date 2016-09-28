@@ -1,13 +1,24 @@
 Simple Azure
-============
+===============================================================================
 
 Simple Azure supports cloud computing management in the Python Programming Language. It plans to support WIndows Azure, OpenStack, etc.  
 [Documentation](https://simple-azure.readthedocs.org/)
 
+Prerequisite
+-------------------------------------------------------------------------------
+
+- Azure Cli installation
+
+```
+    sudo apt-get install nodejs-legacy
+    sudo apt-get install npm
+    sudo npm install -g azure-cli
+```
+
 Example
---------
+-------------------------------------------------------------------------------
 Create a VM on Windows Azure
-(ubuntu 12.04 is a default image)
+(ubuntu 14.04 is a default image)
 
 ```
 from simpleazure.simpleazure import SimpleAzure as saz
@@ -47,7 +58,7 @@ print vars(azure.get_deployment())
  ```
 
 Example for multiple deployment
--------------------------------
+-------------------------------------------------------------------------------
 cluster() function helps to deploy several VMs at once.
 
 ```
@@ -68,7 +79,7 @@ my-cluster-vm-3-46927
 ```
 
 Example for multiple deployment with Azure Data Science Core
--------------------------------------------------------------
+-------------------------------------------------------------------------------
 Deploy 5 VMs with Azure Data Science Core at West Europe 
 
 ```
@@ -81,13 +92,16 @@ azure.create_cluster(num=5)
 ```
 
 Clustering
------------
+-------------------------------------------------------------------------------
+
+TBD
 
 Description
------------
+-------------------------------------------------------------------------------
 * This development is planned to support ipython clustering modules/plugines like the StarCluster project (which is supporting Amazon EC2).
 * This development is planned to support command-line tools to launch / execute .ipynb files in parallel.
 
 Contact
---------
+-------------------------------------------------------------------------------
 
+hroe.lee at gmail.com
