@@ -17,10 +17,12 @@ import random
 from urlparse import urlparse
 from time import sleep
 from azure import *
-from azure.servicemanagement import *
+from azure.servicemanagement import * # Need to be as asm
 from ext.credentials import Credentials
 from . import config
 from . import ssh
+from os.path import expanduser
+from utils import generate_password
 
 class SimpleAzure:
     """Constructs a :class:`SimpleAzure <SimpleAzure>`.
@@ -71,9 +73,10 @@ class SimpleAzure:
     azure_config = config.azure_path()
     thumbprint_path = azure_config + '/.ssh/thumbprint'
     authorized_keys = "/home/" + linux_user_id + "/.ssh/authorized_keys"
-    #public_key_path = azure_config + '/.ssh/myCert.pem'
+    public_key_path = expanduser("~") + "/.ssh/id_rsa.pub" # rsa public key
     private_key_path = azure_config + '/.ssh/myPrivateKey.key'
     key_pair_path = private_key_path
+    ssh_key_is_on = False
 
     #Adding for cluster
     num_4_win = 0
@@ -179,15 +182,16 @@ class SimpleAzure:
         self.set_image()
         self.get_media_link(blobname=name)
 
+	self.linux_user_passwd = generate_password(16)
         os_hd = OSVirtualHardDisk(self.image_name, self.media_link)
         linux_config = LinuxConfigurationSet(self.get_name(), self.linux_user_id,
-                                             self.linux_user_passwd, True)
+                                             self.linux_user_passwd, self.ssh_key_is_on)
 
-        #self.set_ssh_keys(linux_config)
+        self.set_ssh_keys(linux_config)
         self.set_network()
-        #self.set_service_certs()
+        self.set_service_certs()
         # can't find certificate right away.
-        sleep(5)
+        #sleep(5)
 
         result = \
         self.sms.create_virtual_machine_deployment(service_name=self.get_name(), \
@@ -202,6 +206,10 @@ class SimpleAzure:
 
         self.result = result
         return result
+
+    def get_login_info(self):
+        """return SSH id/pass"""
+        return {"id":self.linux_user_id, "pass":self.linux_user_passwd}
 
     def connect_service(self, refresh=False):
         """Connect Windows Azure Service via ServiceManagementService() with a
@@ -230,6 +238,10 @@ class SimpleAzure:
             location = self.location
         self.sms.create_hosted_service(service_name=name, label=name, location=location)
 
+    def use_ssh_key(self, yn=False):
+        """Enable SSH Key to connect"""
+        self.ssh_key_is_on = yn
+
     def set_ssh_keys(self, config):
         """Configure login credentials with ssh keys for the virtual machine.
         This is only for linux OS, not Windows.
@@ -239,11 +251,13 @@ class SimpleAzure:
 
         """
 
+	if not self.ssh_key_is_on:
+            return
         # fingerprint captured by 'openssl x509 -in myCert.pem -fingerprint
         # -noout|cut -d"=" -f2|sed 's/://g'> thumbprint'
         # (Sample output) C453D10B808245E0730CD023E88C5EB8A785ED6B
         self.thumbprint = open(self.thumbprint_path, 'r').readline().split('\n')[0]
-        publickey = PublicKey(self.thumbprint, self.authorized_keys)
+        publickey = PublicKey(self.thumbprint, self.public_key_path)
         # KeyPair is a SSH kay pair both a public and a private key to be stored
         # on the virtual machine.
         # http://msdn.microsoft.com/en-us/library/windowsazure/jj157194.aspx#SSH
@@ -291,6 +305,8 @@ class SimpleAzure:
         .pfx at this time.
 
         """
+        if not self.ssh_key_is_on:
+            return
         # command used: 
         # openssl pkcs12 -in myCert.pem -inkey myPrivateKey.key
         # -export -out myCert.pfx
@@ -384,6 +400,12 @@ class SimpleAzure:
         """
         self.connect_service()
         return self.sms.list_hosted_services()
+
+    def delete_vm(self, name=None):
+        """Delete vm instance"""
+
+        res = self.sms.delete_deployment(name or self.get_name(), name or self.get_name())
+        return res
 
     def set_image(self, name=None, image=None, refresh=False):
         """Set os image to deploy virtual machines.

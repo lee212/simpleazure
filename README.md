@@ -15,6 +15,15 @@ Prerequisite
     sudo npm install -g azure-cli
 ```
 
+Account Setup
+-------------------------------------------------------------------------------
+
+- Open a browser to http://go.microsoft.com/fwlink/?LinkId=254432
+- ``*-DD-MM-YYYY-credentials.publishsettings`` is downloaded on a local directory
+- Run ``azure config mode as`` # To run azure cli tool via the classic service management certificate.
+- Run ``azure account import <publishsettings file>``
+- Run ``azure account cert export ~/.azure/managementCertificate.pem``
+
 Example
 -------------------------------------------------------------------------------
 Create a VM on Windows Azure
@@ -89,6 +98,26 @@ q = azure.get_registered_image(name="Azure-Data-Science-Core")
 azure.set_image(image=q,refresh=True)
 azure.set_location("West Europe")
 azure.create_cluster(num=5)
+```
+
+List of VMs
+-------------------------------------------------------------------------------
+
+```
+vars(azure.list_deployments().hosted_services)
+```
+
+Terminating VM
+-------------------------------------------------------------------------------
+
+```
+azure.delete_vm()
+```
+
+or
+
+```
+azure.delete_vm('vm-name')
 ```
 
 Clustering
