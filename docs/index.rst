@@ -29,7 +29,6 @@ Three lines are required to deploy Window Azure Virtual Machine in Python.
    from simpleazure.simpleazure import SimpleAzure as saz
 
    azure = saz()
-   azure.get_config()
    azure.create_vm()
    
 .. raw:: html

@@ -131,7 +131,7 @@ class SimpleAzure:
         return self.location
 
     def set_role_size(self, size=config.DEFAULT_ROLE_SIZE):
-        """Set a role size for the virtual machine among ExtraSmall, Small,
+        """Set a role (flavor) size for the virtual machine among ExtraSmall, Small,
         Medium, Large, ExtraLarge
 
         :param size: the name of a role size to create
@@ -220,6 +220,8 @@ class SimpleAzure:
         :type refresh: bool.
         
         """
+        if not hasattr(self, 'cert'):
+            self.get_creds()
         if not self.sms or refresh:
             self.sms = ServiceManagementService(self.subscription_id, self.certificate_path)
 
@@ -404,7 +406,7 @@ class SimpleAzure:
     def delete_vm(self, name=None):
         """Delete vm instance"""
 
-        res = self.sms.delete_deployment(name or self.get_name(), name or self.get_name())
+        res = self.sms.delete_deployment(name or self.get_name(), name or self.get_name(), delete_vhd=True)
         return res
 
     def set_image(self, name=None, image=None, refresh=False):
@@ -581,3 +583,72 @@ class SimpleAzure:
 
     def get_pkey(self):
         return self.private_key_path
+
+    def purge_all(self):
+        """Delete all resources"""
+
+        res=None
+        self.connect_service()
+        # Delete hosted services
+        hosted_services = self.sms.list_hosted_services()
+        for i in hosted_services:
+            svc_props = self.sms.get_hosted_service_properties(i.service_name, True)
+            for j in svc_props.deployments:
+                self.delete_vm(j.name) #i.service_name)
+            # log("{0} (vm) deletion requested".format(i.service_name))
+            try:
+                res = self.sms.delete_hosted_service(i.service_name)
+            except:
+                print ("Failed to delete {0}".format(i.service_name))
+                pass
+            # log("{0} (cloud service) deletion requested".format(i.service_name))
+        # Delete storage account
+        storage = self.sms.list_storage_accounts()
+        for i in storage:
+            try:
+                res = self.sms.delete_storage_account(i.service_name)
+                # log("{0} (storage) deletion requested".format(i.service_name))
+            except:
+                print ("Failed to delete {0}".format(i.service_name))
+                pass
+
+    def get_all_items(self):
+        self.connect_service()
+        all_items = {}
+
+        # The following items are displayed:
+        # - cloud services
+        # - storage
+        # - virtual machines
+
+
+        supported = ['hosted_services', 'deployments', 'storage']
+        item = { 'count': 0, 'names': [] }
+
+        # initialize
+        for i in supported:
+            all_items[i] = item
+        
+        # hosted services, deployments
+        hosted_services = self.sms.list_hosted_services()
+        all_items['hosted_services']['count'] = len(hosted_services)
+        for i in hosted_services:
+            svc_props = self.sms.get_hosted_service_properties(i.service_name, True)
+            all_items['deployments']['count'] += len(svc_props.deployments)
+            for j in svc_props.deployments:
+                all_items['deployments']['names'].append(j.name)
+            all_items['hosted_services']['names'].append(i.service_name)
+
+        storage = self.sms.list_storage_accounts()
+        all_items['storage']['count'] = len(storage)
+        for i in storage:
+            all_items['storage']['names'].append(i.service_name)
+        return all_items
+
+# Tips
+# 
+# 'hosted_service'
+# returns like:
+#
+# {'url': u'https://management.core.windows.net/6b3cf2b5-2cc1-4828-b5e0-9f8be72e6e6f/services/hostedservices/sazvm-16203', 'service_name': u'sazvm-16203', 'hosted_service_properties': <azure.servicemanagement.models.HostedServiceProperties object at 0x7f9557815e90>, 'deployments': None}
+

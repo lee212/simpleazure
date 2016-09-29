@@ -11,7 +11,6 @@ Deploying Azure Virtual Machine
    from simpleazure.simpleazure import SimpleAzure as saz
 
    azure = saz()
-   azure.get_config()
    azure.create_vm()
    
 You can change an operating system image by the ``set_image()`` function. For example, *Ubuntu 12.04 distribution* can be selected like as follows:
@@ -29,7 +28,6 @@ Deploying several machines
 .. code-block:: python
 
    azure = saz()
-   azure.get_config()
    azure.create_cluster(num=5)
    
    my-cluster-vm-0-87412
@@ -49,7 +47,6 @@ This example explains as how to deploy a virtual machine with the community imag
 .. code-block:: python
 
    azure = saz()
-   azure.get_config()
    q = azure.get_registered_image(name="Azure-Data-Science-Core")
    azure.set_image(image=q)
    azure.create_vm()

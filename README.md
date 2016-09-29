@@ -1,8 +1,13 @@
 Simple Azure
 ===============================================================================
 
-Simple Azure supports cloud computing management in the Python Programming Language. It plans to support WIndows Azure, OpenStack, etc.  
-[Documentation](https://simple-azure.readthedocs.org/)
+Simple Azure supports using Azure Virtual Machines with simple python functions like other cloud providers e.g. AWS. [Documentation](https://simple-azure.readthedocs.org/)
+
+Caveats
+-------------------------------------------------------------------------------
+
+- Classic (legacy) Python SDK is used from https://github.com/Azure/azure-sdk-for-python/blob/master/azure-servicemanagement-legacy
+- Virtual Machines, Cloud Services and Storage are only used in Microsoft Azure services.
 
 Prerequisite
 -------------------------------------------------------------------------------
@@ -33,7 +38,6 @@ Create a VM on Windows Azure
 from simpleazure.simpleazure import SimpleAzure as saz
 
 azure = saz()
-azure.get_config()
 azure.create_vm()
 ```
 
@@ -72,7 +76,6 @@ cluster() function helps to deploy several VMs at once.
 
 ```
 azure = saz()
-azure.get_config()
 azure.create_cluster()
 ```
 
@@ -93,7 +96,6 @@ Deploy 5 VMs with Azure Data Science Core at West Europe
 
 ```
 azure = saz()
-azure.get_config()
 q = azure.get_registered_image(name="Azure-Data-Science-Core")
 azure.set_image(image=q,refresh=True)
 azure.set_location("West Europe")
