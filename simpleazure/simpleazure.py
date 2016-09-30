@@ -14,6 +14,7 @@ This module provides a Python library for Windows Azure Virtual Machines.
 import os
 import base64
 import random
+import copy
 from urlparse import urlparse
 from time import sleep
 from azure import *
@@ -602,6 +603,15 @@ class SimpleAzure:
                 print ("Failed to delete {0}".format(i.service_name))
                 pass
             # log("{0} (cloud service) deletion requested".format(i.service_name))
+
+        # delete disks
+        disks = self.sms.list_disks().disks
+        for i in disks:
+            try:
+                res = self.sms.delete_disk(i.name)
+            except:
+                print ("Failed to delete {0}".format(i.name))
+                pass
         # Delete storage account
         storage = self.sms.list_storage_accounts()
         for i in storage:
@@ -627,7 +637,8 @@ class SimpleAzure:
 
         # initialize
         for i in supported:
-            all_items[i] = item
+            # shallow, deep copy - reference or value copy of inside objects
+            all_items[i] = copy.deepcopy(item)
         
         # hosted services, deployments
         hosted_services = self.sms.list_hosted_services()
