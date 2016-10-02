@@ -1,9 +1,12 @@
 from fabric.api import run, env
 
 class SSH:
-    def setup(self, host=None, pkey=None):
-        env.host_string = host
-        env.key_filename = pkey
+#    def setup(self, host=None, pkey=None):
+    def setup(self, **kwargs):
+        for k,v in kwargs.iteritems():
+            exec('env.' + k + '="' + v + '"')
+        #env.host_string = host
+        #env.key_filename = pkey
 
     def shell(self):
         run('bash')

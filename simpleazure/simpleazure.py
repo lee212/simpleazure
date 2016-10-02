@@ -185,25 +185,21 @@ class SimpleAzure:
 
 	self.linux_user_passwd = generate_password(16)
         os_hd = OSVirtualHardDisk(self.image_name, self.media_link)
-        linux_config = LinuxConfigurationSet(self.get_name(), self.linux_user_id,
-                                             self.linux_user_passwd, self.ssh_key_is_on)
+        linux_config = LinuxConfigurationSet(self.get_name(),
+                self.linux_user_id, self.linux_user_passwd, self.ssh_key_is_on)
 
         self.set_ssh_keys(linux_config)
         self.set_network()
         self.set_service_certs()
         # can't find certificate right away.
-        #sleep(5)
+        sleep(5)
 
         result = \
-        self.sms.create_virtual_machine_deployment(service_name=self.get_name(), \
-                                                   deployment_name=self.get_name(), \
-                                                   deployment_slot='production',\
-                                                   label=self.get_name(), \
-                                                   role_name=self.get_name(), \
-                                                   system_config=linux_config, \
-                                                   os_virtual_hard_disk=os_hd, \
-                                                   network_config=self.network,\
-                                                   role_size=self.get_role_size())
+        self.sms.create_virtual_machine_deployment(service_name=self.get_name(),\
+        deployment_name=self.get_name(), deployment_slot='production',\
+        label=self.get_name(), role_name=self.get_name(), \
+        system_config=linux_config, os_virtual_hard_disk=os_hd, \
+        network_config=self.network, role_size=self.get_role_size())
 
         self.result = result
         return result
@@ -224,7 +220,8 @@ class SimpleAzure:
         if not hasattr(self, 'cert'):
             self.get_creds()
         if not self.sms or refresh:
-            self.sms = ServiceManagementService(self.subscription_id, self.certificate_path)
+            self.sms = ServiceManagementService(self.subscription_id,
+                    self.certificate_path)
 
     def create_cloud_service(self, name=None, location=None):
         """Create a cloud (hosted) service via create_hosted_service()
@@ -239,7 +236,8 @@ class SimpleAzure:
             name = self.get_name()
         if not location:
             location = self.location
-        self.sms.create_hosted_service(service_name=name, label=name, location=location)
+        self.sms.create_hosted_service(service_name=name, label=name,
+                location=location)
 
     def use_ssh_key(self, yn=False):
         """Enable SSH Key to connect"""
@@ -259,7 +257,8 @@ class SimpleAzure:
         # fingerprint captured by 'openssl x509 -in myCert.pem -fingerprint
         # -noout|cut -d"=" -f2|sed 's/://g'> thumbprint'
         # (Sample output) C453D10B808245E0730CD023E88C5EB8A785ED6B
-        self.thumbprint = open(self.thumbprint_path, 'r').readline().split('\n')[0]
+        self.thumbprint = open(self.thumbprint_path,
+                'r').readline().split('\n')[0]
         publickey = PublicKey(self.thumbprint, self.public_key_path)
         # KeyPair is a SSH kay pair both a public and a private key to be stored
         # on the virtual machine.
@@ -298,7 +297,8 @@ class SimpleAzure:
         """
         network = ConfigurationSet()
         network.configuration_set_type = 'NetworkConfiguration'
-        network.input_endpoints.input_endpoints.append(ConfigurationSetInputEndpoint('ssh', 'tcp', '22', '22'))
+        network.input_endpoints.input_endpoints.append(ConfigurationSetInputEndpoint('ssh',
+            'tcp', '22', '22'))
         self.network = network
 
     def set_service_certs(self):
@@ -407,7 +407,8 @@ class SimpleAzure:
     def delete_vm(self, name=None):
         """Delete vm instance"""
 
-        res = self.sms.delete_deployment(name or self.get_name(), name or self.get_name(), delete_vhd=True)
+        res = self.sms.delete_deployment(name or self.get_name(), name or
+                self.get_name(), delete_vhd=True)
         return res
 
     def set_image(self, name=None, image=None, refresh=False):
@@ -500,8 +501,8 @@ class SimpleAzure:
         try:
             return storage_account
         except:
-            self.create_storage_account()
-            storage_account = self.get_name()
+            storage_account = self.create_storage_account()
+            #storage_account = self.get_name()
             return storage_account
 
     def create_storage_account(self):
@@ -511,6 +512,8 @@ class SimpleAzure:
         self.sms.create_storage_account(service_name=name,
                                         description=description, label=label,
                                         location=self.get_location())
+        self.storage_name = name
+        return name
 
     def get_account_from_link(self, url):
         """Return hostname from a link.
@@ -548,9 +551,10 @@ class SimpleAzure:
         results = {}
         # It is supposed to use multi-processing instead of for loop
         for cnt in range(cluster_count):
-            self.set_name(self.cluster_name_prefix + str(cnt) + "-" + self.get_random())
+            self.set_name(self.cluster_name_prefix + str(cnt) + "-" +
+                    self.get_random())
             result = self.create_vm(self.get_name())
-            sleep(10)
+            sleep(15)
             #results.append(result)
             results[self.get_name()] = result
             if cnt == 0:
@@ -562,7 +566,7 @@ class SimpleAzure:
         self.results = results
         return results
 
-    def login_to(self, name=None):
+    def login_to(self, name=None, login_id=None, passwd=None, ssh_key=None):
         """SSH to a virtual machine
         
         :param name: (optional) the hostname of a virtual machine
@@ -576,7 +580,14 @@ class SimpleAzure:
         hostname = config.get_azure_domain(name)
 
         sshmaster = ssh.SSH()
-        sshmaster.setup(host=hostname, pkey=self.private_key_path)
+        self.sshmaster = sshmaster
+        if ssh_key:
+            sshmaster.setup(host_string = hostname, key_filename = ssh_key or
+                    self.private_key_path)
+        else:
+            sshmaster.setup(host_string = hostname, user = login_id or
+                    self.linux_user_id, password = passwd or
+                    self.linux_user_passwd)
         sshmaster.shell()
 
     def get_username(self):
@@ -593,7 +604,8 @@ class SimpleAzure:
         # Delete hosted services
         hosted_services = self.sms.list_hosted_services()
         for i in hosted_services:
-            svc_props = self.sms.get_hosted_service_properties(i.service_name, True)
+            svc_props = self.sms.get_hosted_service_properties(i.service_name,
+                    True)
             for j in svc_props.deployments:
                 self.delete_vm(j.name) #i.service_name)
             # log("{0} (vm) deletion requested".format(i.service_name))
@@ -644,7 +656,8 @@ class SimpleAzure:
         hosted_services = self.sms.list_hosted_services()
         all_items['hosted_services']['count'] = len(hosted_services)
         for i in hosted_services:
-            svc_props = self.sms.get_hosted_service_properties(i.service_name, True)
+            svc_props = self.sms.get_hosted_service_properties(i.service_name,
+                    True)
             all_items['deployments']['count'] += len(svc_props.deployments)
             for j in svc_props.deployments:
                 all_items['deployments']['names'].append(j.name)
