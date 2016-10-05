@@ -13,6 +13,7 @@ This module provides a Python library for Windows Azure Virtual Machines.
 
 import os
 import random
+from haikunator import Haikunator
 
 def ensure_dir_exists(directory):
     try:
@@ -46,3 +47,7 @@ def generate_password(length=8, lower=True, upper=True, number=True):
         else:
             mypw = mypw + _random_character(alphabet)
     return mypw
+
+def get_rand_name():
+    h = Haikunator()
+    return h.haikunate()

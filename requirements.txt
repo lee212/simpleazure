@@ -1,3 +1,4 @@
 azure
 pyaml
 fabric
+haikunator # random name generator

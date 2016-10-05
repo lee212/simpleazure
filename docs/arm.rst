@@ -40,7 +40,7 @@ github.com would be best::
 Additional Packages
 -------------------------------------------------------------------------------
 
-You may encounter some errors like this, if you don't install additiona packages::
+You may encounter some errors like this, if you don't install additional packages::
 
    Traceback (most recent call last):
    File "<stdin>", line 1, in <module>
@@ -128,7 +128,9 @@ If your credentials are invalid, you may see errors like this::
         Correlation ID: <UUID>
         Timestamp: 2016-10-04 15:41:24Z
 
- or ::
+
+or ::
+
 
         Traceback (most recent call last):
           File "<stdin>", line 1, in <module>
