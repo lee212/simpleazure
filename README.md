@@ -29,6 +29,25 @@ Account Setup
 - Run ``azure account import <publishsettings file>``
 - Run ``azure account cert export ~/.azure/managementCertificate.pem``
 
+Installation
+-------------------------------------------------------------------------------
+
+```
+
+   git clone https://github.com/lee212/simpleazure.git
+   cd simpleazure
+   python setup.py install
+
+```
+
+or
+
+```
+
+   pip install simpleazure (TBD)
+
+```
+
 Example
 -------------------------------------------------------------------------------
 Create a VM on Windows Azure
