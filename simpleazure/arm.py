@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-simpleazure.AzureResourceManagerTemplate
+simpleazure.arm
 
 This module supports Azure Resource Manager with its Template in terms of deploying software stacks.
 
@@ -20,13 +20,13 @@ from . import config
 from . import utils
 
 
-class Template(object):
-    """Constructs a :class:`Template <Template>`.
-    Returns :class:`Template <Template>` instance.
+class ARM(object):
+    """Constructs a :class:`ARM <ARM>`.
+    Returns :class:`ARM <ARM>` instance.
 
     Usage::
 
-      >> from simpleazure.arm import Template as armt
+      >> from simpleazure.arm import ARM as armt
       >> arm = armt()
 
     """
@@ -57,7 +57,7 @@ class Template(object):
         self.set_sshkey()
         self.set_template(template)
         self.set_parameters(param)
-        self.set_properties()
+        self.set_deployment_properties()
         self.update_rg()
         self.call_deploy()
 
@@ -92,7 +92,7 @@ class Template(object):
         """ Returns lower case without space """
         return self.location.lower().replace(" ", "")
 
-    def set_properties(self):
+    def set_deployment_properties(self):
         self.deployment_properties = {
                 'mode': dm.incremental,
                 'template': self.template,
