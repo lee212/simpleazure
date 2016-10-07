@@ -19,6 +19,10 @@ class Github(object):
     """Constructs a :class:`Github <Github>`.
     Returns :class:`Github <Github>` instance.
 
+    Disclaimer: This class does not cover every API calls from github.
+    'Repositories' and 'Search' are mainly used to support listing and
+    searching contents related to Azure Resource Manager Templates.
+
     Usage::
 
     """
@@ -29,11 +33,13 @@ class Github(object):
 
     # Define api_path and exec_str when you add a new api call
     api_path = {
-            "get_contents": "/repos/:owner/:repo/contents/:path"
+            "get_file": "/repos/:owner/:repo/contents/:path",
+            "get_list": "/repos/:owner/:repo/contents/"
             }
 
     exec_results = {
-            "get_contents": "self.results['content'].decode('base64')",
+            "get_file": "self.results['content'].decode('base64')",
+            "get_list": "self.results",
             "search_code": "self.results",
             }
 
@@ -70,10 +76,15 @@ class Github(object):
     def set_var(self, key, value):
         exec("self." + key + "='" + value + "'")
 
-    def get_contents(self):
+    def unset_var(self, key):
+        exec("self." + key + "=''")
+
+    def get_file(self):
         """https://developer.github.com/v3/repos/contents/#get-contents
 
         GET /repos/:owner/:repo/contents/:path
+
+        This is for a file
 
         """
         self.action = inspect.stack()[0][3]
@@ -83,10 +94,31 @@ class Github(object):
         if self.run_api():
             return self.get_results()
 
+    def get_list(self):
+        """https://developer.github.com/v3/repos/contents/#get-contents
+
+        GET /repos/:owner/:repo/contents/:path
+
+        This is for a directory
+
+        """
+        return self._exec()
+
+    def _exec(self):
+        self.action = inspect.stack()[1][3]
+        api_path = self._get_api_path(self.action)
+        request_url = self._fill_in_path(api_path)
+        self.request_url = request_url
+        if self.run_api():
+            return self.get_results()
+
     def get_results(self):
         ret = None
         exec_str = self.exec_results[self.action]
-        exec("ret = " + exec_str)
+        try:
+            exec("ret = " + exec_str)
+        except:
+            ret = self.results
         return ret
 
     def _get_api_path(self, action_name):
@@ -115,6 +147,11 @@ class Github(object):
             return True
         return False
 
+    def run_direct(self, url):
+        self.request_url = url
+        if self.run_api():
+            return self.get_results()
+        
     def reset(self):
         self.request_url = ""
         self.repo = ""
