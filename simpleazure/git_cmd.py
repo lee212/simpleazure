@@ -1,4 +1,5 @@
-from sh import
+import sh
+from sh import git
 from . import config
 import os
 
@@ -6,23 +7,24 @@ class GitCmd(object):
 
     def __init__(self, path):
         self.path = path
-        basename = os.path.basename(path)
-        self.local_path = config.DEFAULT_PATH + "/" + basename
+        basename = os.path.basename(path).split(".")[0]
+        self.local_path = os.path.join(config.DEFAULT_PATH, basename)
         self.clone()
-'''
-     git directory
-     get azuredeploy
-     azure parameters
-     metadata
-     nested
-     scripts
-     etc
-'''
+    '''
+         git directory
+         get azuredeploy
+         azure parameters
+         metadata
+         nested
+         scripts
+         etc
+    '''
     def get_list(self):
-        dirnames = [ d for d in os.path.listdir(self.path) if
-                not os.path.isfile(os.path.join(path, f))]
+        dirnames = [ d for d in os.listdir(self.local_path) if
+                not os.path.isfile(os.path.join(self.local_path, d))]
         if '.github' in dirnames:
-            del(dirnames['.github'])
+            print dirnames
+            del(dirnames[dirnames.index('.github')])
 
         return dirnames
 
@@ -40,6 +42,6 @@ class GitCmd(object):
 
     def check_if_exist(self):
         if os.path.isdir(self.local_path):
-            if os.path.isdir(self.local_path + "/.git"):
+            if os.path.isdir(os.path.join(self.local_path, ".git")):
                 return True
         return False
