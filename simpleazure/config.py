@@ -14,6 +14,10 @@ import os
 import yaml
 from . import utils
 
+DEFAULT_PATH = os.environ["HOME"] + '/.saz/'
+DEFAULT_NAME = 'simpleazure'
+DEFAULT_SHORT_NAME = 'saz'
+
 DEFAULT_AZURE_CONFIG_PATH = os.environ["HOME"] + '/.azure'
 CLUSTER_DIR = '/cluster'
 AZURE_CLOUD_DOMAIN = 'cloudapp.net'

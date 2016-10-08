@@ -27,6 +27,7 @@ class AzureQuickStartTemplates(object):
         self.git = Github()
         self.git_repo = "azure-quickstart-templates"
         self.git_owner = "Azure"
+        self.git_clone = 'https://github.com/Azure/azure-quickstart-templates.git'
 
     def get_list(self):
         """Returns a list of items in a repository except files"""
