@@ -15,7 +15,7 @@ import json
 import requests
 import inspect
 
-class Github(object):
+class GithubAPI(object):
     """Constructs a :class:`Github <Github>`.
     Returns :class:`Github <Github>` instance.
 

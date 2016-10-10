@@ -10,8 +10,10 @@ This module supports listing all azure-quickstart-templates from github
 
 """
 
-from github import Github
+from github_api import GithubAPI
+from github_cli import GithubCLI
 import json
+import inspect
 
 class AzureQuickStartTemplates(object):
     """Constructs a :class:`AzureQuickStartTemplates <AzureQuickStartTemplates>`.
@@ -22,21 +24,37 @@ class AzureQuickStartTemplates(object):
     this class reads the list and downloads json data to run the template directly.
 
     """
+    api_or_cli = 'cli' #CLI uses git clone to read contents instead of API
 
-    def __init__(self):
-        self.git = Github()
+    def __init__(self, mode="cli"):
+        
+        self.api_or_cli = mode
+
+        self.api = GithubAPI()
         self.git_repo = "azure-quickstart-templates"
         self.git_owner = "Azure"
         self.git_clone = 'https://github.com/Azure/azure-quickstart-templates.git'
 
+        if mode == "cli":
+            self.cli = GithubCLI(self.git_clone)
+
     def get_list(self):
         """Returns a list of items in a repository except files"""
+        my_func_name = inspect.stack()[0][3]
+        func = getattr(self, my_func_name + "_" + self.api_or_cli)
+        return func()
 
-        self.git.set_var("repo", self.git_repo)
-        self.git.set_var("owner", self.git_owner)
-        #res = [ item if item['type'] == "dir" for item in self.git.get_list() ]
+    def get_list_cli(self):
+        return self.cli.get_list()
+
+    def get_list_api(self):
+
+        self.api.set_var("repo", self.git_repo)
+        self.api.set_var("owner", self.git_owner)
+        #res = [ item if item['type'] == "dir" for item in self.api.get_list() ]
         res = {}
-        items = self.git.get_list()
+
+        items = self.api.get_list()
         for item in items:
             if item['type'] != "dir":
                 continue
@@ -78,21 +96,21 @@ class AzureQuickStartTemplates(object):
 
     def get_nested(self, path):
         """Returns nested templates from a path"""
-        self.git.set_var("path", path + "/nested")
-        return self.git.get_list() or ""
+        self.api.set_var("path", path + "/nested")
+        return self.api.get_list() or ""
 
     def get_scripts(self, path):
         """Returns scripts from a path"""
-        self.git.set_var("path", path + "/scripts")
-        return self.git.get_list() or ""
+        self.api.set_var("path", path + "/scripts")
+        return self.api.get_list() or ""
 
     def get_all(self, path):
         """Returns all items from a path"""
-        self.git.set_var("path", path)
-        return self.git.get_list() 
+        self.api.set_var("path", path)
+        return self.api.get_list() 
 
     def _get_json_contents(self, path):
-        self.git.set_var("path", path)
-        data = json.loads(self.git.get_file())
+        self.api.set_var("path", path)
+        data = json.loads(self.api.get_file())
         return data
 
