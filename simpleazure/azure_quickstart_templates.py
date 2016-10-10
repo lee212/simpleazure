@@ -27,6 +27,7 @@ class AzureQuickStartTemplates(object):
 
     """
     api_or_cli = 'cli' #CLI uses git clone to read contents instead of API
+    templates = collections.OrderedDict()
 
     def __init__(self, mode="cli"):
         
@@ -40,11 +41,58 @@ class AzureQuickStartTemplates(object):
         if mode == "cli":
             self.cli = GithubCLI(self.git_clone)
 
-    def get_list(self):
+    def search(self, word):
+        self.api.set_var("repo", self.git_owner + "/" + self.git_repo)
+        results = self.api.search_code(word)
+        new = collections.OrderedDict()
+        for item in results['items']:
+            template_name = os.path.dirname(item['path'])
+            template = self.get_template(template_name)
+            new[template_name] = template
+            if not 'found_in' in new[template_name]:
+                new[template_name]['found_in'] = []
+            new[template_name]['found_in'].append(item['path'])
+        return new
+
+    def get_template(self, name):
+        # cached
+        if name in self.templates:
+            return self.templates[name]
+        try:
+            # requred
+            func = getattr(self, "get_azuredeploy_" + self.api_or_cli)
+            azuredeploy = func(name)
+            func = getattr(self, "get_parameters_" + self.api_or_cli)
+            parameters = func(name)
+            func = getattr(self, "get_metadata_" + self.api_or_cli)
+            meta = func(name)
+        except:
+            return {}
+        func = getattr(self, "get_all_" + self.api_or_cli)
+        etc = func(name)
+        func = getattr(self, "get_nested_" + self.api_or_cli)
+        nested = func(name)
+        func = getattr(self, "get_scripts_" + self.api_or_cli)
+        scripts = func(name)
+        res = Template()
+        res['azuredeploy'] = azuredeploy
+        res['parameters'] = parameters
+        res['metadata'] = meta
+        res['nested'] = nested
+        res['scripts'] = scripts
+        res['etc'] = etc
+
+        #update cache?
+        self.templates[name] = res
+        return res
+
+    def get_list(self, refresh=False):
         """Returns a list of items in a repository except files"""
         my_func_name = inspect.stack()[0][3]
         func = getattr(self, my_func_name + "_" + self.api_or_cli)
-        return func()
+        res = func()
+        self.templates = res # results cached
+        return res
 
     def get_list_cli(self):
         res = collections.OrderedDict()
@@ -54,7 +102,6 @@ class AzureQuickStartTemplates(object):
                 continue
             if item == "1-CONTRIBUTION-GUIDE":
                 continue
-
             try:
                 # requred
                 azuredeploy = self.get_azuredeploy_cli(item)
@@ -156,17 +203,14 @@ class AzureQuickStartTemplates(object):
 
     def get_metadata_cli(self, path):
         content = self.cli.get_file(os.path.join(path, "metadata.json"))
-        print (path)
         return self._get_json_contents(content)
 
     def get_azuredeploy_cli(self, path):
         content = self.cli.get_file(os.path.join(path, "azuredeploy.json"))
-        print (path)
         return self._get_json_contents(content)
 
     def get_parameters_cli(self, path):
         content = self.cli.get_file(os.path.join(path, "azuredeploy.parameters.json"))
-        print (path)
         return self._get_json_contents(content)
 
     def get_nested_cli(self, path):
@@ -178,4 +222,53 @@ class AzureQuickStartTemplates(object):
     def get_all_cli(self, path):
         return self.cli.get_list(path) 
 
+
+class Template(dict):
+
+    azuredeploy = parameters = metadata = nested = scripts = etc = None
+    special_placeholders = [ 'GEN-UNIQUE', 'GEN-UNIQUE-', 'GEN-SSH-PUB-KEY', 'GEN-PASSWORD' ]
+
+    def brief(self):
+        return { 
+                'itemDisplayName': self['metadata']['itemDisplayName'],
+                'summary': self['metadata']['summary'] 
+                }
+
+    def summary(self):
+        (required, others) = self._get_parameters()
+        outputs = self._get_outputs()
+        # name, count, values
+        return [
+                ['Name', self['metadata']['itemDisplayName'], self['metadata']['summary']],
+                ['Required parameters', len(required), ', '.join(required)],
+                ['Other parameters', len(others), ', '.join(others)],
+                ['Resources', len(self['azuredeploy']['resources']), ', '.join([ f['type'] for f in self['azuredeploy']['resources'] ])],
+                ['Outputs', len(outputs), ', '.join(outputs)],
+                ]
+
+    def _get_parameters(self):
+        required = []
+        others = []
+        for k, v in self['parameters']['parameters'].iteritems():
+            try:
+                if v['value'][:4] == "GEN-":
+                    required.append(k + "(" + v['value'] + ")")
+                else:
+                    others.append(k + "(" + v['value'] + ")")
+            except:
+                others.append(k + "(" + v['value'] + ")")
+        return (required, others)
+
+    def _get_resources(self):
+        #for k,v in self['azuredeploy']['resources'].iter
+        pass
+
+    def _get_outputs(self):
+        outputs = []
+        try:
+            for k, v in self['azuredeploy']['outputs'].iteritems():
+                outputs.append(k)
+        except:
+            pass
+        return outputs
 

@@ -25,6 +25,9 @@ class GithubAPI(object):
 
     Usage::
 
+    Note:: Rate Limiting - 60/hr unauthorized, 5000/hr authorized requests
+    ref- https://developer.github.com/v3/#rate-limiting
+
     """
 
     base_url = "https://api.github.com"
@@ -46,9 +49,6 @@ class GithubAPI(object):
     def __init__(self):
         pass
 
-    def set_repo(self, repo):
-        self.repo = repo
-
     def search_code(self, word):
         """https://developer.github.com/v3/search/#search-code
        
@@ -67,6 +67,8 @@ class GithubAPI(object):
         # TODO
         # Create a function to manage parameters in a generic way
         request_url = self.base_url + "/search/code?q="+word
+        # TODO
+        # Apply all available parameter values to search, repo is only option here at this time
         if self.repo:
             request_url += "+repo:" + self.repo
         self.request_url = request_url
