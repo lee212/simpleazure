@@ -1,9 +1,11 @@
-Quick Start: Azure Resource Manager Mode
+.. _ref-arm:
+
+Quick Setup for Azure Resource Manager Mode
 ===============================================================================
 
 Azure Resource Template (JSON based Infrastructure as Code) runs with Azure
 Resource Manager which Azure Python SDK 2.0.0+ supports with new packages and
-functions, and SimpleAzure uses new version of Azure Python SDK to deploy
+functions, and Simple Azure uses new version of Azure Python SDK to deploy
 software stacks under Azure Resource Templates.
 
 Previous development is now called 'legacy' or 'classic' mode of Azure Python
@@ -17,7 +19,7 @@ or other online articles are insufficient to follow, this is understandable
 because ARM supports with Azure Python SDK is fairly new (as of September 2016)
 and some Azure services are in 'preview' mode.
 
-Installation
+Installation of Azure Python SDK
 -------------------------------------------------------------------------------
 
 From Pypi::
@@ -78,6 +80,10 @@ but app registrations are not described entirely because Admin consent needs to
 be done additionally. Otherwise, registered apps are not visible in the
 subscriptions page to add access with Roles.
 
+.. note:: Remember ``client_id``, ``secret`` and ``tenant`` values including
+        subscription id because these values are required to authenticate in
+        Simple Azure ARM mode.
+        
 Reconsent Step
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -183,3 +189,93 @@ If your subscription principal is not consent::
          raise exp
        msrestazure.azure_exceptions.CloudError: The received access token is not valid: at least one of the claims 'puid' or 'altsecid' or 'oid' should be present. If you are accessing as application please make sure service principal is properly created in the tenant.
 
+Authentication in Simple Azure
+-------------------------------------------------------------------------------
+
+Simple Azure requires the following information to authenticate:
+
+- subscription id (identication to your account, e.g. ``azure account show`` shows ID)
+- client id (equal to ``client_id``)
+- tenant id (equal to ``tenant``)
+- client secret key (equal to ``secret``)
+
+With Environment Variables
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It is recommmend to store the credentials using environment variables instead
+passing through as Python parameters in code. Use the following environment
+variable names to store:
+
+- subscription id: ``AZURE_SUBSCRIPTION_ID``
+- client id: ``AZURE_CLIENT_ID``
+- tenant id: ``AZURE_TENANT_ID``
+- client secret key: ``AZURE_CLIENT_SECRET``
+
+In a simple form, save these in a file and load it before using Simple Azure in
+a shell. For example:
+
+::
+
+        $ cat <<EOF > ~/.saz/cred
+        export AZURE_SUBSCRIPTION_ID=5s3ag2s5-2aa1-4828-xxxx-9g8sw72w5w5g
+        export AZURE_CLIENT_ID=5c5a3ea3-ap34-4pd0-xxxx-2p38ac00aap1
+        export AZURE_TENANT_ID=5e39a20e-c55a-53de-xxxx-2503a55et6ta
+        export AZURE_CLIENT_SECRET=xxxx
+        EOF
+
+Then source it like:
+
+::
+
+        $ source ~/.saz/cred
+
+``env`` command displays environment variables exposed, e.g.::
+
+        $ env|grep AZURE
+        AZURE_SUBSCRIPTION_ID=5s3ag2s5-2aa1-4828-xxxx-9g8sw72w5w5g
+        AZURE_CLIENT_ID=5c5a3ea3-ap34-4pd0-xxxx-2p38ac00aap1
+        AZURE_TENANT_ID=5e39a20e-c55a-53de-xxxx-2503a55et6ta
+        AZURE_CLIENT_SECRET=xxxx
+
+Tips on Getting Credential via Azure CLI
+-------------------------------------------------------------------------------
+
+Subscription id and tenant id are found by, for example::
+
+        $ azure account show
+        info:    Executing command account show
+        data:    Name                        : Simple-Azure
+        data:    ID                          : 5s3ag2s5-2aa1-4828-xxxx-9g8sw72w5w5g
+        data:    State                       : Enabled
+        data:    Tenant ID                   : 5e39a20e-c55a-53de-xxxx-2503a55et6ta
+        data:    Is Default                  : true
+        data:    Environment                 : AzureCloud
+        data:    Has Certificate             : Yes
+        data:    Has Access Token            : Yes
+        data:    User name                   : hroe.lee@gmail.com
+        data:
+        info:    account show command OK
+
+- ``ID`` represents ``AZURE_SUBSCRIPTION_ID``.
+- ``Tenant ID`` represents ``AZURE_TENANT_ID``.
+
+Client id is found by, for example::
+
+        $ azure ad app list
+        info:    Executing command ad app list
+        + Listing applications
+        data:    AppId:                   5c5a3ea3-ap34-4pd0-xxxx-2p38ac00aap1
+        dqtq:    ObjectId:                dc25d100-1234-4567-bf11-1234e1234dbq
+        data:    DisplayName:             simpleazure
+        data:    IdentifierUris:          0=https://simplezure.com/login
+        data:    ReplyUrls:
+        data:    AvailableToOtherTenants: False
+        data:    HomePage:                http://simpleazure.com
+        data:
+        info:    ad app list command OK
+
+``AppId`` represents ``AZURE_CLIENT_ID``.
+
+``AZURE_CLIENT_SECRET`` is not visible because it is one-time displayed value
+from the portal.  It is also same as the ``<password>`` used in the service
+principal credential in Azure CLI.
