@@ -64,8 +64,11 @@ class ARM(object):
     def terminate_deployment(self, resource_group=None, deployment=None):
         self.client.deployments.delete(resource_group or self.resource_group, deployment or self.deployment)
 
-    def remove_rg(self, name):
-        self.client.resource_groups.delete(name)
+    def remove_rg(self, name=None):
+        return self.remove_resource_group(name)
+
+    def remove_resource_group(self, name=None):
+        return self.client.resource_groups.delete(name or self.resource_group)
 
     def update_rg(self):
         res = self.client.resource_groups.create_or_update(
