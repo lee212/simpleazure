@@ -10,12 +10,13 @@ This module supports listing all azure-quickstart-templates from github
 
 """
 
-from github_api import GithubAPI
-from github_cli import GithubCLI
 import json
 import inspect
 import os.path
 import collections
+from github_api import GithubAPI
+from github_cli import GithubCLI
+from template.template import Template
 
 class AzureQuickStartTemplates(object):
     """Constructs a :class:`AzureQuickStartTemplates <AzureQuickStartTemplates>`.
@@ -223,52 +224,4 @@ class AzureQuickStartTemplates(object):
         return self.cli.get_list(path) 
 
 
-class Template(dict):
-
-    azuredeploy = parameters = metadata = nested = scripts = etc = None
-    special_placeholders = [ 'GEN-UNIQUE', 'GEN-UNIQUE-', 'GEN-SSH-PUB-KEY', 'GEN-PASSWORD' ]
-
-    def brief(self):
-        return { 
-                'itemDisplayName': self['metadata']['itemDisplayName'],
-                'summary': self['metadata']['summary'] 
-                }
-
-    def summary(self):
-        (required, others) = self._get_parameters()
-        outputs = self._get_outputs()
-        # name, count, values
-        return [
-                ['Name', self['metadata']['itemDisplayName'], self['metadata']['summary']],
-                ['Required parameters', len(required), ', '.join(required)],
-                ['Other parameters', len(others), ', '.join(others)],
-                ['Resources', len(self['azuredeploy']['resources']), ', '.join([ f['type'] for f in self['azuredeploy']['resources'] ])],
-                ['Outputs', len(outputs), ', '.join(outputs)],
-                ]
-
-    def _get_parameters(self):
-        required = []
-        others = []
-        for k, v in self['parameters']['parameters'].iteritems():
-            try:
-                if v['value'][:4] == "GEN-":
-                    required.append(k + "(" + v['value'] + ")")
-                else:
-                    others.append(k + "(" + v['value'] + ")")
-            except:
-                others.append(k + "(" + v['value'] + ")")
-        return (required, others)
-
-    def _get_resources(self):
-        #for k,v in self['azuredeploy']['resources'].iter
-        pass
-
-    def _get_outputs(self):
-        outputs = []
-        try:
-            for k, v in self['azuredeploy']['outputs'].iteritems():
-                outputs.append(k)
-        except:
-            pass
-        return outputs
 

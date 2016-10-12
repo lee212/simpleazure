@@ -18,7 +18,7 @@ from azure.mgmt.resource import ResourceManagementClient as rmc
 from azure.mgmt.resource.resources.models import DeploymentMode as dm
 from . import config
 from . import utils
-
+from template.template import Template
 
 class ARM(object):
     """Constructs a :class:`ARM <ARM>`.
@@ -35,11 +35,12 @@ class ARM(object):
     resource_group = config.DEFAULT_RESOURCE_GROUP
     deployment = config.DEFAULT_DEPLOYMENT
     template = None
-    parameters = None
+    parameters = {}
 
     def __init__(self, subscription=None, client_id=None, secret=None, tenant=None):
         self.sshkey = SSHKey()
         self.get_credential(subscription, client_id, secret, tenant)
+        self.template = Template()
 
     def get_credential(self, subscription=None, client_id=None, secret=None, tenant=None):
         sid = os.getenv('AZURE_SUBSCRIPTION_ID', subscription)
@@ -54,7 +55,7 @@ class ARM(object):
         self.resource_group = new_name
 
     def deploy(self, template=None, param=None):
-        self.set_sshkey()
+        self.sshkey.set_pubkey()
         self.set_template(template)
         self.set_parameters(param)
         self.set_deployment_properties()
@@ -101,26 +102,22 @@ class ARM(object):
                 'template': self.template,
                 'parameters': self.parameters }
 
-    def set_parameters(self, dictv):
-        if self.parameters and dictv is None:
+    def set_parameter(self, param):
+        """Set a single parameter"""
+        param_with_value = self._get_parameters_with_value(param)
+        self.parameters.update(param_with_value)
+        return self.parameters
+
+    def set_parameters(self, params):
+        if self.parameters and params is None:
             return self.parameters
 
-        self.parameters = self._get_parameters_with_value(dictv)
+        self.parameters = self._get_parameters_with_value(params)
 
-    def _get_parameters_with_value(self, dictv):
-        parameters = {k: {'value': v} for k, v in dictv.items()}
+    def _get_parameters_with_value(self, params):
+        parameters = {k: {'value': v} for k, v in params.items()}
         return parameters
-
-    def set_sshkey(self, path=None):
-        try:
-            with open(os.path.expanduser(path or config.DEFAULT_SSH_KEY), "r") as f:
-                self.sshkey.pubkey = f.read()
-                return True
-        except Exception as e:
-            # debug / log 
-            # print (e)
-            return False
-
+ 
     def set_template(self, path_or_uri=None):
         if self.template and path_or_uri is None:
             return self.template
@@ -130,7 +127,7 @@ class ARM(object):
         else:
             with open(path_or_uri, "r") as temp:
                 template = temp.read()
-        self.template = template
+        self.template['azuredeploy'] = template
 
     def from_github(self, repo):
         # find repo
@@ -159,8 +156,34 @@ class ARM(object):
 # deleted. The default mode is Incremental. 
 # source: https://github.com/dx-ted-emea/Azure-Resource-Manager-Documentation/blob/master/ARM/Templates/Template_Deploy.md
 
+#extra
 class SSHKey(object):
 
     pvkey = None
     pubkey = None
-    path = None
+    pubkey_path = None
+    pvkey_path = None
+
+    default_path = { 
+            'pvkey': "~/.ssh/id_rsa",
+            'pubkey': "~/.ssh/id_rsa.pub" 
+            }
+
+    def __init__(self, path=None):
+        self.set_pubkey(path)
+
+    def set_pubkey(self, path=None):
+        try:
+            path = os.path.expanduser(path or self.default_path['pubkey'])
+            with open(path, "r") as f:
+                self.pubkey = f.read()
+                f.close()
+                self.pubkey_path = path
+                return True
+        except Exception as e:
+            # debug / log 
+            # print (e)
+            return False
+
+
+

@@ -27,7 +27,6 @@ DEFAULT_LOCATION = "Central US"
 DEFAULT_ROLE_SIZE = "Small" # ExtraSmall|Small|Medium|Large|ExtraLarge
 
 # For ARM
-DEFAULT_SSH_KEY = "~/.ssh/id_rsa.pub"
 DEFAULT_RESOURCE_GROUP = "saz-rg"
 DEFAULT_DEPLOYMENT = "saz-deploy"
 
