@@ -47,15 +47,15 @@ class AzureQuickStartTemplates(object):
     def search(self, word):
         self.api.set_var("repo", self.git_owner + "/" + self.git_repo)
         results = self.api.search_code(word)
-        new = collections.OrderedDict()
+        templates = Templates()
         for item in results['items']:
             template_name = os.path.dirname(item['path'])
             template = self.get_template(template_name)
-            new[template_name] = template
-            if not 'found_in' in new[template_name]:
-                new[template_name]['found_in'] = []
-            new[template_name]['found_in'].append(item['path'])
-        return new
+            templates[template_name] = template
+            if not 'found_in' in templates[template_name]:
+                templates[template_name]['found_in'] = []
+            templates[template_name]['found_in'].append(item['path'])
+        return templates
 
     def get_template(self, name):
         # cached
@@ -70,7 +70,7 @@ class AzureQuickStartTemplates(object):
             func = getattr(self, "get_metadata_" + self.api_or_cli)
             meta = func(name)
         except:
-            return {}
+            return Template()
         func = getattr(self, "get_all_" + self.api_or_cli)
         etc = func(name)
         func = getattr(self, "get_nested_" + self.api_or_cli)

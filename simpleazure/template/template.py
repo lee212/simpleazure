@@ -39,7 +39,11 @@ class Templates(OrderedDict):
         res = {}
 
         for name in self._list[self._list_page]:
-            res[name] = self[name].metadata().itemDisplayName
+            try:
+                res[name] = self[name].metadata().itemDisplayName
+            # if metadata is not available
+            except Exception as e:
+                res[name] = ""
         if len(self._list) > self._list_page:
             self._list_page += 1
         return pd.Series(res)
