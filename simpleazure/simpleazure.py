@@ -25,7 +25,7 @@ from . import ssh
 from os.path import expanduser
 from utils import generate_password
 
-class SimpleAzure:
+class SimpleAzure(object):
     """Constructs a :class:`SimpleAzure <SimpleAzure>`.
     Returns :class:`SimpleAzure <SimpleAzure>` instance.
 

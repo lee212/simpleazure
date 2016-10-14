@@ -16,7 +16,7 @@ import os.path
 import collections
 from github_api import GithubAPI
 from github_cli import GithubCLI
-from template.template import Template
+from template.template import Template, Templates
 
 class AzureQuickStartTemplates(object):
     """Constructs a :class:`AzureQuickStartTemplates <AzureQuickStartTemplates>`.
@@ -28,7 +28,9 @@ class AzureQuickStartTemplates(object):
 
     """
     api_or_cli = 'cli' #CLI uses git clone to read contents instead of API
-    templates = collections.OrderedDict()
+    templates = Templates()
+
+    ignored = [ '.github', '1-CONTRIBUTION-GUIDE' ]
 
     def __init__(self, mode="cli"):
         
@@ -87,21 +89,21 @@ class AzureQuickStartTemplates(object):
         self.templates[name] = res
         return res
 
-    def get_list(self, refresh=False):
+    def get_templates(self, refresh=False):
         """Returns a list of items in a repository except files"""
         my_func_name = inspect.stack()[0][3]
         func = getattr(self, my_func_name + "_" + self.api_or_cli)
-        res = func()
-        self.templates = res # results cached
-        return res
+        templates = func()
+        if templates:
+            templates = templates.get_sorted_by_key()
+        self.templates = templates # results cached
+        return templates
 
-    def get_list_cli(self):
-        res = collections.OrderedDict()
+    def get_templates_cli(self):
+        templates = Templates()
         items = self.cli.get_list()
         for item in items:
-            if item == ".github":
-                continue
-            if item == "1-CONTRIBUTION-GUIDE":
+            if item in self.ignored:
                 continue
             try:
                 # requred
@@ -113,31 +115,29 @@ class AzureQuickStartTemplates(object):
             etc = self.get_all_cli(item)
             nested = self.get_nested_cli(item)
             scripts = self.get_scripts_cli(item)
-            res[item] = { 
+            templates[item] = Template({
                     "azuredeploy": azuredeploy,
                     "parameters": parameters,
                     "metadata": meta,
                     "nested": nested,
                     "scripts": scripts,
                     "etc": etc
-                    }
+                    })
             meta = azuredeploy = parameters = nested = scripts = etc = ""
-        return res
+        return templates
 
-    def get_list_api(self):
+    def get_templates_api(self):
 
         self.api.set_var("repo", self.git_repo)
         self.api.set_var("owner", self.git_owner)
         #res = [ item if item['type'] == "dir" for item in self.api.get_list() ]
-        res = collections.OrderedDict()
+        templates = Templates()
 
         items = self.api.get_list()
         for item in items:
             if item['type'] != "dir":
                 continue
-            if item['name'] == ".github":
-                continue
-            if item['name'] == "1-CONTRIBUTION-GUIDE":
+            if item['name'] in self.ignored:
                 continue
             try:
                 # required files
@@ -150,16 +150,16 @@ class AzureQuickStartTemplates(object):
             etc = self.get_all_api(item['path'])
             nested = self.get_nested_api(item['path'])
             scripts = self.get_scripts_api(item['path'])
-            res[item['name']] = { 
+            templates[item['name']] = Template({ 
                     "azuredeploy": azuredeploy,
                     "parameters": parameters,
                     "metadata": meta,
                     "nested": nested,
                     "scripts": scripts,
                     "etc": etc
-                    }
+                    })
             meta = azuredeploy = parameters = nested = scripts = etc = ""
-        return res
+        return templates
 
     def get_metadata_api(self, path):
         """Returns cotents of the metadata.json file from a path"""

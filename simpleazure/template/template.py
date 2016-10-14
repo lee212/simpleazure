@@ -9,7 +9,53 @@ This module supports writing/reading Azure Resourece Manager templates
  :license: 
 
 """
+
+#TODO: replace pandas data series. data frame with simple functions
+#
 import pandas as pd
+from collections import OrderedDict
+from itertools import islice, izip_longest
+
+class Templates(OrderedDict):
+    _list = None
+    _list_page = 0
+    _list_inc = 10
+
+    def get_sorted_by_key(self):
+        new = Templates(sorted(self.items()))
+        return new
+
+    def ten(self):
+        self._list_inc = 10
+        return self.page()
+
+    def twenty(self):
+        self._list_inc = 20
+        return self.page()
+
+    def page(self):
+        if not self._list:
+            self._list = list(grouper(self, self._list_inc))
+        res = {}
+
+        for name in self._list[self._list_page]:
+            res[name] = self[name].metadata().itemDisplayName
+        if len(self._list) > self._list_page:
+            self._list_page += 1
+        return pd.Series(res)
+
+    def next(self):
+        return self.page()
+
+    def first(self):
+        self._list_page = 0
+        return self.page()
+
+# from https://docs.python.org/2/library/itertools.html
+def grouper(iterable, n, fillvalue=None):
+    "Collect data into fixed-length chunks or blocks"
+    args = [iter(iterable)] * n
+    return izip_longest(fillvalue=fillvalue, *args)
 
 class Template(dict):
 
@@ -42,6 +88,17 @@ class Template(dict):
                 new[f['type']] = ""
 
         return pd.Series(new)
+
+    def requirements(self):
+        required = {}
+
+        for k, v in self['parameters']['parameters'].iteritems():
+            try:
+                if v['value'][:4] == "GEN-":
+                    required[k] = v['value']
+            except:
+                pass
+        return required
 
     def summary(self):
         (required, others) = self._get_parameters()

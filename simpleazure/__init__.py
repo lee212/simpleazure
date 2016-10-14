@@ -6,3 +6,4 @@ __license__ = 'TBD'
 __copyright__ = 'TBD'
 
 from .cluster import Cluster
+from arm import ARM
