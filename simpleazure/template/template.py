@@ -12,8 +12,10 @@ This module supports writing/reading Azure Resourece Manager templates
 
 #TODO: replace pandas data series. data frame with simple functions
 #
+        
+from pprint import pprint
 import pandas as pd
-from collections import OrderedDict
+from collections import OrderedDict, defaultdict
 from itertools import islice, izip_longest
 
 class Templates(OrderedDict):
@@ -61,10 +63,18 @@ def grouper(iterable, n, fillvalue=None):
     args = [iter(iterable)] * n
     return izip_longest(fillvalue=fillvalue, *args)
 
+def tree(): return defaultdict(tree)
+def dicts(t): return {k: dicts(t[k]) for k in t}
+def depth(d, level=1):
+    if not isinstance(d, dict) or not d:
+        return level
+    return max(depth(d[k], level + 1) for k in d)
+
 class Template(dict):
 
     azuredeploy = parameters = metadata = nested = scripts = etc = None
     special_placeholders = [ 'GEN-UNIQUE', 'GEN-UNIQUE-', 'GEN-SSH-PUB-KEY', 'GEN-PASSWORD' ]
+    dependency = None
 
     def metadata(self):
         return pd.Series(self['metadata'])
@@ -87,11 +97,89 @@ class Template(dict):
         new = {}
         for f in self['azuredeploy']['resources']:
             try:
-                new[f['type']] = f['dependsOn']
+                new[f['type']] = f
             except:
                 new[f['type']] = ""
 
         return pd.Series(new)
+
+    def dependson(self):
+        new = tree()
+        for resource in self['azuredeploy']['resources']:
+            try:
+                if 'dependsOn' in resource:
+                    for depend in resource['dependsOn']:
+                        depend_typename = self._get_typename(depend)
+                        val = self._lookup(depend_typename)
+                        new[resource['type']][depend_typename] = val
+            except:
+                new[resource['type']] = self._run_template_functions(resource['name'])
+
+        depth_cnt = 0
+        pick_one = None
+        for k,v in new.iteritems():
+            depth_k = depth(v)
+            if depth_k > depth_cnt:
+                pick_one = k
+                depth_cnt = depth_k
+
+        temp = tree()
+        temp[pick_one] = new[pick_one]
+        self.dependency = dicts(temp)
+        return dicts(temp)
+
+    def dependson_print(self):
+        pprint(self.dependency)
+
+    def _run_template_functions(self, value):
+        concat = self._concat
+        variables = self._variables
+        try:
+            return eval(value)[0]
+        except Exception as e:
+            return value
+
+    def _get_typename(self, value):
+        try:
+            result = self._run_template_functions(value).split("/")
+            return "/".join(result[0:2])
+        except Exception as e:
+            return value
+
+    def _lookup(self, typename):
+        new = tree()
+        try:
+            for resource in self['azuredeploy']['resources']:
+                if typename == resource['type']:
+                    if 'dependsOn' in resource:
+                        for depend in resource['dependsOn']:
+                            depend_typename = self._get_typename(depend)
+                            val = self._lookup(depend_typename)
+                            new[depend_typename] = val
+                    else:
+                        val = self._run_template_functions(resource['name'])
+                        new[val] = {}
+                    return new
+        except:
+            return new
+
+    # Azure Template function
+    def _concat(self, *args):
+        strings = ""
+        for arg in args:
+            strings += arg
+        return strings
+
+    # Azure Template function
+    def _variables(self, name):
+        try:
+            var = self['azuredeploy']['variables'][name]
+        except:
+            var = name
+        try:
+            return eval(var)
+        except:
+            return var
 
     def requirements(self):
         required = {}

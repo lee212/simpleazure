@@ -8,9 +8,9 @@ deploying these templates in Python with its (directory) name.
 
 ::
 
-        >> from simpleazure.azure_quickstart_templates import AzureQuickStart as aqst
-        >> template = aqst.get_template('101-vm-sshkey')
-        >> template.metadata()
+        >>> from simpleazure.azure_quickstart_templates import AzureQuickStart as aqst
+        >>> template = aqst.get_template('101-vm-sshkey')
+        >>> template.metadata()
         dateUpdated                                               2015-06-05
         description        This template allows you to create a Virtual M...
         githubUsername                                             squillace
@@ -27,8 +27,8 @@ templates are fetched and ready to deploy. For example:
 
 ::
 
-        >> templates = aqst.get_templates()
-        >> templates.ten()
+        >>> templates = aqst.get_templates()
+        >>> templates.ten()
         100-blank-template                                                                  Blank Template
         101-acs-dcos                                                       Azure Container Service - DC/OS
         101-acs-mesos                                                      Azure Container Service - DC/OS
@@ -40,7 +40,7 @@ templates are fetched and ready to deploy. For example:
         101-application-gateway-public-ip-ssl-offload         Create an Application Gateway with Public IP
         101-automation-runbook-getvms                    Create Azure Automation Runbook to retrieve Az...
 
-Details for a template are also available like metadata (from metadata.json):
+Details for a template are also available, for example, metadata (from metadata.json) is displayed:
 
 ::
         >>> templates['101-acs-dcos'].metadata()
@@ -52,14 +52,14 @@ Details for a template are also available like metadata (from metadata.json):
 
 
 
-        >> from simpleazure import arm
-        >> from simpleazure.azure_quickstart_templates import AzureQuickStart as aqst
-        >> arm = arm.ARM() # Azure Resource Manager object
-        >> aqst = aqst.AzureQuickStartTemplate()
-        >> vm_sshkey_template = aqst.get_template('101-vm-sshkey')
-        >> vm_sshkey_template.requirements()
+        >>> from simpleazure import arm
+        >>> from simpleazure.azure_quickstart_templates import AzureQuickStart as aqst
+        >>> arm = arm.ARM() # Azure Resource Manager object
+        >>> aqst = aqst.AzureQuickStartTemplate()
+        >>> vm_sshkey_template = aqst.get_template('101-vm-sshkey')
+        >>> vm_sshkey_template.requirements()
         {u'sshKeyData': u'GEN-SSH-PUB-KEY'}
-        >> arm.set_parameter("sshKeyData", "ssh-rsa AAAB... hrlee@quickstart")
+        >>> arm.set_parameter("sshKeyData", "ssh-rsa AAAB... hrlee@quickstart")
 
 .. comment::
         - statistics for deploying time, number of resources, price tags, options, limitations (versions, os distribution)
@@ -74,16 +74,21 @@ Details for a template are also available like metadata (from metadata.json):
 Searching Template
 -------------------------------------------------------------------------------
 
-Simple Azure supports template search with a keyword from the Azure QuickStart
-Templates. Let's find templates that use 'rhel' (Red Hat Enterprise Linux) in a
-description. It found 13 templates and the first ten items are like: 
+Simple Azure supports a template search from the Azure QuickStart Templates
+with a keyword. Let's find templates that use 'rhel' (Red Hat Enterprise Linux)
+in a description. 
 
 ::
 
-        >> rhel_templates = aqst.search("rhel")
-        >> len(rhel_templates)
+        >>> rhel_templates = aqst.search("rhel")
+
+It found 13 templates and the first ten items are like: 
+
+::
+        >>> len(rhel_templates)
         13
-        >> rhel_templates.ten()
+
+        >>> rhel_templates.ten()
         101-vm-full-disk-encrypted-rhel       Red Hat Enterprise Linux 7.2 VM (Fully Encrypted)
         101-vm-simple-rhel                    Red Hat Enterprise Linux VM (RHEL 7.2 or RHEL ...
         201-encrypt-running-linux-vm                   Enable encryption on a running Linux VM.
@@ -95,18 +100,40 @@ description. It found 13 templates and the first ten items are like:
         sap-2-tier-marketplace-image            2-tier configuration for use with SAP NetWeaver
         vsts-tomcat-redhat-vm                 Red Hat Tomcat server for use with Team Servic...
 
-See metadata of the second templates ``101-vm-simple-rhel``:
+Template Details
+-------------------------------------------------------------------------------
+
+Simple Azure provides Template() object functions to quickly review template
+details such as required parameters, template descriptions and resource
+information.  
+
+Metadata
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+See metadata of the template ``101-vm-simple-rhel`` from the search results
+above:
 
 ::
 
-        >> rhel_templates['101-vm-simple-rhel'].metadata()
+        >>> rhel_templates['101-vm-simple-rhel'].metadata()
         dateUpdated                                               2016-02-23
         description        This template will deploy a Red Hat Enterprise...
         githubUsername                                            BorisB2015
         itemDisplayName    Red Hat Enterprise Linux VM (RHEL 7.2 or RHEL ...
         summary            This template will deploy RedHat (RHEL) VM, us...
 
-It requires these parameters:
+        >>> rhel_templates['101-vm-simple-rhel'].metadata().description
+        u'This template will deploy a Red Hat Enterprise Linux VM (RHEL 7.2 or
+        RHEL 6.7), using the Pay-As-You-Go RHEL VM image for the selected
+        version on Standard D1 VM in the location of your chosen resource group
+        with an additional 100 GiB data disk attached to the VM. Additional
+        charges apply to this image - consult Azure VM Pricing page for
+        details.'
+
+Parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+We may want to know what parameters are required to deploy for this template:
 
 ::
  
@@ -115,6 +142,24 @@ It requires these parameters:
         adminUsername
         vmName
 
+These parameters need to be set before deploying the template.
+
+Resources
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It seems that ``101-vm-simple-rhel`` deploys a Virtual Machine with Standard D1.
+For more detail about resources are:
+
+::
+
+        >>> rhel['101-vm-simple-rhel'].resources()
+        Microsoft.Compute/virtualMachines      {u'name': u'[parameters('vmName')]', u'apiVers...
+        Microsoft.Network/networkInterfaces    {u'name': u'[variables('nicName')]', u'apiVers...
+        Microsoft.Network/publicIPAddresses    {u'properties': {u'publicIPAllocationMethod': ...
+        Microsoft.Network/virtualNetworks      {u'properties': {u'subnets': [{u'name': u"[var...
+        Microsoft.Storage/storageAccounts      {u'properties': {u'accountType': u'[variables(...
+
+There are five services are used to deploy a RHEL virtual machine.
 
 Simple Azure Features
 -------------------------------------------------------------------------------
