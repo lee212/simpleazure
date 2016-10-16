@@ -1,3 +1,5 @@
+.. _ref-saz-template-deploy:
+
 Deploying Azure Virtual Machine in Simple Azure ARM Mode
 ===============================================================================
 

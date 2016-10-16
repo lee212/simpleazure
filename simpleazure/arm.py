@@ -102,7 +102,7 @@ class ARM(object):
                 'template': self.template,
                 'parameters': self.parameters }
 
-    def set_parameter(self, param):
+    def add_parameter(self, param):
         """Set a single parameter"""
         param_with_value = self._get_parameters_with_value(param)
         self.parameters.update(param_with_value)
@@ -113,6 +113,7 @@ class ARM(object):
             return self.parameters
 
         self.parameters = self._get_parameters_with_value(params)
+        return self.parameters
 
     def _get_parameters_with_value(self, params):
         parameters = {k: {'value': v} for k, v in params.items()}
@@ -128,6 +129,9 @@ class ARM(object):
             with open(path_or_uri, "r") as temp:
                 template = temp.read()
         self.template['azuredeploy'] = template
+
+    def load_template(self, template):
+        self.template = template
 
     def from_github(self, repo):
         # find repo
