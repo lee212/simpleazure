@@ -121,7 +121,7 @@ like ::
 
 If your credentials are invalid, you may see errors like this:
 
-.. highlight::
+.. code-block:: python
 
         Traceback (most recent call last):
           File "<stdin>", line 1, in <module>
@@ -139,7 +139,7 @@ If your credentials are invalid, you may see errors like this:
 
 or :
 
-.. highlight::
+.. code-block:: python
 
 
         Traceback (most recent call last):
@@ -180,7 +180,7 @@ Replace the 'subscription_id' with a real value.
 
 If you do not have proper permissions, error message looks like:
 
-.. highlight::
+.. code-block:: python
 
         Traceback (most recent call last):
           File "<stdin>", line 1, in <module>
@@ -190,7 +190,7 @@ If you do not have proper permissions, error message looks like:
 
 If your subscription principal is not consent:
 
-.. highlight::
+.. code-block:: python
 
      Traceback (most recent call last):
        File "<stdin>", line 1, in <module>
@@ -252,7 +252,7 @@ Tips on Getting Credential via Azure CLI
 
 Subscription id and tenant id are found by, for example:
 
-.. highlight:: console
+.. code-block:: console
 
         $ azure account show
         info:    Executing command account show
@@ -273,7 +273,7 @@ Subscription id and tenant id are found by, for example:
 
 Client id is found by, for example:
 
-.. highlight:: console
+.. code-block:: console
 
         $ azure ad app list
         info:    Executing command ad app list
