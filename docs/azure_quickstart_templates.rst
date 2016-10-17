@@ -12,7 +12,7 @@ Deploying Azure QuickStart Templates
         >>> arm.set_template(vm_sshkey_template)
         >>> arm.deploy()
 
-Azure provides 407 community templates[1]_ from starting a single virtual
+Azure provides 407 community templates [1]_ from starting a single virtual
 machine (e.g. 101-vm-simple-linux) to hadoop clusters with Apache Spark (e.g.
 hdinsight-apache-spark) and Simple Azure supports deploying these templates in
 Python with additional options like search.
@@ -33,12 +33,12 @@ Microsoft Azure.
 
 A template in the azure quickstart is served in a single directory with
 required json files to describe resource deployments. Simple Azure provides
-template information based on these files on the github repository. Metadata,
-for example, is supplied by:
+template information in Python based on the directory name and the files in the
+directory. Metadata, for example, is supplied by:
 
 ::
 
-        >>> template.metadata()
+        >>> vm_sshkey_template.metadata()
         dateUpdated                                               2015-06-05
         description        This template allows you to create a Virtual M...
         githubUsername                                             squillace
@@ -48,8 +48,8 @@ for example, is supplied by:
 This output is from ``101-vm-sshkey`` template and ``metadata()`` returns
 its description such as date, description, and github username of the template.
 
-Listing all templates (``get_templates()``) is also based on the meata data
-with its directory name like:
+(``get_templates()``) provides listing all templates which is also based on the
+meta data with its directory name like:
 
 ::
 
@@ -66,8 +66,8 @@ with its directory name like:
         101-application-gateway-public-ip-ssl-offload         Create an Application Gateway with Public IP
         101-automation-runbook-getvms                    Create Azure Automation Runbook to retrieve Az...
 
-You can choose one of the templates using Python dict data type, for example,
-``101-acs-dcos`` template is displayed by:
+Choose one of the templates using Python dict data format, for example,
+``101-acs-dcos`` template (2nd template in the listing) is displayed by:
 
 ::
         >>> templates['101-acs-dcos'].metadata()
@@ -78,7 +78,7 @@ You can choose one of the templates using Python dict data type, for example,
         summary            Azure Container Service optimizes the configur...
 
 More options are available to search, load and deploy templates via Simple Azure
-and following sections demonstrate them with examples.
+and the following sections demonstrate them with examples.
 
 .. comment::
 
@@ -112,6 +112,7 @@ in a description.
 It found 13 templates and the first ten items are: 
 
 ::
+
         >>> len(rhel_templates)
         13
 
@@ -160,9 +161,6 @@ Simple Azure runs by loading these files when it's imported in python.
 Metadata
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-::
-        [template object].metadata()            # pandas Series
-
 See metadata of the template ``101-vm-simple-rhel`` from the search results
 above:
 
@@ -187,11 +185,16 @@ Here, ``metadata()`` returns ``101-vm-simple-rhel`` template description in
 Pandas Series format and full description text is visible like python class
 variable (metadata().description).
 
-Parameters
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This information is from ``matadata.json`` and returns Pandas Series
 
 ::
-        [template object].parameters()          # pandas Series
+
+        [template object].metadata()            # pandas Series
+
+
+Parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We may want to know what parameters are necessary to deploy for this template:
 
@@ -205,12 +208,14 @@ We may want to know what parameters are necessary to deploy for this template:
 These three parameters need to be set before deploying the template and we will
 find out how to set parameters using Simple Azure later in this page.
 
-Resources
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This information is from ``azuredeploy.parameters.json`` and returns Pandas Series
 
 ::
+        [template object].parameters()          # pandas Series
 
-        [template object].resources()           # pandas Series
+
+Resources
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 According to the metadata earlier, we know that ``101-vm-simple-rhel`` deploys
 a virtual machine with Standard D1 but it isn't clear what resources are used.
@@ -227,19 +232,21 @@ a virtual machine with Standard D1 but it isn't clear what resources are used.
 There are five services (including ``virtualMachines`` in Compute service) are
 described in the template to deploy RHEL image on Microsoft Azure.
 
-Service Dependency
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+This information is from ``azuredeploy.json`` and returns Pandas Series
 
 ::
 
-        [template object].dependson()           # dict type return
-        [template object].dependson_print()     # pprint 
+        [template object].resources()           # pandas Series
+
+
+Service Dependency
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Services can be related to other services when it deploys, for example,
-``networkInterfaces`` depends on ``publicIPAddresses`` and ``virtualNetworks``
-in the ``101-vm-simple-rhel`` template. Dependencies are not visible in
-``resources()`` but in ``dependson()`` which returns it relation in python dict
-data type using pprint():
+``publicIPAddresses`` and ``virtualNetworks`` services are depended on
+``networkInterfaces`` resource in the ``101-vm-simple-rhel`` template.
+Dependencies are not visible in ``resources()`` but in ``dependson()`` which
+returns its relation in python dict data type using pprint():
 
 ::
 
@@ -252,17 +259,24 @@ data type using pprint():
 .. note:: `ARMVIZ.io <armviz.io>`_ depicts the service dependency on the web
         like Simple Azure.  For example, ``101-vm-simple-rhel``'s dependency is
         displayed `here
-        <armviz.io/#/?load=https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-simple-rhel/azuredeploy.json>`_
+        <http://armviz.io/#/?load=https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-simple-rhel/azuredeploy.json>`_
+
+::
+
+        [template object].dependson()           # dict type return
+        [template object].dependson_print()     # pprint 
 
 Template Deployment
 -------------------------------------------------------------------------------
 
-.. info::  Basic template deployment on Simple Azure is available, see :ref:`ref-saz-template-deploy`
+.. tip:: Basic template deployment on Simple Azure is available, see
+        :ref:`ref-saz-template-deploy`
 
-Simple Azure has a sub module for Azure Resource Manager (ARM) which should be
-imported to call ``deploy()`` function:
+Simple Azure has a sub module for Azure Resource Manager (ARM) which deploys a
+template on Azure.
 
 ::
+
         >>> from simpleazure import arm
         >>> arm = arm.ARM() # Azure Resource Manager object
 
@@ -295,7 +309,9 @@ In our example of RHEL, three parameters need to be set before its deployment,
          'adminUsername': {'value': 'azureuser'},
          'vmName': {'value': 'saz-quickstart'}}
 
-Python dict data type has updated with *value* key name.
+Python dict data type has updated with *value* key name like ``{ '[parameter
+name]' : { 'value': '[parameter value'] }}`` and these parameter settings will
+be used when the template is deployed.
 
 .. note:: Use ``add_parameter()``, if you have additional parameter to add.
 
@@ -308,12 +324,17 @@ Deployment
 
         >>> arm.deploy()
 
-Or you can directly specify them when you call ``deploy()`` as a parameter.
+Or you can directly deploy a template with parameters.
 
 ::
 
         >>> arm.deploy(rhel['101-vm-simple-rhel'], {"adminPassword":"xxxxx", "adminUsername":"azureuser", "vmName":"saz-quickstart"})
 
+It takes some time to complete a deployment and get access to a virtual machine.
+
+.. todo::
+        
+        access information is required to display
 .. comment::
 
         Simple Azure Features

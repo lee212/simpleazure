@@ -60,7 +60,7 @@ class ARM(object):
         self.set_parameters(param)
         self.set_deployment_properties()
         self.update_rg()
-        self.call_deploy()
+        return self.call_deploy()
 
     def terminate_deployment(self, resource_group=None, deployment=None):
         self.client.deployments.delete(resource_group or self.resource_group, deployment or self.deployment)
@@ -99,7 +99,7 @@ class ARM(object):
     def set_deployment_properties(self):
         self.deployment_properties = {
                 'mode': dm.incremental,
-                'template': self.template,
+                'template': self.template['azuredeploy'],
                 'parameters': self.parameters }
 
     def add_parameter(self, param):
