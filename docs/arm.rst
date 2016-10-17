@@ -5,8 +5,8 @@ Quick Setup for Azure Resource Manager Mode
 
 Azure Resource Template (JSON based Infrastructure as Code) runs with Azure
 Resource Manager which Azure Python SDK 2.0.0+ supports with new packages and
-functions, and Simple Azure uses new version of Azure Python SDK to deploy
-software stacks under Azure Resource Templates.
+functions. Simple Azure uses the new version of Azure Python SDK to deploy
+software and infrastructure with Azure Resource Templates.
 
 Previous development is now called 'legacy' or 'classic' mode of Azure Python
 SDK with limited features (although it still works to start or terminate Azure
@@ -42,15 +42,6 @@ github.com would be best::
 Additional Packages
 -------------------------------------------------------------------------------
 
-You may encounter some errors like this, if you don't install additional packages::
-
-   Traceback (most recent call last):
-   File "<stdin>", line 1, in <module>
-   File "/usr/local/lib/python2.7/site-packages/azure/common/credentials.py", line 25, in <module>
-   raise ImportError("You need to install 'msrest' to use this feature")
-   ImportError: You need to install 'msrest' to use this feature
-
-
 From Pypi::
 
         pip install msrest
@@ -59,6 +50,15 @@ From Pypi::
 From github.com repository::
 
         pip install -r requirements.txt
+
+You may encounter some errors like this, if you don't install additional packages::
+
+   Traceback (most recent call last):
+   File "<stdin>", line 1, in <module>
+   File "/usr/local/lib/python2.7/site-packages/azure/common/credentials.py", line 25, in <module>
+   raise ImportError("You need to install 'msrest' to use this feature")
+   ImportError: You need to install 'msrest' to use this feature
+
 
 Authentication with Service Principal Credentials (ServicePrincipalCredentials)
 -------------------------------------------------------------------------------
@@ -89,7 +89,7 @@ Reconsent Step
 
 Follow the steps below:
 
-- Go to classic portal
+- Go to `the classic portal <https://manage.windowsazure.com/>`_
 - Select 'Active Directory' and find 'applications' tab at the top of the page
 - Search apps by selecting 'Applications my company owns' in the search box
 - Select your application and find 'Users and Groups' tab at the top of the
@@ -119,7 +119,9 @@ like ::
   from azure.common.credentials import ServicePrincipalCredentials as spc
   cred = spc(client_id = 'abcdefghi-1234-4555-8173-jklmnopqrstu',secret='abcdEFGHIJ//klmnopqrSTU/',tenant='1234567-abcd-7890-ABCD-1234567890')
 
-If your credentials are invalid, you may see errors like this::
+If your credentials are invalid, you may see errors like this:
+
+.. highlight::
 
         Traceback (most recent call last):
           File "<stdin>", line 1, in <module>
@@ -135,7 +137,9 @@ If your credentials are invalid, you may see errors like this::
         Timestamp: 2016-10-04 15:41:24Z
 
 
-or ::
+or :
+
+.. highlight::
 
 
         Traceback (most recent call last):
@@ -151,7 +155,8 @@ or ::
           Correlation ID: <UUID>
           Timestamp: 2016-10-04 15:41:33Z
 
-This may occur because your secret is not registered properly or client_id or tenant is not found.
+This may occur because your secret is not registered properly or client_id or
+tenant is not found.
 
 Create a new Resource Group
 -------------------------------------------------------------------------------
@@ -173,7 +178,9 @@ Let's try to create a sample group named 'quickstart-rg-1' by the following code
 
 Replace the 'subscription_id' with a real value.
 
-If you do not have proper permissions, error message looks like::
+If you do not have proper permissions, error message looks like:
+
+.. highlight::
 
         Traceback (most recent call last):
           File "<stdin>", line 1, in <module>
@@ -181,7 +188,9 @@ If you do not have proper permissions, error message looks like::
             raise exp
         msrestazure.azure_exceptions.CloudError: The client '<uuid>' with object id '<uuid>' does not have authorization to perform action 'Microsoft.Resources/subscriptions/resourcegroups/write' over scope '/subscriptions/<subscription_id>/resourcegroups/quickstart-rg-1'.
 
-If your subscription principal is not consent::
+If your subscription principal is not consent:
+
+.. highlight::
 
      Traceback (most recent call last):
        File "<stdin>", line 1, in <module>
@@ -194,7 +203,8 @@ Authentication in Simple Azure
 
 Simple Azure requires the following information to authenticate:
 
-- subscription id (identication to your account, e.g. ``azure account show`` shows ID)
+- subscription id (identication to your account, e.g. ``azure account show``
+  shows ID)
 - client id (equal to ``client_id``)
 - tenant id (equal to ``tenant``)
 - client secret key (equal to ``secret``)
