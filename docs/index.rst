@@ -56,6 +56,9 @@ Content
 .. toctree::
    :maxdepth: 1
 
+   arm
+   templates
+   azure_quickstart_templates
    quickstart
    tutorial
    installation
