@@ -263,6 +263,9 @@ returns its relation in python dict data type using pprint():
         displayed `here
         <http://armviz.io/#/?load=https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-simple-rhel/azuredeploy.json>`_
 
+This information is from ``dependsOn`` section in ``azuredeploy.json`` and
+returns Python dictionary or prints in the Pretty Print (pprint) mode:
+
 ::
 
         [template object].dependson()           # dict type return
