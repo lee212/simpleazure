@@ -4,24 +4,72 @@
    contain the root `toctree` directive.
 
 Simple Azure - Python library for Windows Azure
-================================================
+===============================================================================
 
-Simple Azure is a python library for Windows Azure. 
-It provides a service management with clustering. 
-Simple Azure enables ipython notebook on Windows Azure based on the azure-sdk-for-python and its plugin. 
-Linux distributions on VM Depot are accessible with the Azure node.js SDK. 
-IPython cluster is also supported.
+Simple Azure enables easy deployments of Microsoft Azure Services including the
+new Azure Resource Manager and the classic Service Management like other cloud
+providers e.g. Amazon EC2. 407 community templates from `Azure QuickStart
+Templates <https://github.com/Azure/azure-quickstart-templates>`_ are included
+to deploy software and infrasture with a few steps in Python and a classic
+virtual machine service is supported with the azure-sdk-for-python legacy
+packge. Simple Azure is currently in a development stage therefore new features
+will be added from time to time and issues and bugs might be easily found.
+Documentation is also actively updated.
 
-* cluster computing (like StarCluster)
-* IPython cluster with the plugin
-* Access to the open VM image repository (VM Depot)
+Deploying a Template in Simple Azure ARM Mode
+-------------------------------------------------------------------------------
 
-You can get started with :doc:`Quickstart </quickstart>` and then learn more through :doc:`Tutorial </tutorial>` that shows how to deploy and utilize Windows Azure with Simple Azure.
-:doc:`Installation </installation>` and :doc:`Configuration </configuration>` helps you get Simple Azure installed on your machine and :doc:`Command </command>` describes how to use Simple Azure on the shell.
-You can find resources :doc:`here </deliverables>`.
+From Azure QuickStart Template:
 
-Deploying Azure Virtual Machines
----------------------------------
+::
+
+        >>> from simpleazure import SimpleAzure
+        >>> saz = SimpleAzure()
+
+        # aqst is for Azure QuickStart Templates
+        >>> vm_sshkey_template = saz.aqst.get_template('101-vm-sshkey')
+
+        # arm is for Azure Resource Manager
+        >>> saz.arm.set_template(vm_sshkey_template)
+        >>> saz.arm.set_parameter("sshKeyData", "ssh-rsa AAAB... hrlee@quickstart")
+        >>> saz.arm.deploy()
+
+From a custom template on github:
+
+::
+
+        >> url = "https://raw.githubusercontent.com/Azure-Samples/resource-manager-python-template-deployment/master/templates/template.json"
+        >> saz.arm.deploy(template = url, param = { "sshKeyData": "ssh-rsa AAAB3Nza..." })
+
+.. note:: For more about using ARM? check out :ref:`ref-arm`
+.. note:: For more about deploying a custom Template? check out :ref:`ref-saz-template-deploy`
+.. note:: For more about deploying Azure QuickStart Templates? check out :ref:`ref-aqst`
+
+Caveats
+-------------------------------------------------------------------------------
+
+Simple Azure was started in 2013 but wasn't consistently updated which means
+some dated features may not work as expected. Relax, I am trying to get Simple
+Azure back on track after these abandoned moments, so please report any issues
+that you may encounter, I will try to fix or sort it out as quickly as possible
+I can.
+
+Obsolete features (might be revived later):
+
+- virtual cluster
+- IPython cluster with the plugin
+- Access to the open VM image repository (VM Depot)
+
+If you are looking for a classic mode launching a virtual machine, you can get
+started with :doc:`Quickstart </quickstart>` and then learn more through
+:doc:`Tutorial </tutorial>` that shows how to deploy and utilize
+Azure Virtual Machines with Simple Azure.  :doc:`Installation </installation>`
+and :doc:`Configuration </configuration>` helps you get Simple Azure installed
+on your machine and :doc:`Command </command>` describes how to use Simple Azure
+on the shell. You can find resources :doc:`here </deliverables>`.
+
+Deploying Azure Virtual Machines (classic mode)
+-------------------------------------------------------------------------------
 Three lines are required to deploy Window Azure Virtual Machine in Python.
 
 .. code-block:: python
@@ -35,23 +83,23 @@ Three lines are required to deploy Window Azure Virtual Machine in Python.
 
    <iframe width="560" height="315" src="//www.youtube.com/embed/pHG_gmnc6qI" frameborder="0" allowfullscreen></iframe>
 
-Installation (TBD)
-------------------
+Pypi Installation (TBD)
+-------------------------------------------------------------------------------
 
 ::
 
   $ pip install simpleazure
   $ simpleazure-cluster start mycluster
 
-Contribute
-===========
+Contribution
+-------------------------------------------------------------------------------
 
-* Mailinglist
+* Mailinglist (tbd)
 * `issues <https://github.com/lee212/simpleazure/issues>`_
 
 
-Content
-=======
+Contents
+-------------------------------------------------------------------------------
 
 .. toctree::
    :maxdepth: 1
@@ -67,7 +115,7 @@ Content
    deliverables
    
 Indices and tables
-==================
+-------------------------------------------------------------------------------
 
 * :ref:`genindex`
 * :ref:`modindex`
