@@ -15,9 +15,9 @@ Deploying Azure QuickStart Templates
         >>> arm.deploy()
 
 Azure provides 407 community templates [1]_ from starting a single virtual
-machine (e.g. 101-vm-simple-linux) to hadoop clusters with Apache Spark (e.g.
+machine (e.g. 101-vm-sshkey) to hadoop clusters with Apache Spark (e.g.
 hdinsight-apache-spark) and Simple Azure supports deploying these templates in
-Python with additional options like search.
+Python with additional options like a template search.
 
 The example above shows that Simple Azure loads ``101-vm-sshkey`` template from
 the *azure-quickstart-templates* github repository and deploys it with a
@@ -50,8 +50,8 @@ directory. Metadata, for example, is supplied by:
 This output is from ``101-vm-sshkey`` template and ``metadata()`` returns
 its description such as date, description, and github username of the template.
 
-(``get_templates()``) provides listing all templates which is also based on the
-meta data with its directory name like:
+``get_templates()`` provides listing all templates which is also based on the
+diretory name and the meta-data like:
 
 ::
 
@@ -80,7 +80,7 @@ Choose one of the templates using Python dict data format, for example,
         summary            Azure Container Service optimizes the configur...
 
 More options are available to search, load and deploy templates via Simple Azure
-and the following sections demonstrate them with examples.
+and the following sections demonstrate these options with examples.
 
 .. comment::
 
@@ -188,7 +188,7 @@ Pandas Series format and full description text is visible like python class
 variable (metadata().description).
 
 
-This information is from ``matadata.json`` and returns Pandas Series
+This information is from ``matadata.json`` and returned by Pandas Series
 
 ::
 
@@ -210,9 +210,10 @@ We may want to know what parameters are necessary to deploy for this template:
 These three parameters need to be set before deploying the template and we will
 find out how to set parameters using Simple Azure later in this page.
 
-This information is from ``azuredeploy.parameters.json`` and returns Pandas Series
+This information is from ``azuredeploy.parameters.json`` and returned by Pandas Series
 
 ::
+
         [template object].parameters()          # pandas Series
 
 
@@ -234,7 +235,7 @@ a virtual machine with Standard D1 but it isn't clear what resources are used.
 There are five services (including ``virtualMachines`` in Compute service) are
 described in the template to deploy RHEL image on Microsoft Azure.
 
-This information is from ``azuredeploy.json`` and returns Pandas Series
+This information is from ``azuredeploy.json`` and returned by Pandas Series
 
 ::
 
@@ -264,7 +265,7 @@ returns its relation in python dict data type using pprint():
         <http://armviz.io/#/?load=https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-simple-rhel/azuredeploy.json>`_
 
 This information is from ``dependsOn`` section in ``azuredeploy.json`` and
-returns Python dictionary or prints in the Pretty Print (pprint) mode:
+returned by Python dictionary or printed in the Pretty Print (pprint):
 
 ::
 
@@ -318,7 +319,8 @@ Python dict data type has updated with *value* key name like ``{ '[parameter
 name]' : { 'value': '[parameter value'] }}`` and these parameter settings will
 be used when the template is deployed.
 
-.. note:: Use ``add_parameter()``, if you have additional parameter to add.
+.. note:: Use ``add_parameter()``, if you have additional parameter to add in
+        existing parameters, e.g. add_parameter({"dnsName":"azure-preview"})
 
 Deployment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -335,14 +337,16 @@ Or you can directly deploy a template with parameters.
 
         >>> arm.deploy(rhel['101-vm-simple-rhel'], {"adminPassword":"xxxxx", "adminUsername":"azureuser", "vmName":"saz-quickstart"})
 
-It takes some time to complete a deployment and get access to a virtual machine.
+It may take a few minutes to complete a deployment and give access to a virtual
+machine.
 
 Access
 -------------------------------------------------------------------------------
 
 If a template is deployed with an access to virtual machines i.e. SSH via
 public IP addresses, ``view_info()`` returns an ip address in a same resource
-group.
+group. ``Microsoft.Network/PublicIPAddresses`` service is fetched in this
+example.
 
 ::
 
@@ -350,7 +354,7 @@ group.
         [u'40.77.103.150']
 
 
-Use the same login user name and password from parameters in a SSH client:
+Use the same login user name and password from the parameters defined earlier:
 
 ::
   
@@ -360,31 +364,33 @@ Use the same login user name and password from parameters in a SSH client:
           Are you sure you want to continue connecting (yes/no)? yes
           Warning: Permanently added '40.77.103.150' (ECDSA) to the list of known hosts.
           azureuser@40.77.103.150's password:
+          [azureuser@simpleazure-quickstart-rhel ~]$ 
+
+
+We confirm that the virutual machine is RHEL 7.2 by:          
+
+::
+
           [azureuser@simpleazure-quickstart-rhel ~]$ cat /etc/redhat-release
           Red Hat Enterprise Linux Server release 7.2 (Maipo)
 
 Termination
 --------------------------------------------------------------------------------
 
-Simple deleting a resource group where deployment is made terminates all
-services.
+Deleting a resource group where deployment is made terminates all
+services in the resource group.
 
 ::
 
         >>> arm.remove_resource_group()
 
 
-.. todo::
-        
-        access information is required to display
 .. comment::
 
-        Simple Azure Features
+        additional Features
         -------------------------------------------------------------------------------
-        - support official azure quickstart templates (407 avail)
         - support custom
         - search by technologies, resources, image e.g. Ubuntu, Centos, 
         - preview by replacing variables, parameters
         - elapsed time
-        - visualization?
         - ease writing new template?
