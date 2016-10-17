@@ -1,23 +1,29 @@
-Command
-===============
+Command (classic mode)
+===============================================================================
 
-Simple Azure supports command line tools, so a user can create virtual machines on the shell.
+Simple Azure supports command line tools, so a user can create virtual machines
+on the shell.
 
 Creating Clusters
-------------------
-The usage is based on StarCluster. We aim to provide an identical interface and command name to use clusters like StarCluster.
+-------------------------------------------------------------------------------
+
+The usage is based on StarCluster. We aim to provide an identical interface and
+command name to use clusters like StarCluster.
 
 simpleazure-cluster
-^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 A user can create one or more clusters of virtual machines on Windows Azure:
 
 ::
 
    $ simpleazure-cluster start mycluster
 
-Note. ``mycluster`` is a profile name and the config file has been stored under the default directory ``$HOME/.azure/cluster`` as a yaml file.
+Note. ``mycluster`` is a profile name and the config file has been stored under
+the default directory ``$HOME/.azure/cluster`` as a yaml file.
 
-The number of clusters can be changed in the config file (mycluster.yaml) like this:
+The number of clusters can be changed in the config file (mycluster.yaml) like
+this:
 
 ::
 
@@ -25,7 +31,8 @@ The number of clusters can be changed in the config file (mycluster.yaml) like t
     num=5
 
 sshmaster
-''''''''''''
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
 This command allows to login to a master node via SSH.
 
 ::

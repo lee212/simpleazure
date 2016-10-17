@@ -1,10 +1,10 @@
-Quickstart
-============
+Quickstart (classic mode)
+===============================================================================
 
 This page provides a good introduction to Simple Azure.
 
 Deploying Azure Virtual Machine
---------------------------------
+-------------------------------------------------------------------------------
 
 .. code-block:: python
 
@@ -22,7 +22,8 @@ You can change an operating system image by the ``set_image()`` function. For ex
 This allows you to create a vm with the selected image. Note that ``set_image()`` must be used before calling the ``create_vm()`` function.
 
 Deploying several machines
----------------------------
+-------------------------------------------------------------------------------
+
 ``create_cluster()`` function allows you to create multiple machines at once. ``num=`` parameter can be used to specify the number of nodes.
 
 .. code-block:: python
@@ -40,7 +41,8 @@ Deploying several machines
    {'request_id': 'b1a3446ebafe47a295df4c9d1b7d743c'}
    
 Deploying a Virtual Machine from the community images (VM DEPOT)
------------------------------------------------------------------
+-------------------------------------------------------------------------------
+
 Personalized and preconfigured virtual machines images can be imported from the community repository (http://vmdepot.msopentech.com).
 This example explains as how to deploy a virtual machine with the community image, Azure Data Science Core.
 
@@ -52,7 +54,8 @@ This example explains as how to deploy a virtual machine with the community imag
    azure.create_vm()
    
 Simple Azure on Command Line Interface (CLI)
------------------------------------------------
+-------------------------------------------------------------------------------
+
 Simple Azure supports commands on a linux shell. For example, you can create clusters of virtual machines on Windows Azure like `StarCluster <http://star.mit.edu/cluster/index.html>`_ like as follows:
 (StarCluster is a cluster-computing toolkit for Amazon Cloud)
 
