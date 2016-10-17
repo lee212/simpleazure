@@ -250,7 +250,9 @@ Then source it like:
 Tips on Getting Credential via Azure CLI
 -------------------------------------------------------------------------------
 
-Subscription id and tenant id are found by, for example::
+Subscription id and tenant id are found by, for example:
+
+.. highlight:: console
 
         $ azure account show
         info:    Executing command account show
@@ -269,7 +271,9 @@ Subscription id and tenant id are found by, for example::
 - ``ID`` represents ``AZURE_SUBSCRIPTION_ID``.
 - ``Tenant ID`` represents ``AZURE_TENANT_ID``.
 
-Client id is found by, for example::
+Client id is found by, for example:
+
+.. highlight:: console
 
         $ azure ad app list
         info:    Executing command ad app list
