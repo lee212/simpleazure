@@ -302,7 +302,7 @@ In our example of RHEL, three parameters need to be set before its deployment,
         >>> arm.set_parameters(
                        {"adminPassword":"xxxxx",
                         "adminUsername":"azureuser",
-                        "vmName":"saz-quickstart"}
+                        "vmName":"simpleazure-quickstart"}
                       )
 
         {'adminPassword': {'value': 'xxxxx'},
@@ -331,6 +331,43 @@ Or you can directly deploy a template with parameters.
         >>> arm.deploy(rhel['101-vm-simple-rhel'], {"adminPassword":"xxxxx", "adminUsername":"azureuser", "vmName":"saz-quickstart"})
 
 It takes some time to complete a deployment and get access to a virtual machine.
+
+Access
+-------------------------------------------------------------------------------
+
+If a template is deployed with an access to virtual machines i.e. SSH via
+public IP addresses, ``view_info()`` returns an ip address in a same resource
+group.
+
+::
+
+        >>> arm.view_info()
+        [u'40.77.103.150']
+
+
+Use the same login user name and password from parameters in a SSH client:
+
+::
+  
+        $ ssh 40.77.103.150 -l azureuser
+          The authenticity of host '40.77.103.150 (40.77.103.150)' can't be established.
+          ECDSA key fingerprint is 64:fc:dd:7c:98:8c:ed:93:63:61:56:31:81:ad:cf:69.
+          Are you sure you want to continue connecting (yes/no)? yes
+          Warning: Permanently added '40.77.103.150' (ECDSA) to the list of known hosts.
+          azureuser@40.77.103.150's password:
+          [azureuser@simpleazure-quickstart-rhel ~]$ cat /etc/redhat-release
+          Red Hat Enterprise Linux Server release 7.2 (Maipo)
+
+Termination
+--------------------------------------------------------------------------------
+
+Simple deleting a resource group where deployment is made terminates all
+services.
+
+::
+
+        >>> arm.remove_resource_group()
+
 
 .. todo::
         
