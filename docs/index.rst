@@ -53,10 +53,10 @@ Caveats
 -------------------------------------------------------------------------------
 
 Simple Azure was started in 2013 but wasn't consistently updated which means
-some dated features may not work as expected. Relax, I am trying to get Simple
-Azure back on track after these abandoned moments, so please report any issues
-that you may encounter, I will try to fix or sort it out as quickly as possible
-I can.
+that some dated features may not work as expected. Relax, I am trying to get
+Simple Azure back on track after these abandoned moments, so please report any
+issues that you may encounter. I will try to fix or sort it out as quickly as
+possible I can.
 
 Obsolete features (might be revived later):
 
@@ -70,11 +70,12 @@ started with :doc:`Quickstart </quickstart>` and then learn more through
 Azure Virtual Machines with Simple Azure.  :doc:`Installation </installation>`
 and :doc:`Configuration </configuration>` helps you get Simple Azure installed
 on your machine and :doc:`Command </command>` describes how to use Simple Azure
-on the shell. You can find resources :doc:`here </deliverables>`.
+on the python shell. You can find resources :doc:`here </deliverables>`.
 
 Deploying Azure Virtual Machines (classic mode)
 -------------------------------------------------------------------------------
-Three lines are required to deploy Window Azure Virtual Machine in Python.
+Three lines are required to deploy Window Azure Virtual Machine in Simple
+Azure.
 
 .. code-block:: python
 
@@ -117,10 +118,12 @@ Contents
    command
    configuration
    deliverables
-   
-Indices and tables
--------------------------------------------------------------------------------
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+.. comments::
+
+        Indices and tables
+        -------------------------------------------------------------------------------
+
+        * :ref:`genindex`
+        * :ref:`modindex`
+        * :ref:`search`
