@@ -6,15 +6,19 @@
 Simple Azure - Python library for Windows Azure
 ===============================================================================
 
-Simple Azure enables easy deployments of Microsoft Azure Services including the
-new Azure Resource Manager and the classic Service Management like other cloud
-providers e.g. Amazon EC2. 407 community templates from `Azure QuickStart
+Simple Azure enables template deployments of Microsoft Azure Services via the
+new Azure Resource Manager and launching virtual machines via the classic
+Service Management API. 407 community templates [1]_ from `Azure QuickStart
 Templates <https://github.com/Azure/azure-quickstart-templates>`_ are included
 to deploy software and infrasture with a few steps in Python and a classic
 virtual machine service is supported with the azure-sdk-for-python legacy
-packge. Simple Azure is currently in a development stage therefore new features
-will be added from time to time and issues and bugs might be easily found.
-Documentation is also actively updated.
+package.  Simple Azure is currently in a development stage therefore new
+features will be added from time to time and issues and bugs might be easily
+found while you use Simple Azure. Check out the latest version from the `github
+<https://github.com/lee212/simpleazure>`_ repository. Documentation is also
+actively updated.
+
+.. [1] as of 10/13/2016 from https://github.com/Azure/azure-quickstart-templates
 
 Deploying a Template in Simple Azure ARM Mode
 -------------------------------------------------------------------------------
