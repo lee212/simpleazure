@@ -41,7 +41,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Simple Azure'
-copyright = u'2013, Hyungro Lee'
+copyright = u'2016, Hyungro Lee'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
