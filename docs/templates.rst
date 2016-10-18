@@ -8,7 +8,7 @@ Simpla Azure deploys a Ubuntu 16.04 VM using `the sample template
 from `Azure-Samples
 <https://github.com/Azure-Samples/resource-manager-python-template-deployment/>`_ like this:
 
-::
+.. code-block:: python
 
   >> import simpleazure as saz
   >> arm = saz.arm()
@@ -20,11 +20,15 @@ A new deployment is completed in a resource group like:
 
 .. image:: images/sampleazure.png
 
-Deleting a deployment is::
+Deleting a deployment is:
+
+.. code-block:: pycon
 
   >> a.terminate_deployment()
 
-Or removing a resource group is::
+Or removing a resource group is:
+
+.. code-block:: pycon
 
   >> a.remove_resource_group()
 
@@ -56,7 +60,9 @@ ARM JSON Template
 -------------------------------------------------------------------------------
 
 Azure Resource Template uses JSON format to describe its parameters, variables,
-resources and outputs. For example, the blank template looks like::
+resources and outputs. For example, the blank template looks like:
+
+.. code-block:: json
 
   {
      "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
@@ -88,7 +94,9 @@ according to `the official templates
 Starting a VM with Simple Azure (step-by-step)
 -------------------------------------------------------------------------------
 
-``arm`` sub package is added under ``simpleazure``. Try::
+``arm`` sub package is added under ``simpleazure``. Try:
+
+.. code-block:: pycon
 
   >> import simpleazure
   >> arm = simpleazure.arm()
@@ -109,7 +117,9 @@ You may not be familiar with client id and client secret key, see the page here
 ':ref:`ref-arm`'. Client id and secret key can be obtained via Azure CLI or the
 new portal.
 
-You can deliver credential values as parameters in Python Shell like::
+You can deliver credential values as parameters in Python Shell like:
+
+.. code-block:: pycon
 
   >> sid = "5s3ag2s5-2aa1-4828-xxxx-9g8sw72w5w5g"
   >> cid = "5c5a3ea3-ap34-4pd0-xxxx-2p38ac00aap1"
@@ -117,7 +127,9 @@ You can deliver credential values as parameters in Python Shell like::
   >> tid = "5e39a20e-c55a-53de-xxxx-2503a55et6ta"
   >> arm.set_credential(subscription = sid, client_id = cid, secret = secret, tenant = tid)
 
-It is actually recommended to use environment variables. Create a file for credentials like::
+It is actually recommended to use environment variables. Create a file for credentials like:
+
+.. code-block:: console
 
         $ cat <<EOF > ~/.saz/cred
         export AZURE_SUBSCRIPTION_ID=5s3ag2s5-2aa1-4828-xxxx-9g8sw72w5w5g
@@ -128,11 +140,15 @@ It is actually recommended to use environment variables. Create a file for crede
 
 And then source it before running Python like:
 
-::
+:
+
+.. code-block:: console
 
         $ source ~/.saz/cred
 
-Now. no parameters are necessary. Simple Azure loads credentials from environment variables::
+Now. no parameters are necessary. Simple Azure loads credentials from environment variables:
+
+.. code-block:: pycon
 
   >> arm.set_credential()
 
@@ -145,12 +161,16 @@ template from the *azure-quickstart-templates* which deploys a Ubuntu
 14.04.4-LTS Virtual Machine with a SSH key injection. ``deploy()`` accepts template
 from URL or a local file as long as it is a JSON format.
 
-From URL::
+From URL:
+
+.. code-block:: pycon
 
         >> template_url = 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-sshkey/azuredeploy.json'
         >> arm.set_template(template_url)
 
-From FILE::
+From FILE:
+
+.. code-block:: pycon
 
         >> template_path = "~/101-vm-sshkey/azuredeploy.json"
         >> arm.set_template(template_path)
@@ -166,7 +186,9 @@ We assume that you already have a SSH key pair generated with a default filename
 object contains public key string like:
 
 
-::
+:
+
+.. code-block:: pycon
         
         >> arm.sshkey.pubkey
         ssh-rsa AAAAB3... hrlee@quickstart
@@ -174,7 +196,9 @@ object contains public key string like:
 
 We provide this as a parameter like:
 
-::
+:
+
+.. code-block:: pycon
 
         >> arm.set_parameter({"sshKeyData": arm.sshkey.pubkey})
 
@@ -197,7 +221,9 @@ The relations of these services are visualized via armvis.io `here
 <http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2FAzure%2Fazure-quickstart-templates%2Fmaster%2F101-vm-sshkey%2Fazuredeploy.json>`_
 
 In Simple Azure, ``deploy()`` function creates a new deployment for these six
-resources by::
+resources by:
+
+.. code-block:: pycon
 
         >> arm.deploy()
 
@@ -205,7 +231,9 @@ You can directly call ``deploy()`` function without setting template
 (set_template()) and parameters (set_parameter()) but sending them as function
 parameters like (Both ways work same):
 
-::
+:
+
+.. code-block:: pycon
 
   >> arm.deploy(template_url, parameters)
 
@@ -226,11 +254,15 @@ function call deletes resources in a same unit (a sample resource group or
 deployment).
 
 
-Deleting a deployment is::
+Deleting a deployment is:
+
+.. code-block:: pycon
 
   >> arm.terminate_deployment()
 
-Removing a resource group is ::
+Removing a resource group is :
+
+.. code-block:: pycon
 
   >> arm.remove_resource_group()
 
@@ -255,7 +287,9 @@ It might be helpful to review virtual machine service from  one of the existing
 templates. There is a template starting a VM with ssh public key:
 `101-vm-ssh-key template
 <https://github.com/Azure/azure-quickstart-templates/blob/master/101-vm-sshkey/azuredeploy.json>`_
-, and the virtual machine service is defined like this in ``resources``::
+, and the virtual machine service is defined like this in ``resources``:
+
+.. code-block:: json
 
         {
           "apiVersion": "2015-08-01",

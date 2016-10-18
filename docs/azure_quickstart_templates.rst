@@ -2,7 +2,9 @@
 
 Deploying Azure QuickStart Templates
 ===============================================================================
-::
+:
+
+.. code-block:: pycon
 
         >>> from simpleazure.azure_quickstart_templates import AzureQuickStartTemplates as aqst
         >>> aqst = aqst.AzureQuickStartTemplate()
@@ -38,7 +40,9 @@ required json files to describe resource deployments. Simple Azure provides
 template information in Python based on the directory name and the files in the
 directory. Metadata, for example, is supplied by:
 
-::
+:
+
+.. code-block:: pycon
 
         >>> vm_sshkey_template.metadata()
         dateUpdated                                               2015-06-05
@@ -53,7 +57,9 @@ its description such as date, description, and github username of the template.
 ``get_templates()`` provides listing all templates which is also based on the
 diretory name and the meta-data like:
 
-::
+:
+
+.. code-block:: pycon
 
         >>> templates = aqst.get_templates()
         >>> templates.ten()
@@ -71,7 +77,9 @@ diretory name and the meta-data like:
 Choose one of the templates using Python dict data format, for example,
 ``101-acs-dcos`` template (2nd template in the listing) is displayed by:
 
-::
+:
+
+.. code-block:: pycon
         >>> templates['101-acs-dcos'].metadata()
         dateUpdated                                               2016-02-18
         description        Deploy an Azure Container Service instance for...
@@ -84,21 +92,10 @@ and the following sections demonstrate these options with examples.
 
 .. comment::
 
-        >>> from simpleazure import arm
-        >>> from simpleazure.azure_quickstart_templates import AzureQuickStart as aqst
-        >>> arm = arm.ARM() # Azure Resource Manager object
-        >>> aqst = aqst.AzureQuickStartTemplate()
-        >>> vm_sshkey_template = aqst.get_template('101-vm-sshkey')
-        >>> vm_sshkey_template.requirements()
-        {u'sshKeyData': u'GEN-SSH-PUB-KEY'}
-        >>> arm.set_parameter("sshKeyData", "ssh-rsa AAAB... hrlee@quickstart")
-
-.. comment::
         - statistics for deploying time, number of resources, price tags, options, limitations (versions, os distribution)
           - possible more information of sizes, image,
         - statistics for technologies
         - sub templates (probably supported?) 
-        - 407  as of october 2016
 
 Searching Template
 -------------------------------------------------------------------------------
@@ -107,13 +104,17 @@ Simple Azure supports a template search from the Azure QuickStart Templates
 with a keyword. Let's find templates that use 'rhel' (Red Hat Enterprise Linux)
 in a description. 
 
-::
+:
+
+.. code-block:: pycon
 
         >>> rhel_templates = aqst.search("rhel")
 
 It found 13 templates and the first ten items are: 
 
-::
+:
+
+.. code-block:: pycon
 
         >>> len(rhel_templates)
         13
@@ -132,7 +133,9 @@ It found 13 templates and the first ten items are:
 
 Next items are displayed by calling ``ten()`` again:
 
-::
+:
+
+.. code-block:: pycon
 
         >>> rhel_templates.ten()
         intel-lustre-clients-vmss-centos       Azure VM Scale Set as clients of Intel Lustre
@@ -166,7 +169,9 @@ Metadata
 See metadata of the template ``101-vm-simple-rhel`` from the search results
 above:
 
-::
+:
+
+.. code-block:: pycon
 
         >>> rhel_templates['101-vm-simple-rhel'].metadata()
         dateUpdated                                               2016-02-23
@@ -190,6 +195,8 @@ variable (metadata().description).
 
 This information is from ``matadata.json`` and returned by Pandas Series
 
+:
+
 ::
 
         [template object].metadata()            # pandas Series
@@ -200,7 +207,9 @@ Parameters
 
 We may want to know what parameters are necessary to deploy for this template:
 
-::
+:
+
+.. code-block:: pycon
  
         >>> rhel_templates['101-vm-simple-rhel'].parameters()
         adminPassword
@@ -210,9 +219,11 @@ We may want to know what parameters are necessary to deploy for this template:
 These three parameters need to be set before deploying the template and we will
 find out how to set parameters using Simple Azure later in this page.
 
-This information is from ``azuredeploy.parameters.json`` and returned by Pandas Series
+This information is from ``azuredeploy.parameters.json`` and returned by Pandas
+Series:
 
 ::
+
 
         [template object].parameters()          # pandas Series
 
@@ -223,7 +234,9 @@ Resources
 According to the metadata earlier, we know that ``101-vm-simple-rhel`` deploys
 a virtual machine with Standard D1 but it isn't clear what resources are used.
 
-::
+:
+
+.. code-block:: pycon
 
         >>> rhel_templates['101-vm-simple-rhel'].resources()
         Microsoft.Compute/virtualMachines      {u'name': u'[parameters('vmName')]', u'apiVers...
@@ -235,9 +248,10 @@ a virtual machine with Standard D1 but it isn't clear what resources are used.
 There are five services (including ``virtualMachines`` in Compute service) are
 described in the template to deploy RHEL image on Microsoft Azure.
 
-This information is from ``azuredeploy.json`` and returned by Pandas Series
+This information is from ``azuredeploy.json`` and returned by Pandas Series:
 
 ::
+
 
         [template object].resources()           # pandas Series
 
@@ -251,7 +265,9 @@ Services can be related to other services when it deploys, for example,
 Dependencies are not visible in ``resources()`` but in ``dependson()`` which
 returns its relation in python dict data type using pprint():
 
-::
+:
+
+.. code-block:: pycon
 
         >>> rhel_templates['101-vm-simple-rhel'].dependson_print()
         {u'Microsoft.Compute/virtualMachines': {u'Microsoft.Network/networkInterfaces': {u'Microsoft.Network/publicIPAddresses': {u"[concat(uniquestring(parameters('vmName')), 'publicip')]": {}},
@@ -281,7 +297,9 @@ Template Deployment
 Simple Azure has a sub module for Azure Resource Manager (ARM) which deploys a
 template on Azure.
 
-::
+:
+
+.. code-block:: pycon
 
         >>> from simpleazure import arm
         >>> arm = arm.ARM() # Azure Resource Manager object
@@ -293,7 +311,9 @@ Load Template
 
 *arm* object needs to know which template will be used to deploy and we tell:
 
-::
+:
+
+.. code-block:: pycon
 
         >>> arm.load_template(rhel['101-vm-simple-rhel'])
 
@@ -303,7 +323,9 @@ Set Parameter
 In our example of RHEL, three parameters need to be set before its deployment,
 ``adminPassword``, ``adminUsername`` and ``vmName``:
 
-::
+:
+
+.. code-block:: pycon
 
         >>> arm.set_parameters(
                        {"adminPassword":"xxxxx",
@@ -327,13 +349,17 @@ Deployment
 
 ``deploy()`` function runs a template with a parameter if they are already set.
 
-::
+:
+
+.. code-block:: pycon
 
         >>> arm.deploy()
 
 Or you can directly deploy a template with parameters.
 
-::
+:
+
+.. code-block:: pycon
 
         >>> arm.deploy(rhel['101-vm-simple-rhel'], {"adminPassword":"xxxxx", "adminUsername":"azureuser", "vmName":"saz-quickstart"})
 
@@ -348,7 +374,9 @@ public IP addresses, ``view_info()`` returns an ip address in a same resource
 group. ``Microsoft.Network/PublicIPAddresses`` service is fetched in this
 example.
 
-::
+:
+
+.. code-block:: pycon
 
         >>> arm.view_info()
         [u'40.77.103.150']
@@ -356,7 +384,9 @@ example.
 
 Use the same login user name and password from the parameters defined earlier:
 
-::
+:
+
+.. code-block:: console
   
         $ ssh 40.77.103.150 -l azureuser
           The authenticity of host '40.77.103.150 (40.77.103.150)' can't be established.
@@ -369,7 +399,7 @@ Use the same login user name and password from the parameters defined earlier:
 
 We confirm that the virutual machine is RHEL 7.2 by:          
 
-::
+.. code-block:: console
 
           [azureuser@simpleazure-quickstart-rhel ~]$ cat /etc/redhat-release
           Red Hat Enterprise Linux Server release 7.2 (Maipo)
@@ -380,12 +410,14 @@ Termination
 Deleting a resource group where deployment is made terminates all
 services in the resource group.
 
-::
+:
+
+.. code-block:: pycon
 
         >>> arm.remove_resource_group()
 
 
-.. comment::
+.. comments::
 
         additional Features
         -------------------------------------------------------------------------------

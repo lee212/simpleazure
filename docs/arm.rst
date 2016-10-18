@@ -22,17 +22,23 @@ and some Azure services are in 'preview' mode.
 Installation of Azure Python SDK
 -------------------------------------------------------------------------------
 
-From Pypi::
+From Pypi:
+
+.. code-block:: console
 
         pip install --pre azure
 
 If you already have the azure package but need to upgrade then add ``-U``
-option::
+option:
+
+.. code-block:: console
 
         pip install --pre azure -U
 
 If you are looking for the latest development, probably downloading code from
-github.com would be best::
+github.com would be best:
+
+.. code-block:: console
 
         git clone git://github.com/Azure/azure-sdk-for-python.git
         cd azure-sdk-for-python
@@ -42,16 +48,22 @@ github.com would be best::
 Additional Packages
 -------------------------------------------------------------------------------
 
-From Pypi::
+From Pypi:
+
+.. code-block:: console
 
         pip install msrest
         pip install msrestazure
 
-From github.com repository::
+From github.com repository:
+
+.. code-block:: console
 
         pip install -r requirements.txt
 
-You may encounter some errors like this, if you don't install additional packages::
+You may encounter some errors like this, if you don't install additional packages:
+
+.. code-block:: pytb
 
    Traceback (most recent call last):
    File "<stdin>", line 1, in <module>
@@ -105,7 +117,9 @@ It is easier to create a new app and a service principal with access to your
 subscriptions via Azure CLI. The official documentation is here:
 https://azure.microsoft.com/en-us/documentation/articles/resource-group-authenticate-service-principal-cli/
 
-The two commands complete this step like::
+The two commands complete this step like:
+
+.. code-block:: console
 
   $ azure ad sp create -n <app name> -p <password> --home-page <http or https url> --identifier-uris <http or https url>
   $ azure role assignment create --objectId <uuid returned from previous command> -o <Role e.g. Owner or Reader> -c /subscriptions/<subscription ID>/
@@ -114,14 +128,16 @@ ServicePrincipalCredentials()
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Try to authenticate with the ``client_id``, ``secret`` and ``tenant`` in Python
-like ::
+like :
+
+.. code-block:: python
 
   from azure.common.credentials import ServicePrincipalCredentials as spc
   cred = spc(client_id = 'abcdefghi-1234-4555-8173-jklmnopqrstu',secret='abcdEFGHIJ//klmnopqrSTU/',tenant='1234567-abcd-7890-ABCD-1234567890')
 
 If your credentials are invalid, you may see errors like this:
 
-.. code-block:: python
+.. code-block:: pytb
 
         Traceback (most recent call last):
           File "<stdin>", line 1, in <module>
@@ -139,8 +155,7 @@ If your credentials are invalid, you may see errors like this:
 
 or :
 
-.. code-block:: python
-
+.. code-block:: pytb
 
         Traceback (most recent call last):
           File "<stdin>", line 1, in <module>
@@ -165,7 +180,9 @@ The first step prior to any deployment would be creating a new resource group
 and it can be done via ``ResourceManagmentClient()`` from
 ``azure.mgmt.resource``
 
-Let's try to create a sample group named 'quickstart-rg-1' by the following code::
+Let's try to create a sample group named 'quickstart-rg-1' by the following code:
+
+.. code-block:: python
 
   from azure.mgmt.resource import ResourceManagementClient as rmc
   client = rmc(cred, 'subscription_id')
@@ -180,7 +197,7 @@ Replace the 'subscription_id' with a real value.
 
 If you do not have proper permissions, error message looks like:
 
-.. code-block:: python
+.. code-block:: pytb
 
         Traceback (most recent call last):
           File "<stdin>", line 1, in <module>
@@ -190,7 +207,7 @@ If you do not have proper permissions, error message looks like:
 
 If your subscription principal is not consent:
 
-.. code-block:: python
+.. code-block:: pytb
 
      Traceback (most recent call last):
        File "<stdin>", line 1, in <module>
@@ -224,7 +241,7 @@ variable names to store:
 In a simple form, save these in a file and load it before using Simple Azure in
 a shell. For example:
 
-::
+.. code-block:: console
 
         $ cat <<EOF > ~/.saz/cred
         export AZURE_SUBSCRIPTION_ID=5s3ag2s5-2aa1-4828-xxxx-9g8sw72w5w5g
@@ -235,11 +252,13 @@ a shell. For example:
 
 Then source it like:
 
-::
+.. code-block:: console
 
         $ source ~/.saz/cred
 
-``env`` command displays environment variables exposed, e.g.::
+``env`` command displays environment variables exposed, e.g.:
+
+.. code-block:: console
 
         $ env|grep AZURE
         AZURE_SUBSCRIPTION_ID=5s3ag2s5-2aa1-4828-xxxx-9g8sw72w5w5g
