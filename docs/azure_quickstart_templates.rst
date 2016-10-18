@@ -55,7 +55,7 @@ This output is from ``101-vm-sshkey`` template and ``metadata()`` returns
 its description such as date, description, and github username of the template.
 
 ``get_templates()`` provides listing all templates which is also based on the
-diretory name and the meta-data like:
+diretory name and the metadata like:
 
 :
 
