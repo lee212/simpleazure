@@ -23,7 +23,7 @@ from template.template import Template
 # Test for getting ip address
 from azure.mgmt.network import NetworkManagementClient as nmc
 
-class ARM(object):
+class AzureResourceManager(object):
     """Constructs a :class:`ARM <ARM>`.
     Returns :class:`ARM <ARM>` instance.
 

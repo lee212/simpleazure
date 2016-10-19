@@ -14,9 +14,9 @@ import json
 import inspect
 import os.path
 import collections
-from github_api import GithubAPI
-from github_cli import GithubCLI
-from template.template import Template, Templates
+from .github_api import GithubAPI
+from .github_cli import GithubCLI
+from .template import Template, Templates
 
 class AzureQuickStartTemplates(object):
     """Constructs a :class:`AzureQuickStartTemplates <AzureQuickStartTemplates>`.

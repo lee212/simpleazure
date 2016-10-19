@@ -1,13 +1,17 @@
 Simple Azure
 ===============================================================================
 
-Simple Azure supports using Azure Virtual Machines with simple python functions like other cloud providers e.g. AWS. [Documentation](https://simple-azure.readthedocs.org/)
+Simple Azure deploys Azure Templates and launches Virtual Machine with Service
+Management API with a few steps like other cloud providers e.g. AWS.
+[Documentation](https://simple-azure.readthedocs.org/)
 
 Caveats
 -------------------------------------------------------------------------------
 
-- Classic (legacy) Python SDK is used from https://github.com/Azure/azure-sdk-for-python/blob/master/azure-servicemanagement-legacy
-- Virtual Machines, Cloud Services and Storage are only used in Microsoft Azure services.
+- Classic (legacy) Python SDK is used from
+  https://github.com/Azure/azure-sdk-for-python/blob/master/azure-servicemanagement-legacy
+- Virtual Machines, Cloud Services and Storage are only used in Microsoft Azure
+  services.
 
 Prerequisite
 -------------------------------------------------------------------------------
@@ -24,8 +28,10 @@ Account Setup
 -------------------------------------------------------------------------------
 
 - Open a browser to http://go.microsoft.com/fwlink/?LinkId=254432
-- ``*-DD-MM-YYYY-credentials.publishsettings`` is downloaded on a local directory
-- Run ``azure config mode as`` # To run azure cli tool via the classic service management certificate.
+- ``*-DD-MM-YYYY-credentials.publishsettings`` is downloaded on a local
+  directory
+- Run ``azure config mode as`` # To run azure cli tool via the classic service
+  management certificate.
 - Run ``azure account import <publishsettings file>``
 - Run ``azure account cert export ~/.azure/managementCertificate.pem``
 
@@ -36,6 +42,7 @@ Installation
 
    git clone https://github.com/lee212/simpleazure.git
    cd simpleazure
+   pip install -r requirements.txt
    python setup.py install
 
 ```
@@ -91,6 +98,7 @@ print vars(azure.get_deployment())
 
 Example for multiple deployment
 -------------------------------------------------------------------------------
+
 cluster() function helps to deploy several VMs at once.
 
 ```
@@ -111,6 +119,7 @@ my-cluster-vm-3-46927
 
 Example for multiple deployment with Azure Data Science Core
 -------------------------------------------------------------------------------
+
 Deploy 5 VMs with Azure Data Science Core at West Europe 
 
 ```
@@ -148,8 +157,10 @@ TBD
 
 Description
 -------------------------------------------------------------------------------
-* This development is planned to support ipython clustering modules/plugines like the StarCluster project (which is supporting Amazon EC2).
-* This development is planned to support command-line tools to launch / execute .ipynb files in parallel.
+* This development is planned to support ipython clustering modules/plugines
+like the StarCluster project (which is supporting Amazon EC2).
+* This development is planned to support command-line tools to launch / execute
+.ipynb files in parallel.
 
 Contact
 -------------------------------------------------------------------------------

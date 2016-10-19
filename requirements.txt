@@ -1,5 +1,7 @@
-azure
+azure==2.0.0rc6
 pyaml
 fabric
 haikunator # random name generator
 sh
+cython # for pandas
+pandas # will be replaced

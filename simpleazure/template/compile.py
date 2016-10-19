@@ -10,8 +10,8 @@ This module compiles Azure Resource Manager Templates
 
 """
 
-from reader import Reader
-from template import Template
+from .reader import Reader
+from .template import Template
 
 class Compile(object):
     """Constructs a :class:`Compile <NEW>`.
