@@ -17,6 +17,7 @@ from .azure_resource_manager import AzureResourceManager
 from .azure_quickstart_templates import AzureQuickStartTemplates
 
 class SimpleAzure(object):
-    arm = AzureResourceManager()
-    asm = AzureServiceManagement()
-    aqst = AzureQuickStartTemplates()
+    def __init__(self):
+        self.arm = AzureResourceManager()
+        self.asm = AzureServiceManagement()
+        self.aqst = AzureQuickStartTemplates()
