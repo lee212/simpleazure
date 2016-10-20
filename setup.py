@@ -11,8 +11,8 @@ def read(fname):
 
 reqs = [line.strip() for line in open('requirements.txt')]
 setup(
-        name = "Simple Azure",
-        version = "0.0.2",
+        name = "simpleazure",
+        version = "0.0.4",
         author = "Hyungro Lee",
         author_email = "hroe.lee@gmail.com",
         description = ("Python Library for Windows Azure"),
@@ -24,15 +24,15 @@ setup(
         # reqs is removed and pip install -r requirements.txt added
         # because 'import azure' wrongly imported from azure-nspkg package
         dependency_links = ['https://github.com/Azure/azure-sdk-for-python.git'],
-        long_description = read('README.md'),
+        long_description = read('README.rst'),
         classifiers=[
             "Development Status :: 3 - Alpha",
             "Topic :: Scientific/Engineering",
             "Intended Audience :: Developers",
             "Intended Audience :: Science/Research",
-            "License :: OSI Approved :: GNU GEneral Public License v3 (GPLv3)",
+            "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
             "Operating System :: POSIX :: Linux",
-            "programming Language :: Python",
+            "Programming Language :: Python",
             ],
         entry_points='''
             [console_scripts]

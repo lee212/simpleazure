@@ -1,9 +1,9 @@
 FROM ubuntu:14.04
 
-MAINTAINER Hyungro Lee <hroe.lee@gmail.com>
+MAINTAINER Hyungro Lee <hyungro.lee@hotmail.com>
 
 # Compiler
-RUN apt-get update 
+RUN apt-get update && apt-get install git python-pip -y
 
 # Simple Azure from Github repository
 RUN  git clone https://github.com/lee212/simpleazure.git && \
