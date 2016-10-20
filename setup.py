@@ -9,7 +9,7 @@ class SimpleAzureInstall(bdist_egg):
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-reqs = [line.strip() for line in open('requirements.txt')]
+#reqs = [line.strip() for line in open('requirements.txt')]
 setup(
         name = "simpleazure",
         version = "0.0.5",
