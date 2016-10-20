@@ -20,11 +20,11 @@ from urlparse import urlparse
 from time import sleep
 from azure import *
 from azure import servicemanagement as asm
-from ext.credentials import Credentials
+from .ext.credentials import Credentials
 from . import config
 from . import ssh
 from os.path import expanduser
-from utils import generate_password
+from .utils import generate_password
 
 class AzureServiceManagement(object):
     """Constructs a :class:`SimpleAzure <SimpleAzure>`.
