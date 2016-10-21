@@ -84,7 +84,7 @@ Prerequisite
     sudo apt-get install npm
     sudo npm install -g azure-cli
 
-Account Setup
+Account Setup for ASM
 -------------------------------------------------------------------------------
 
 - Open a browser to http://go.microsoft.com/fwlink/?LinkId=254432
