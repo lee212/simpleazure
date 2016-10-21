@@ -72,6 +72,43 @@ and :doc:`Configuration </configuration>` helps you get Simple Azure installed
 on your machine and :doc:`Command </command>` describes how to use Simple Azure
 on the python shell. You can find resources :doc:`here </deliverables>`.
 
+Docker Image 
+-------------------------------------------------------------------------------
+
+Simple Azure is available in Docker image to run.
+
+- Simple Azure only:
+
+.. code-block:: console
+
+        docker pull lee212/simpleazure
+        docker run -i -t lee212/simpleazure
+
+- With IPython Notebook:
+
+.. code-block:: console
+
+        docker pull lee212/simpleazure_with_ipython
+        docker run -i -t lee212/simpleazure_with_ipython
+
+
+Installation
+-------------------------------------------------------------------------------
+
+From github.com:
+.. code-block:: console
+
+   git clone https://github.com/lee212/simpleazure.git
+   cd simpleazure
+   pip install -r requirements.txt
+   python setup.py install
+
+from Pypi:
+
+.. code-block:: console
+
+   pip install simpleazure
+
 Deploying Azure Virtual Machines (classic mode)
 -------------------------------------------------------------------------------
 Three lines are required to deploy Window Azure Virtual Machine in Simple
@@ -88,13 +125,6 @@ Azure.
 
    <iframe width="560" height="315" src="//www.youtube.com/embed/pHG_gmnc6qI" frameborder="0" allowfullscreen></iframe>
 
-Pypi Installation (TBD)
--------------------------------------------------------------------------------
-
-::
-
-  $ pip install simpleazure
-  $ simpleazure-cluster start mycluster
 
 Contribution
 -------------------------------------------------------------------------------
