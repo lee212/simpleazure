@@ -19,7 +19,11 @@ setup(
         license = "GPLv3",
         keywords = "SimpleAzure, Azure, Template deployment",
         url = "https://github.com/lee212/simpleazure",
-        packages = ['simpleazure'],
+        packages = [
+            'simpleazure',
+            'simpleazure/ext',
+            'simpleazure/template',
+            ],
         install_requires = [
             "azure==2.0.0rc6",
             "pyaml",

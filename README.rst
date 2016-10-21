@@ -14,15 +14,15 @@ Simple Azure is available in Docker image to run.
 
 .. code-block:: console
 
-        docker pull lee212/simpleazure
         docker run -i -t lee212/simpleazure
 
 - With IPython Notebook:
 
 .. code-block:: console
 
-        docker pull lee212/simpleazure_with_ipython
-        docker run -i -t lee212/simpleazure_with_ipython
+        docker run -d -p 8888:8888 lee212/simpleazure_with_ipython
+
+Open a browser with the port number **8888**.
 
 Installation
 -------------------------------------------------------------------------------
