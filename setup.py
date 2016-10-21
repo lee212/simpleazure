@@ -9,10 +9,10 @@ class SimpleAzureInstall(bdist_egg):
 def read(fname):
     return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
-reqs = [line.strip() for line in open('requirements.txt')]
+#reqs = [line.strip() for line in open('requirements.txt')]
 setup(
         name = "simpleazure",
-        version = "0.0.4",
+        version = "0.0.5",
         author = "Hyungro Lee",
         author_email = "hroe.lee@gmail.com",
         description = ("Python Library for Windows Azure"),
@@ -20,7 +20,15 @@ setup(
         keywords = "SimpleAzure, Azure, Template deployment",
         url = "https://github.com/lee212/simpleazure",
         packages = ['simpleazure'],
-        install_requires = [], 
+        install_requires = [
+            "azure==2.0.0rc6",
+            "pyaml",
+            "fabric",
+            "haikunator", # random name generator
+            "sh",
+            "cython", # for pandas
+            "pandas" # will be replaced
+            ], 
         # reqs is removed and pip install -r requirements.txt added
         # because 'import azure' wrongly imported from azure-nspkg package
         dependency_links = ['https://github.com/Azure/azure-sdk-for-python.git'],
