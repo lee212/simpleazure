@@ -28,6 +28,7 @@ Installation
 -------------------------------------------------------------------------------
 
 From github.com:
+
 .. code-block:: console
 
    git clone https://github.com/lee212/simpleazure.git
