@@ -1,6 +1,8 @@
-FROM ubuntu:14.04
+FROM jupyter/base-notebook
 
 MAINTAINER Hyungro Lee <hyungro.lee@hotmail.com>
+
+USER root
 
 # Compiler
 RUN apt-get update && apt-get install git python-pip python-dev libffi-dev libssl-dev -y
