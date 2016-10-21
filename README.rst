@@ -5,13 +5,72 @@ Simple Azure deploys Azure Templates and launches Virtual Machine with Service
 Management API with a few steps like other cloud providers e.g. AWS.
 [Documentation](https://simple-azure.readthedocs.org/)
 
-Caveats
+Docker Image 
 -------------------------------------------------------------------------------
 
-- Classic (legacy) Python SDK is used from
-  https://github.com/Azure/azure-sdk-for-python/blob/master/azure-servicemanagement-legacy
-- Virtual Machines, Cloud Services and Storage are only used in Microsoft Azure
-  services.
+Simple Azure is available in Docker image to run.
+
+- Simple Azure only:
+
+.. code-block:: console
+
+        docker pull lee212/simpleazure
+        docker run -i -t lee212/simpleazure
+
+- With IPython Notebook:
+
+.. code-block:: console
+
+        docker pull lee212/simpleazure_with_ipython
+        docker run -i -t lee212/simpleazure_with_ipython
+
+Installation
+-------------------------------------------------------------------------------
+
+From github.com:
+.. code-block:: console
+
+   git clone https://github.com/lee212/simpleazure.git
+   cd simpleazure
+   pip install -r requirements.txt
+   python setup.py install
+
+from Pypi:
+
+.. code-block:: console
+
+   pip install simpleazure
+
+QuickStart
+-------------------------------------------------------------------------------
+
+Starting `101-vm-sshkey
+<https://github.com/Azure/azure-quickstart-templates/tree/master/101-vm-sshkey>`_
+template:
+
+.. code-block:: pycon
+
+        >>> from simpleazure import SimpleAzure
+        >>> saz = SimpleAzure()
+
+        # aqst is for Azure QuickStart Templates
+        >>> vm_sshkey_template = saz.aqst.get_template('101-vm-sshkey')
+
+        # arm is for Azure Resource Manager
+        >>> saz.arm.set_template(vm_sshkey_template)
+        >>> saz.arm.set_parameter("sshKeyData", "ssh-rsa AAAB... hrlee@quickstart")
+        >>> saz.arm.deploy()
+
+
+.. comments::
+
+        Caveats
+        -------------------------------------------------------------------------------
+
+        - Classic (legacy) Python SDK is used from
+          https://github.com/Azure/azure-sdk-for-python/blob/master/azure-servicemanagement-legacy
+        - Virtual Machines, Cloud Services and Storage are only used in Microsoft Azure
+          services.
 
 Prerequisite
 -------------------------------------------------------------------------------
@@ -35,23 +94,7 @@ Account Setup
 - Run ``azure account import <publishsettings file>``
 - Run ``azure account cert export ~/.azure/managementCertificate.pem``
 
-Installation
--------------------------------------------------------------------------------
-
-.. code-block:: console
-
-   git clone https://github.com/lee212/simpleazure.git
-   cd simpleazure
-   pip install -r requirements.txt
-   python setup.py install
-
-or
-
-.. code-block:: console
-
-   pip install simpleazure
-
-Example
+Example (classic mode for launching VMs)
 -------------------------------------------------------------------------------
 
 Create a VM on Windows Azure
@@ -59,10 +102,10 @@ Create a VM on Windows Azure
 
 .. code-block:: python
 
-        from simpleazure.simpleazure import SimpleAzure as saz
+        from simpleazure import SimpleAzure as saz
 
         azure = saz()
-        azure.create_vm()
+        azure.asm.create_vm()
 
 Status can be seen here.
 
@@ -95,7 +138,7 @@ or
          'upgrade_status': None,
          'url': u'http://myvm-20735.cloudapp.net/'}
 
-Example for multiple deployment
+Example for multiple deployment (classic)
 -------------------------------------------------------------------------------
 
 cluster() function helps to deploy several VMs at once.
@@ -104,7 +147,7 @@ cluster() function helps to deploy several VMs at once.
 .. code-block:: python
 
         azure = saz()
-        azure.create_cluster()
+        azure.asm.create_cluster()
 
         my-cluster-vm-0-87412
         {'request_id': '88c94c00288d42acaf877783f09c4558'}
@@ -124,43 +167,36 @@ Deploy 5 VMs with Azure Data Science Core at West Europe
 .. code-block:: python
 
         azure = saz()
-        q = azure.get_registered_image(name="Azure-Data-Science-Core")
-        azure.set_image(image=q,refresh=True)
-        azure.set_location("West Europe")
-        azure.create_cluster(num=5)
+        q = azure.asm.get_registered_image(name="Azure-Data-Science-Core")
+        azure.asm.set_image(image=q,refresh=True)
+        azure.asm.set_location("West Europe")
+        azure.asm.create_cluster(num=5)
 
 List of VMs
 -------------------------------------------------------------------------------
 
 .. code-block:: python
 
-        vars(azure.list_deployments().hosted_services)
+        vars(azure.asm.list_deployments().hosted_services)
 
 Terminating VM
 -------------------------------------------------------------------------------
 
 .. code-block:: python
 
-        azure.delete_vm()
+        azure.asm.delete_vm()
 
 or
 
 .. code-block:: python
 
-        azure.delete_vm('vm-name')
+        azure.asm.delete_vm('vm-name')
 
 Clustering
 -------------------------------------------------------------------------------
 
 TBD
 
-Description
--------------------------------------------------------------------------------
-
-* This development is planned to support ipython clustering modules/plugines
-like the StarCluster project (which is supporting Amazon EC2).
-* This development is planned to support command-line tools to launch / execute
-.ipynb files in parallel.
 
 Contact
 -------------------------------------------------------------------------------
