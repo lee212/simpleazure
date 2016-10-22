@@ -43,7 +43,7 @@ From a custom template on github:
 ::
 
         >> url = "https://raw.githubusercontent.com/Azure-Samples/resource-manager-python-template-deployment/master/templates/template.json"
-        >> saz.arm.deploy(template = url, param = { "sshKeyData": "ssh-rsa AAAB3Nza..." })
+        >> saz.arm.deploy(template = url, param = { "sshKeyData": "ssh-rsa AAAB3Nza...", 'dnsLabelPrefix':"simpleazure", 'vmName':'simpleazure-first-vm'}) })
 
 .. note:: For more about using ARM? check out :ref:`ref-arm`
 .. note:: For more about deploying a custom Template? check out :ref:`ref-saz-template-deploy`
