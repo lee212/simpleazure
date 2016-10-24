@@ -3,7 +3,14 @@
 """
 simpleazure.arm
 
-This module supports Azure Resource Manager with its Template in terms of deploying software stacks.
+This module supports Azure Resource Manager with its Template in terms of
+deploying software stacks.
+
+Caveats: Not all Azure services are supported. Currently supported resources
+    from azure.mgmt are:
+    - ResourceManagementClient
+    - SubscriptionClient
+    Any resources related to start a virtual machine will be added
 
  :copyright:
  :license: 
@@ -13,9 +20,11 @@ This module supports Azure Resource Manager with its Template in terms of deploy
 from urlparse import urlparse
 import urllib, json
 import os.path
+import azure
 from azure.common.credentials import ServicePrincipalCredentials as spc
 from azure.mgmt.resource import ResourceManagementClient as rmc
 from azure.mgmt.resource.resources.models import DeploymentMode as dm
+from azure.mgmt.resource import SubscriptionClient as sc
 from . import config
 from . import utils
 from template.template import Template
@@ -45,6 +54,10 @@ class AzureResourceManager(object):
 
     def __init__(self, subscription=None, client_id=None, secret=None, tenant=None):
         self.get_credential(subscription, client_id, secret, tenant)
+        # resource management client as rmc
+        self.client = rmc(self.cred, self.subscription_id)
+        # subscription client as sc
+        self.s_client = sc(self.cred)
         self.template = Template()
 
     def get_credential(self, subscription=None, client_id=None, secret=None, tenant=None):
@@ -54,7 +67,6 @@ class AzureResourceManager(object):
         sec = os.getenv('AZURE_CLIENT_SECRET', secret)
         self.subscription_id = sid
         self.cred = spc(client_id = cid, secret = sec, tenant = tid)
-        self.client = rmc(self.cred, sid)
 
     def create(self, service_name=None, **kwargs):
         if service_name is None:
@@ -79,6 +91,11 @@ class AzureResourceManager(object):
     def get(self, service_name=None, **kwargs):
         if service_name is None:
             servie_name = self.selected_service
+
+    def list_available_locations(self):
+        locations = self.s_client.subscriptions.list_locations(self.subscription_id)
+        return pd.Series(list(locations))
+
 
     def get_group_or_create(self):
         new_name = utils.get_rand_name()
@@ -121,8 +138,22 @@ class AzureResourceManager(object):
     def get_deployment_name(self):
         return self.deployment
 
-    def get_location(self):
+    def set_location(self, location):
+        """ Set location with a input location 
+
+            location: string
+            location: azure.mgmt.resource.subscriptions.models.location.Location
+        
+        """
+        if isinstance(location, str):
+            self.location = location.lower().replace(" ", "")
+        elif isinstance(location, azure.mgmt.resource.subscriptions.models.location.Location):
+            self.location = location.name
+
+    def get_location(self, name=None):
         """ Returns lower case without space """
+        if name:
+            return pd.Series(vars(name))
         return self.location.lower().replace(" ", "")
 
     def set_deployment_properties(self):

@@ -128,6 +128,8 @@ class AzureServiceManagement(object):
 
         """
 
+        # TODO 'display_name' is being used like 'Central US' instead of its name 'centralus'
+        # ARM mode uses its name 'centralus', we need to check ASM still works with the name
         self.location = location
 
     def get_location(self):
