@@ -66,7 +66,7 @@ class AzureResourceManager(object):
     def list(self, service_name=None):
         if not service_name:
             servie_name = self.selected_service
-        func = getttr(self.client, service_name)
+        func = getattr(self.client, service_name)
         return func()
 
     def get(self, service_name=None, **kwargs):
