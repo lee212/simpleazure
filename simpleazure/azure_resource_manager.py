@@ -20,6 +20,7 @@ from . import config
 from . import utils
 from template.template import Template
 from .azure_network_management import AzureNetworkManagement as nmc
+import pandas as pd
 
 class AzureResourceManager(object):
     """Constructs a :class:`ARM <ARM>`.
@@ -56,21 +57,27 @@ class AzureResourceManager(object):
         self.client = rmc(self.cred, sid)
 
     def create(self, service_name=None, **kwargs):
-        if not service_name:
-            servie_name = self.selected_service
+        if service_name is None:
+            service_name = self.selected_service
 
     def delete(self, service_name=None, **kwargs):
-        if not service_name:
-            servie_name = self.selected_service
+        if service_name is None:
+            service_name = self.selected_service
 
     def list(self, service_name=None):
-        if not service_name:
-            servie_name = self.selected_service
+        if service_name is None:
+            service_name = self.selected_service
         func = getattr(self.client, service_name)
-        return func()
+        func = getattr(func, "list")
+        res = func()
+        new = []
+        for i in res:
+            new.append(pd.Series(i.__dict__))
+
+        return new
 
     def get(self, service_name=None, **kwargs):
-        if not service_name:
+        if service_name is None:
             servie_name = self.selected_service
 
     def get_group_or_create(self):

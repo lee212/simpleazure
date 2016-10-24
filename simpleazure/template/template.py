@@ -40,6 +40,12 @@ class Templates(OrderedDict):
             self._list = list(grouper(self, self._list_inc))
         res = {}
 
+        try:
+            self._list[self._list_page]
+        except IndexError as e:
+            print ("= last page! =")
+            self._list_page -= 1
+
         for name in self._list[self._list_page]:
             try:
                 res[name] = self[name].metadata().itemDisplayName
