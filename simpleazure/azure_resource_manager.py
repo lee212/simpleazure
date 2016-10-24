@@ -29,8 +29,10 @@ class AzureResourceManager(object):
 
     Usage::
 
-      >> from simpleazure.arm import ARM as armt
-      >> arm = armt()
+        >>> from simpleazure import SimpleAzure as saz
+        >>> saz_client = saz()
+        >>> saz_client.arm
+        <simpleazure.azure_resource_manager.AzureResourceManager object at>
 
     """
 
