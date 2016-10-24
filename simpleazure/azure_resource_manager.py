@@ -40,7 +40,7 @@ class AzureResourceManager(object):
     template = None
     parameters = {}
     network = None
-    selected_serivce = "resource_groups"
+    selected_service = "resource_groups"
 
     def __init__(self, subscription=None, client_id=None, secret=None, tenant=None):
         self.get_credential(subscription, client_id, secret, tenant)
