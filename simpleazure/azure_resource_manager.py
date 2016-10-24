@@ -45,7 +45,6 @@ class AzureResourceManager(object):
     network = None
 
     def __init__(self, subscription=None, client_id=None, secret=None, tenant=None):
-        self.sshkey = SSHKey()
         self.get_credential(subscription, client_id, secret, tenant)
         self.template = Template()
 
@@ -63,7 +62,6 @@ class AzureResourceManager(object):
         self.resource_group = new_name
 
     def deploy(self, template=None, param=None):
-        self.sshkey.set_pubkey()
         self.set_template(template)
         self.set_parameters(param)
         self.set_deployment_properties()
@@ -201,35 +199,4 @@ class NMC(object):
             return res
         except:
             return res
-
-#extra
-class SSHKey(object):
-
-    pvkey = None
-    pubkey = None
-    pubkey_path = None
-    pvkey_path = None
-
-    default_path = { 
-            'pvkey': "~/.ssh/id_rsa",
-            'pubkey': "~/.ssh/id_rsa.pub" 
-            }
-
-    def __init__(self, path=None):
-        self.set_pubkey(path)
-
-    def set_pubkey(self, path=None):
-        try:
-            path = os.path.expanduser(path or self.default_path['pubkey'])
-            with open(path, "r") as f:
-                self.pubkey = f.read()
-                f.close()
-                self.pubkey_path = path
-                return True
-        except Exception as e:
-            # debug / log 
-            # print (e)
-            return False
-
-
 
