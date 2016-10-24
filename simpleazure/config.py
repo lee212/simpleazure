@@ -27,8 +27,9 @@ DEFAULT_LOCATION = "Central US"
 DEFAULT_ROLE_SIZE = "Small" # ExtraSmall|Small|Medium|Large|ExtraLarge
 
 # For ARM
-DEFAULT_RESOURCE_GROUP = "saz-rg"
-DEFAULT_DEPLOYMENT = "saz-deploy"
+DEFAULT_RESOURCE_GROUP = "Default-SimpleAzure-" + \
+        (DEFAULT_LOCATION.replace(" ", "")
+DEFAULT_DEPLOYMENT = "Default-SimpleAzure-Deployment"
 
 def config_path():
     return DEFAULT_AZURE_CONFIG_PATH
