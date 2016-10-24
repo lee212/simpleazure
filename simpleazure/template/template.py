@@ -23,6 +23,8 @@ class Templates(OrderedDict):
     _list_page = 0
     _list_inc = 10
 
+    warning_message_last_page = " == End of page ! == "
+
     def get_sorted_by_key(self):
         new = Templates(sorted(self.items()))
         return new
@@ -37,13 +39,14 @@ class Templates(OrderedDict):
 
     def page(self):
         if not self._list:
-            self._list = list(grouper(self, self._list_inc))
+            _sorted = self.get_sorted_by_key()
+            self._list = list(grouper(_sorted, self._list_inc))
         res = {}
 
         try:
             self._list[self._list_page]
         except IndexError as e:
-            print ("= last page! =")
+            print (self.warning('last_page'))
             self._list_page -= 1
 
         for name in self._list[self._list_page]:
@@ -52,8 +55,11 @@ class Templates(OrderedDict):
             # if metadata is not available
             except Exception as e:
                 res[name] = ""
-        if len(self._list) > self._list_page:
+        if max(0, (len(self._list) - 1)) > self._list_page:
             self._list_page += 1
+        else:
+            print (self.warning('last_page'))
+
         return pd.Series(res)
 
     def next(self):
@@ -62,6 +68,13 @@ class Templates(OrderedDict):
     def first(self):
         self._list_page = 0
         return self.page()
+
+    def count(self):
+        return len(self)
+
+    def warning(self, name):
+        value = getattr(self, "warning_message_" + name)
+        return value
 
 # from https://docs.python.org/2/library/itertools.html
 def grouper(iterable, n, fillvalue=None):
