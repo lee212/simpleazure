@@ -50,6 +50,7 @@ class AzureResourceManager(object):
     template = None
     parameters = {}
     network = None
+    default_tag = { 'SimpleAzure': 'default' }
     selected_service = "resource_groups"
 
     def __init__(self, subscription=None, client_id=None, secret=None, tenant=None):
@@ -68,14 +69,17 @@ class AzureResourceManager(object):
         self.subscription_id = sid
         self.cred = spc(client_id = cid, secret = sec, tenant = tid)
 
+    # Test code
     def create(self, service_name=None, **kwargs):
         if service_name is None:
             service_name = self.selected_service
 
+    # Test code
     def delete(self, service_name=None, **kwargs):
         if service_name is None:
             service_name = self.selected_service
 
+    # Test code
     def list(self, service_name=None):
         if service_name is None:
             service_name = self.selected_service
@@ -88,9 +92,28 @@ class AzureResourceManager(object):
 
         return new
 
+    # Test code
     def get(self, service_name=None, **kwargs):
         if service_name is None:
             servie_name = self.selected_service
+        func = getattr(self.client, service_name)
+        func = getattr(func, "get")
+        res = func(**kwargs)
+        new = []
+        for i in res:
+            new.append(pd.Series(i.__dict__))
+
+        return new
+
+    def get_resource_group_name(self):
+        return self.resource_group
+
+    def set_resource_group_name(self, name):
+        result_check = self.client.resource_groups.check_existence(name)
+        if not result_check:
+            return result_check
+        self.resource_group = name
+        return result_check
 
     def list_available_locations(self):
         locations = self.s_client.subscriptions.list_locations(self.subscription_id)
@@ -105,7 +128,7 @@ class AzureResourceManager(object):
         self.set_template(template)
         self.set_parameters(param)
         self.set_deployment_properties()
-        self.update_rg()
+        self.update_resource_group()
         return self.call_deploy()
 
     def terminate_deployment(self, resource_group=None, deployment=None):
@@ -117,12 +140,13 @@ class AzureResourceManager(object):
     def remove_resource_group(self, name=None):
         return self.client.resource_groups.delete(name or self.resource_group)
 
-    def update_rg(self):
+    def update_resource_group(self):
         res = self.client.resource_groups.create_or_update(
                 self.resource_group,
                 {
-                    'location':self.get_location()
-                    }
+                    'location':self.get_location(),
+                    'tags': self.default_tag
+                },
                 )
         return res
 
@@ -192,6 +216,7 @@ class AzureResourceManager(object):
 
     def load_template(self, template):
         self.template = template
+        self.parameters = template['parameters']['parameters']
 
     def from_github(self, repo):
         # find repo
@@ -217,6 +242,18 @@ class AzureResourceManager(object):
             return self.network
         self.network = nmc(self.cred, self.subscription_id)
         self.network.set_resource_group(self.resource_group)
+
+    def export_template(self, group_name=None, deployment_name=None):
+        return self._export_template()
+
+    def _export_template(self):
+        return self.template
+
+    def _export_template_api(self, group_name=None, deployment_name=None):
+        return self.client.deployments.export_template(group_name or
+                self.resource_group, deployment_name or
+                self.get_deployment_name())
+
 # Tips
 #
 # DeploymentMode: incremental | complete
