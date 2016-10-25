@@ -30,6 +30,7 @@ from . import utils
 from template.template import Template
 from .azure_network_management import AzureNetworkManagement as nmc
 import pandas as pd
+import time
 
 class AzureResourceManager(object):
     """Constructs a :class:`ARM <ARM>`.
@@ -128,8 +129,12 @@ class AzureResourceManager(object):
         self.set_template(template)
         self.set_parameters(param)
         self.set_deployment_properties()
+        start = time.time()
         self.update_resource_group()
-        return self.call_deploy()
+        result = self.call_deploy()
+        end = time.time()
+        print ("{0:.2f} elapsed time for the deployment".format (end - start))
+        return result
 
     def terminate_deployment(self, resource_group=None, deployment=None):
         self.client.deployments.delete(resource_group or self.resource_group, deployment or self.deployment)
