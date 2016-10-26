@@ -205,7 +205,7 @@ class AzureResourceManager(object):
         return self.parameters
 
     def _get_parameters_with_value(self, params):
-        parameters = {k: {'value': v} for k, v in params.items()}
+        parameters = {k: {u'value': v} for k, v in params.items()}
         return parameters
  
     def set_template(self, path_or_uri=None):
@@ -215,9 +215,10 @@ class AzureResourceManager(object):
         if urlparse(path_or_uri).scheme is not "":
             template = json.loads(urllib.urlopen(path_or_uri).read())
         else:
-            with open(path_or_uri, "r") as temp:
-                template = temp.read()
+            with open(os.path.expanduser(path_or_uri), "r") as temp:
+                template = json.loads(temp.read())
         self.template['azuredeploy'] = template
+        #self.set_parameters(template['parameters'])
 
     def load_template(self, template):
         self.template = template

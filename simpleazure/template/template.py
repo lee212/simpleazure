@@ -17,6 +17,10 @@ from pprint import pprint
 import pandas as pd
 from collections import OrderedDict, defaultdict
 from itertools import islice, izip_longest
+import editor
+import json
+import datadiff
+from datadiff.tools import assert_equal
 
 class Templates(OrderedDict):
     _list = None
@@ -244,6 +248,19 @@ class Template(dict):
         except:
             pass
         return new_dict
+
+    def edit(self):
+        changed = json.loads(editor.edit(contents=json.dumps(self, indent=4)))
+        return Template(changed)
+
+    def diff(self, b):
+        try:
+            datadiff.tools.assert_equal(dict(self), dict(b))
+            equal=True
+        except AssertionError as e:
+            equal=False
+        if not equal:
+            print datadiff.diff(dict(self), dict(b))
 
 class Deploy(object):
     """Constructs a :class:`Deploy <Deploy>`.

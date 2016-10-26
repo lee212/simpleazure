@@ -116,12 +116,12 @@ class AzureQuickStartTemplates(object):
             nested = self.get_nested_cli(item)
             scripts = self.get_scripts_cli(item)
             templates[item] = Template({
-                    "azuredeploy": azuredeploy,
-                    "parameters": parameters,
-                    "metadata": meta,
-                    "nested": nested,
-                    "scripts": scripts,
-                    "etc": etc
+                    u"azuredeploy": azuredeploy,
+                    u"parameters": parameters,
+                    u"metadata": meta,
+                    u"nested": nested,
+                    u"scripts": scripts,
+                    u"etc": etc
                     })
             meta = azuredeploy = parameters = nested = scripts = etc = ""
         return templates
@@ -151,12 +151,12 @@ class AzureQuickStartTemplates(object):
             nested = self.get_nested_api(item['path'])
             scripts = self.get_scripts_api(item['path'])
             templates[item['name']] = Template({ 
-                    "azuredeploy": azuredeploy,
-                    "parameters": parameters,
-                    "metadata": meta,
-                    "nested": nested,
-                    "scripts": scripts,
-                    "etc": etc
+                    u"azuredeploy": azuredeploy,
+                    u"parameters": parameters,
+                    u"metadata": meta,
+                    u"nested": nested,
+                    u"scripts": scripts,
+                    u"etc": etc
                     })
             meta = azuredeploy = parameters = nested = scripts = etc = ""
         return templates
