@@ -15,6 +15,7 @@ import os
 import urllib
 from urlparse import urlparse
 from pprint import pprint
+from .template import Template
 
 class Reader(object):
     """Constructs a :class:`Reader <Reader>`.
@@ -25,11 +26,11 @@ class Reader(object):
     """
 
     default_dir = os.path.dirname(os.path.realpath(__file__)) + "/defaults/" 
-    template = {}
+    template = Template()
 
     def __init__(self, path_or_uri=None):
         if path_or_uri:
-            self.template = self.read_template(path_or_uri)
+            self.read_template(path_or_uri)
 
     def read_template(self, path_or_uri):
 
@@ -37,8 +38,8 @@ class Reader(object):
             template = json.loads(urllib.urlopen(path_or_uri).read())
         else:
             with open(path_or_uri, "r") as temp:
-                template = temp.read()
-        self.template = template
+                template = json.loads(temp.read())
+        self.template = Template(template)
 
     def get_defaults(self):
         return self.read_defaults()
