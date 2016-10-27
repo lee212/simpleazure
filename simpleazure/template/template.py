@@ -23,6 +23,7 @@ import datadiff
 from datadiff.tools import assert_equal
 from urlparse import urlparse
 import urllib
+import os
 
 class Templates(OrderedDict):
     _list = None
@@ -281,6 +282,11 @@ class Template(dict):
             with open(path_or_uri, "r") as temp:
                 template = json.loads(temp.read())
         self.update(template)
+
+    def save(self, path):
+        with open(os.path.expanduser(path), "w") as f:
+            f.write(json.dumps(self, indent=4))
+        f.close()
 
 class Deploy(object):
     """Constructs a :class:`Deploy <Deploy>`.
