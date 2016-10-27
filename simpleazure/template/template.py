@@ -101,6 +101,15 @@ class Template(dict):
     special_placeholders = [ 'GEN-UNIQUE', 'GEN-UNIQUE-', 'GEN-SSH-PUB-KEY', 'GEN-PASSWORD' ]
     dependency = None
 
+    def __init__(self, data_or_filepath=None):
+        if data_or_filepath:
+            if isinstance(data_or_filepath, dict):
+                self.update(data_or_filepath)
+            try:
+                self.read_template(date_or_filepath)
+            except:
+                pass
+
     def metadata(self):
         return pd.Series(self['metadata'])
 
