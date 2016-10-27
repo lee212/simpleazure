@@ -7,12 +7,12 @@ Simple Azure - Python Library for Windows Azure
 ===============================================================================
 
 Simple Azure is a Python library for Microsoft Azure Services including Virtual
-Machine (VM) to deploy services with simple steps.  Infrastructure provisioning
-is supported now with the new Azure Resource Manager (ARM) Templates, therefore
-you can share a template for your application in a JSON file to reproduce same
-infrastructure now and then. Launching virtual machines is still supported
-using the Azure Service Management (ASM) API which is now called classic or
-legacy mode.  
+Machine (VM) to provision resources in a simple way. Infrastructure
+provisioning is supported now with the new Azure Resource Manager (ARM)
+Templates, therefore you can share a template for your application in a JSON
+file to reproduce same infrastructure now and then. Launching virtual machines
+is still supported using the Azure Service Management (ASM) API which is now
+called classic or legacy mode.  
 
 Simple Azure includes 407 community templates [1]_ from `Azure QuickStart
 Templates <https://github.com/Azure/azure-quickstart-templates>`_ 
