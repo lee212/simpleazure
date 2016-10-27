@@ -6,7 +6,7 @@ These are based on Azure Resource Manager mode (ARM).
 
 * `Tutorial - Account Setup for Azure Resource Manager (ARM) <https://nbviewer.jupyter.org/github/lee212/simpleazure/blob/master/ipynb/Tutorial%20-%20Account%20Setup%20for%20Azure%20Resource%20Manager%20%28ARM%29.ipynb>`_ (Mandatory for the FIRST user)
 * `Tutorial - Modifying a Template in Python <https://nbviewer.jupyter.org/github/lee212/simpleazure/blob/master/ipynb/Tutorial%20-%20Modifying%20a%20Template%20in%20Python.ipynb>`_
-* `Tutorial - Deploying Software Stacks after Provisiong <>`_ (TBD)
+* `Tutorial - Deploying Software Stacks after Provisiong <https://raw.githubusercontent.com/lee212/simpleazure/master/ipynb/Use%20Case%20-%20NIST%20Pedestrian%20and%20Face%20Detection%20on%20Simple%20Azure%20(under%20development).ipynb>`_ 
 
 Tutorial (classic mode)
 ===============================================================================
@@ -32,18 +32,18 @@ viewer.
 Simple Azure
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-* `Simplified Windows Azure SDK for Python (Simple Azure) <http://nbviewer.ipython.org/urls/raw.github.com/lee212/simpleazure/master/ipynb/Tutorial%2520-%2520Simplified%2520Windows%2520Azure%2520SDK%2520for%2520Python.ipynb>`_
-* `Deploying a community image, Azure Data Science Core <http://nbviewer.ipython.org/urls/raw.github.com/lee212/simpleazure/master/ipynb/Deploy%2520ADSC%2520by%2520Simple%2520Azure.ipynb>`_
-* `Enabling IPython Cluster with Simple Azure <http://nbviewer.ipython.org/urls/raw.github.com/lee212/simpleazure/master/ipynb/Tutorial%2520-%2520Enabling%2520IPython%2520cluster%2520with%2520Simple%2520Azure.ipynb>`_
+* `Simplified Windows Azure SDK for Python (Simple Azure) <https://nbviewer.jupyter.org/github/lee212/simpleazure/blob/master/ipynb/classic/Tutorial%20%28classic%29%20-%20Simplified%20Windows%20Azure%20SDK%20for%20Python.ipynb>`_
+* `Deploying a community image, Azure Data Science Core <https://nbviewer.jupyter.org/github/lee212/simpleazure/blob/master/ipynb/classic/Example%20%28classic%29%20-%20Deploy%20ADSC%20by%20Simple%20Azure.ipynb>`_
+* `Enabling IPython Cluster with Simple Azure <https://nbviewer.jupyter.org/github/lee212/simpleazure/blob/master/ipynb/classic/Tutorial%20%28classic%29%20-%20Enabling%20IPython%20cluster%20with%20Simple%20Azure.ipynb>`_
 
 azure-sdk-for-python (legacy)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 azure-sdk-for-python is the official python library for azure:
 
-* `Deploying Windows Azure Virtual Machines with Python SDK (azure-sdk-for-python) <http://nbviewer.ipython.org/urls/raw.github.com/lee212/simpleazure/master/ipynb/Tutorial%2520-%2520Deploying%2520Windows%2520Azure%2520Virtual%2520Machines%2520with%2520Python%2520SDK.ipynb>`_
-* `Deploying Windows and Linux VMs through azure-sdk-for-python <http://nbviewer.ipython.org/urls/raw.github.com/lee212/simpleazure/master/ipynb/Tutorial%2520-%2520Deploying%2520Windows%2520and%2520Linux%2520VMs.ipynb>`_
-* `Deploying multiple VMs through azure-sdk-for-python <http://nbviewer.ipython.org/urls/raw.github.com/lee212/simpleazure/master/ipynb/Tutorial%2520-%2520Deploying%2520multiple%2520VMs.ipynb>`_
+* `Deploying Windows Azure Virtual Machines with Python SDK (azure-sdk-for-python) <https://nbviewer.jupyter.org/github/lee212/simpleazure/blob/master/ipynb/classic/Tutorial%20%28classic%29%20-%20Deploying%20Windows%20Azure%20Virtual%20Machines%20with%20Python%20SDK.ipynb>`_
+* `Deploying Windows and Linux VMs through azure-sdk-for-python <https://nbviewer.jupyter.org/github/lee212/simpleazure/blob/master/ipynb/classic/Tutorial%20%28classic%29%20-%20Deploying%20Windows%20and%20Linux%20VMs.ipynb>`_
+* `Deploying multiple VMs through azure-sdk-for-python <https://nbviewer.jupyter.org/github/lee212/simpleazure/blob/master/ipynb/classic/Tutorial%20%28classic%29%20-%20Deploying%20multiple%20VMs.ipynb>`_
 
 Galaxy workflow toolkit
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -52,8 +52,8 @@ Galaxy workflow toolkit
 python library for scientific research.  Here, the tutorials below introduce
 use cases of Galaxy on IPython Notebook.
 
-* `BioBlend (Galaxy Python library) with IPython <http://nbviewer.ipython.org/urls/raw.github.com/lee212/simpleazure/master/ipynb/Tutorial%2520-%2520BioBlend%2520%28Galaxy%2520Python%2520library%29%2520with%2520IPython.ipynb>`_
-* `Finding coding exon which has the highest number of single nucleotide polymorphisms on chromosome 22 <http://nbviewer.ipython.org/urls/raw.github.com/lee212/simpleazure/master/ipynb/%28Galaxy%29%2520Example%25201.%2520finding%2520coding%2520exon%2520which%2520has%2520the%2520highest%2520number%2520of%2520single%2520nucleotide%2520polymorphisms%2520on%2520chromosome%252022.ipynb>`_
+* `BioBlend (Galaxy Python library) with IPython <https://nbviewer.jupyter.org/github/lee212/simpleazure/blob/master/ipynb/classic/Tutorial%20%28classic%29%20-%20BioBlend%20%28Galaxy%20Python%20library%29%20with%20IPython.ipynb>`_
+* `Finding coding exon which has the highest number of single nucleotide polymorphisms on chromosome 22 <https://nbviewer.jupyter.org/github/lee212/simpleazure/blob/master/ipynb/classic/Example%20%28Galaxy%20Workflow%29%20-%20finding%20coding%20exon%20which%20has%20the%20highest%20number%20of%20single%20nucleotide%20polymorphisms%20on%20chromosome%2022.ipynb>`_
 
 IPython
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -61,5 +61,4 @@ IPython
 This tutorial shows how to have IPython installed on Windows Azure with a
 normal linux distribution.
 
-* `Installing IPython on Windows Azure Virtual Machines and configuring clustering <http://nbviewer.ipython.org/urls/raw.github.com/lee212/simpleazure/master/ipynb/Tutorial%2520-%2520Installing%2520IPython%2520on%2520Windows%2520Azure%2520Virtual%2520Machines%2520and%2520configuring%2520clustering.ipynb>`_
-* `Enabling IPython Cluster with Simple Azure <http://nbviewer.ipython.org/urls/raw.github.com/lee212/simpleazure/master/ipynb/Tutorial%2520-%2520Enabling%2520IPython%2520cluster%2520with%2520Simple%2520Azure.ipynb>`_
+* `Enabling IPython Cluster with Simple Azure <https://nbviewer.jupyter.org/github/lee212/simpleazure/blob/master/ipynb/classic/Tutorial%20%28classic%29%20-%20Enabling%20IPython%20cluster%20with%20Simple%20Azure.ipynb>`_
