@@ -1,0 +1,249 @@
+{
+    "parameters": {
+        "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#", 
+        "contentVersion": "1.0.0.0", 
+        "parameters": {
+            "adminUsername": {
+                "value": "azureuser"
+            }, 
+            "sshKeyData": {
+                "value": "ssh-rsa AAAAB...<skipped>... hroe.lee@simpleazure"
+            },
+            "numberOfInstances": {
+                "value": 3
+            }
+        }
+    }, 
+    "nested": "", 
+    "etc": [], 
+    "scripts": "", 
+    "azuredeploy": {
+        "parameters": {
+            "adminUserName": {
+                "defaultValue": "azureuser", 
+                "type": "string", 
+                "metadata": {
+                    "description": "User name for the Virtual Machine."
+                }
+            }, 
+            "sshKeyData": {
+                "type": "string", 
+                "metadata": {
+                    "description": "SSH rsa public key file as a string."
+                }
+            },
+            "numberOfInstances": {
+               "defaultValue": 3,
+               "type": "int",
+               "metadata": {
+                    "description": "Number of Instances to start"
+                }
+            }
+        }, 
+        "outputs": {
+            "sshCommand": {
+                "type": "string", 
+                "value": "[concat('ssh ', parameters('adminUsername'), '@', variables('uniqueDnsLabelPrefix'), '.', resourceGroup().location, '.cloudapp.azure.com')]"
+            }
+        }, 
+        "variables": {
+            "vnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('virtualNetworkName'))]", 
+            "publicIPAddressType": "Dynamic", 
+            "ubuntuOSVersion": "14.04.4-LTS", 
+            "vmStorageAccountContainerName": "vhds", 
+            "publicIPAddressName": "sshPublicIP", 
+            "vmName": "sshvm", 
+            "location": "[resourceGroup().location]", 
+            "virtualNetworkName": "sshVNET", 
+            "sshKeyPath": "[concat('/home/',parameters('adminUserName'),'/.ssh/authorized_keys')]", 
+            "imageOffer": "UbuntuServer", 
+            "osDiskName": "osDisk1", 
+            "subnet1Prefix": "10.0.0.0/24", 
+            "uniqueDnsLabelPrefix": "[concat('store', uniquestring(resourceGroup().id))]", 
+            "subnet1Ref": "[concat(variables('vnetID'),'/subnets/',variables('subnet1Name'))]", 
+            "nicName": "sshNIC", 
+            "imagePublisher": "Canonical", 
+            "subnet1Name": "Subnet-1", 
+            "addressPrefix": "10.0.0.0/16", 
+            "vmSize": "Standard_DS2", 
+            "apiVersion": "2015-06-15", 
+            "storageAccountName": "[concat(uniquestring(resourceGroup().id), 'sasshvm')]", 
+            "networkSecurityGroupName": "networkSecurityGroup1", 
+            "storageAccountType": "Premium_LRS"
+        }, 
+        "contentVersion": "1.0.0.0", 
+        "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json", 
+        "resources": [
+            {
+                "properties": {
+                    "accountType": "[variables('storageAccountType')]"
+                }, 
+                "type": "Microsoft.Storage/storageAccounts", 
+                "name": "[variables('storageAccountName')]", 
+                "apiVersion": "[variables('apiVersion')]", 
+                "location": "[variables('location')]"
+            }, 
+            {
+                "properties": {
+                    "securityRules": [
+                        {
+                            "name": "ssh_rule", 
+                            "properties": {
+                                "priority": 123, 
+                                "direction": "Inbound", 
+                                "protocol": "Tcp", 
+                                "description": "Locks inbound down to ssh default port 22.", 
+                                "access": "Allow", 
+                                "destinationPortRange": "22", 
+                                "sourcePortRange": "*", 
+                                "destinationAddressPrefix": "*", 
+                                "sourceAddressPrefix": "*"
+                            }
+                        }
+                    ]
+                }, 
+                "type": "Microsoft.Network/networkSecurityGroups", 
+                "name": "[variables('networkSecurityGroupName')]", 
+                "apiVersion": "[variables('apiVersion')]", 
+                "location": "[variables('location')]"
+            }, 
+            {
+                "name": "[concat(variables('publicIPAddressName'), copyindex())]", 
+                "apiVersion": "[variables('apiVersion')]", 
+                "location": "[variables('location')]", 
+                "copy": {
+                    "count": "[parameters('numberOfInstances')]", 
+                    "name": "ipLoop"
+                }, 
+                "type": "Microsoft.Network/publicIPAddresses", 
+                "properties": {
+                    "publicIPAllocationMethod": "[variables('publicIPAddressType')]", 
+                    "dnsSettings": {
+                        "domainNameLabel": "[concat(variables('uniqueDnsLabelPrefix'), copyindex())]"
+                    }
+                }
+            }, 
+            {
+                "name": "[variables('virtualNetworkName')]", 
+                "apiVersion": "[variables('apiVersion')]", 
+                "location": "[variables('location')]", 
+                "dependsOn": [
+                    "[concat('Microsoft.Network/networkSecurityGroups/', variables('networkSecurityGroupName'))]"
+                ], 
+                "type": "Microsoft.Network/virtualNetworks", 
+                "properties": {
+                    "subnets": [
+                        {
+                            "name": "[variables('subnet1Name')]", 
+                            "properties": {
+                                "addressPrefix": "[variables('subnet1Prefix')]", 
+                                "networkSecurityGroup": {
+                                    "id": "[resourceId('Microsoft.Network/networkSecurityGroups', variables('networkSecurityGroupName'))]"
+                                }
+                            }
+                        }
+                    ], 
+                    "addressSpace": {
+                        "addressPrefixes": [
+                            "[variables('addressPrefix')]"
+                        ]
+                    }
+                }
+            }, 
+            {
+                "name": "[concat(variables('nicName'), copyindex())]", 
+                "apiVersion": "[variables('apiVersion')]", 
+                "location": "[variables('location')]", 
+                "dependsOn": [
+                    "[concat('Microsoft.Network/publicIPAddresses/', concat(variables('publicIPAddressName'), copyindex()))]", 
+                    "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
+                ], 
+                "copy": {
+                    "count": "[parameters('numberOfInstances')]", 
+                    "name": "nicLoop"
+                }, 
+                "type": "Microsoft.Network/networkInterfaces", 
+                "properties": {
+                    "ipConfigurations": [
+                        {
+                            "name": "ipconfig1", 
+                            "properties": {
+                                "subnet": {
+                                    "id": "[variables('subnet1Ref')]"
+                                }, 
+                                "privateIPAllocationMethod": "Dynamic", 
+                                "publicIPAddress": {
+                                    "id": "[resourceId('Microsoft.Network/publicIPAddresses', concat(variables('publicIPAddressName'), copyindex()))]"
+                                }
+                            }
+                        }
+                    ]
+                }
+            }, 
+            {
+                "name": "[concat(variables('vmName'), copyindex())]", 
+                "apiVersion": "[variables('apiVersion')]", 
+                "location": "[variables('location')]", 
+                "dependsOn": [
+                    "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]", 
+                    "[concat('Microsoft.Network/networkInterfaces/', concat(variables('nicName'), copyindex()))]"
+                ], 
+                "copy": {
+                    "count": "[parameters('numberOfInstances')]", 
+                    "name": "virtualMachineLoop"
+                }, 
+                "type": "Microsoft.Compute/virtualMachines", 
+                "properties": {
+                    "hardwareProfile": {
+                        "vmSize": "[variables('vmSize')]"
+                    }, 
+                    "storageProfile": {
+                        "imageReference": {
+                            "sku": "[variables('ubuntuOSVersion')]", 
+                            "publisher": "[variables('imagePublisher')]", 
+                            "version": "latest", 
+                            "offer": "[variables('imageOffer')]"
+                        }, 
+                        "osDisk": {
+                            "caching": "ReadWrite", 
+                            "vhd": {
+                                "uri": "[concat('http://',variables('storageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/', variables('osDiskName'), copyindex(), '.vhd')]"
+                            }, 
+                            "createOption": "FromImage", 
+                            "name": "[concat('osdisk', copyindex())]"
+                        }
+                    }, 
+                    "osProfile": {
+                        "adminUsername": "[parameters('adminUserName')]", 
+                        "computerName": "[concat(variables('vmName'), copyindex())]", 
+                        "linuxConfiguration": {
+                            "ssh": {
+                                "publicKeys": [
+                                    {
+                                        "path": "[variables('sshKeyPath')]", 
+                                        "keyData": "[parameters('sshKeyData')]"
+                                    }
+                                ]
+                            }, 
+                            "disablePasswordAuthentication": "true"
+                        }
+                    }, 
+                    "networkProfile": {
+                        "networkInterfaces": [
+                            {
+                                "id": "[resourceId('Microsoft.Network/networkInterfaces', concat(variables('nicName'), copyindex()))]"
+                            }
+                        ]
+                    }
+                }
+            }
+        ]
+    }, 
+    "metadata": {
+        "githubUsername": "squillace", 
+        "dateUpdated": "2015-06-05", 
+        "itemDisplayName": "Deploy a Virtual Machine with SSH rsa public key", 
+        "description": "This template allows you to create a Virtual Machine with SSH rsa public key", 
+        "summary": "Deploy a Virtual Machine with SSH rsa public key"
+    }
+}
