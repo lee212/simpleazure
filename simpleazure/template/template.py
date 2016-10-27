@@ -21,6 +21,8 @@ import editor
 import json
 import datadiff
 from datadiff.tools import assert_equal
+from urlparse import urlparse
+import urllib
 
 class Templates(OrderedDict):
     _list = None
@@ -261,6 +263,15 @@ class Template(dict):
             equal=False
         if not equal:
             print datadiff.diff(dict(self), dict(b))
+
+    def read_template(self, path_or_uri):
+
+        if urlparse(path_or_uri).scheme is not "":
+            template = json.loads(urllib.urlopen(path_or_uri).read())
+        else:
+            with open(path_or_uri, "r") as temp:
+                template = json.loads(temp.read())
+        self.update(template)
 
 class Deploy(object):
     """Constructs a :class:`Deploy <Deploy>`.
