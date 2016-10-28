@@ -44,7 +44,7 @@ Deploying a Template in Simple Azure ARM Mode
 
 Starting a single Linux VM with SSH key from Azure QuickStart Template is:
 
-::
+.. code-block:: pycon
 
         >>> from simpleazure import SimpleAzure
         >>> saz = SimpleAzure()
@@ -59,10 +59,10 @@ Starting a single Linux VM with SSH key from Azure QuickStart Template is:
 
 Starting a sample VM from a custom template URL is:
 
-::
+.. code-block:: pycon
 
-        >> url = "https://raw.githubusercontent.com/Azure-Samples/resource-manager-python-template-deployment/master/templates/template.json"
-        >> saz.arm.deploy(template = url, param = { "sshKeyData": "ssh-rsa AAAB3Nza...", 'dnsLabelPrefix':"simpleazure", 'vmName':'simpleazure-first-vm'}) })
+        >>> url = "https://raw.githubusercontent.com/Azure-Samples/resource-manager-python-template-deployment/master/templates/template.json"
+        >>> saz.arm.deploy(template = url, param = { "sshKeyData": "ssh-rsa AAAB3Nza...", 'dnsLabelPrefix':"simpleazure", 'vmName':'simpleazure-first-vm'}) })
 
 .. note:: For more about using ARM? check out :ref:`ref-arm`
 .. note:: For more about deploying a custom Template? check out :ref:`ref-saz-template-deploy`
@@ -92,6 +92,7 @@ Installation
 -------------------------------------------------------------------------------
 
 From github.com:
+
 .. code-block:: console
 
    git clone https://github.com/lee212/simpleazure.git
