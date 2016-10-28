@@ -33,7 +33,7 @@ legacy package to create a single virtual machine (VM) and multiple VMs.
 
 Simple Azure is currently in a development stage therefore new features will be
 added from time to time and issues and bugs might be easily found while you use
-Simple Azure. Check out the latest version from the `github
+the tool. Check out the latest version from the `github
 <https://github.com/lee212/simpleazure>`_ repository. Documentation is also
 actively updated.
 
