@@ -22,7 +22,7 @@ to deploy software and infrastructure ranging from a simple linux VM deployment
 to Azure Container Service cluster with a DC/OS orchestrator (i.e.
 `101-acs-dcos
 <https://github.com/Azure/azure-quickstart-templates/tree/master/101-acs-dcos>`_).
-You can import, export, search, modify, review and deploy Templates using
+You can import, export, search, modify, review and deploy these templates using
 Simple Azure and get information about deployed services in resource groups.
 Initial scripts or automation tools can be triggered after a completion of
 deployements therefore your software stacks and applications are installed and
