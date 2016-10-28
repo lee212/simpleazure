@@ -12,7 +12,7 @@ def read(fname):
 #reqs = [line.strip() for line in open('requirements.txt')]
 setup(
         name = "simpleazure",
-        version = "0.0.8",
+        version = "0.0.9",
         author = "Hyungro Lee",
         author_email = "hroe.lee@gmail.com",
         description = ("Python Library for Windows Azure"),
@@ -23,6 +23,7 @@ setup(
             'simpleazure',
             'simpleazure/ext',
             'simpleazure/template',
+            'simpleazure/plugin',
             ],
         install_requires = [
             "azure==2.0.0rc6",
@@ -31,7 +32,9 @@ setup(
             "haikunator", # random name generator
             "sh",
             "cython", # for pandas
-            "pandas" # will be replaced
+            "pandas", # will be replaced
+            "datadiff",
+            "python-editor"
             ], 
         # reqs is removed and pip install -r requirements.txt added
         # because 'import azure' wrongly imported from azure-nspkg package
