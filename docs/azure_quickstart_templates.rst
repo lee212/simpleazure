@@ -214,9 +214,8 @@ Template Details
 
 Template consists of key elements: metadata, parameters, resources, and
 dependson (dependencies) to describe resource deployments.  Simple Azure
-provides Template() object functions to quickly review template details such as
-required parameters, template descriptions and resource information. The
-available functions are:
+Template() object functions offer to review these template elements and
+visualize dependencies. The available functions are:
 
 - [template object].metadata()
 - [template object].parameters()
@@ -229,8 +228,6 @@ Metadata
 
 See metadata of the template ``101-vm-simple-rhel`` from the search results
 above:
-
-:
 
 .. code-block:: pycon
 
@@ -256,8 +253,6 @@ variable (metadata().description).
 
 This information is from ``matadata.json`` and returned by Pandas Series
 
-:
-
 ::
 
         [template object].metadata()            # pandas Series
@@ -267,8 +262,6 @@ Parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 We may want to know what parameters are necessary to deploy for this template:
-
-:
 
 .. code-block:: pycon
  
@@ -294,8 +287,6 @@ Resources
 
 According to the metadata earlier, we know that ``101-vm-simple-rhel`` deploys
 a virtual machine with Standard D1 but it isn't clear what resources are used.
-
-:
 
 .. code-block:: pycon
 
@@ -326,8 +317,6 @@ Services can be related to other services when it deploys, for example,
 Dependencies are not visible in ``resources()`` but in ``dependson()`` which
 returns its relation in python dict data type using pprint():
 
-:
-
 .. code-block:: pycon
 
         >>> rhel_templates['101-vm-simple-rhel'].dependson_print()
@@ -341,8 +330,9 @@ returns its relation in python dict data type using pprint():
         displayed `here
         <http://armviz.io/#/?load=https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-simple-rhel/azuredeploy.json>`_
 
-This information is from ``dependsOn`` section in ``azuredeploy.json`` and
-returned by Python dictionary or printed in the Pretty Print (pprint):
+The dependencies are retrieved from ``dependsOn`` section in
+``azuredeploy.json`` in Python dictionary format (dependson()) and in Pretty
+Print format (dependson_print()):
 
 ::
 

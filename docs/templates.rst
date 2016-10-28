@@ -147,8 +147,6 @@ It is actually recommended to use environment variables. Create a file for crede
 
 And then source it before running Python like:
 
-:
-
 .. code-block:: console
 
         $ source ~/.saz/cred
@@ -193,8 +191,6 @@ We assume that you already have a SSH key pair generated with a default filename
 object contains public key string like:
 
 
-:
-
 .. code-block:: pycon
         
         >>> saz.arm.sshkey.pubkey
@@ -202,8 +198,6 @@ object contains public key string like:
 
 
 We provide this as a parameter like:
-
-:
 
 .. code-block:: pycon
 
@@ -237,8 +231,6 @@ resources by:
 You can directly call ``deploy()`` function without setting template
 (set_template()) and parameters (set_parameter()) but sending them as function
 parameters like (Both ways work same):
-
-:
 
 .. code-block:: pycon
 
