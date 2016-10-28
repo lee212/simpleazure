@@ -9,7 +9,7 @@ SSH Keys
 -------------------------------------------------------------------------------
 
 ``.ssh`` directory contains certificates and thumbprints (fingerprints) of key
-pairs on the default directory ``$HOME/.zure``.
+pairs on the default directory ``$HOME/.azure``.
 
 pfx certificate
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -166,12 +166,11 @@ Contents
    arm
    templates
    azure_quickstart_templates
-   quickstart
    tutorial
    installation
+   quickstart
    command
    configuration
-   deliverables
 
 .. comments::
 

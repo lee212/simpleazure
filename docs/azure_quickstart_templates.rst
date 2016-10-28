@@ -2,45 +2,62 @@
 
 Deploying Azure QuickStart Templates
 ===============================================================================
-:
 
 .. code-block:: pycon
 
-        >>> from simpleazure.azure_quickstart_templates import AzureQuickStartTemplates as aqst
-        >>> aqst = aqst.AzureQuickStartTemplate()
-        >>> vm_sshkey_template = aqst.get_template('101-vm-sshkey')
+        >>> from simpleazure import SimpleAzure
+        >>> saz = SimpleAzure()
+        >>> vm_sshkey_template = saz.aqst.get_template('101-vm-sshkey')
+        >>> saz.arm.load_template(vm_sshkey_template)
+        >>> saz.arm.add_parameter({"sshKeyData": "ssh-rsa AAAB... hrlee@quickstart"})
+        >>> saz.arm.deploy()
 
-        >>> from simpleazure import arm
-        >>> arm = arm.ARM()
-        >>> arm.set_parameter("sshKeyData", "ssh-rsa AAAB... hrlee@quickstart")
-        >>> arm.set_template(vm_sshkey_template)
-        >>> arm.deploy()
+Azure offers Power Shell and CLI tool to deploy community templates [1]_ from
+starting a single virtual machine (e.g. 101-vm-sshkey) to building hadoop
+clusters with Apache Spark (e.g.  hdinsight-apache-spark) with limited helper
+functions. Simple Azure supports deploying these templates in Python with
+powerful functions: import, export, edit, store, review, compare(diff), deploy
+and search.
 
-Azure provides 407 community templates [1]_ from starting a single virtual
-machine (e.g. 101-vm-sshkey) to hadoop clusters with Apache Spark (e.g.
-hdinsight-apache-spark) and Simple Azure supports deploying these templates in
-Python with additional options like a template search.
-
-The example above shows that Simple Azure loads ``101-vm-sshkey`` template from
-the *azure-quickstart-templates* github repository and deploys it with a
-required parameter, ssh public key string (*sshKeyData*).
+The example above shows that Simple Azure loads ``101-vm-sshkey`` template
+(which creates a VM with ssh access) from the *azure-quickstart-templates*
+github repository (which is included in Simple Azure) and deploys a virtual
+machine with a required parameter, ssh public key string (*sshKeyData*).
 
 .. [1] as of 10/13/2016 from https://github.com/Azure/azure-quickstart-templates
 
 Overview
 -------------------------------------------------------------------------------
 
-This page describes use of `Azure QuickStart Templates
-<https://github.com/Azure/azure-quickstart-templates>`_ in Python with Simple
-Azure which supports - template search, list, load, view and deployment on
-Microsoft Azure. 
+This page describes basic use of `Azure QuickStart Templates
+<https://github.com/Azure/azure-quickstart-templates>`_ with Simple
+Azure Python library which supports - template search, import, export, edit,
+store, review, compare(diff), and deploy functions.
+
+QuickStart Directory Structure
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A template in the azure quickstart is served in a single directory with
-required json files to describe resource deployments. Simple Azure provides
-template information in Python based on the directory name and the files in the
-directory. Metadata, for example, is supplied by:
+required json files to describe resource deployments.
 
-:
+::
+
+   100-blank-template   (directory name)
+   |
+   \- azuredeploy.json  (main template to deploy)
+   \- azuredeploy.parameters.json       (required parameter definitions)
+   \- metadata.json     (template description)
+
+Note that the directory name here (i.e. 100-blank-template) is an index of a
+template that Simple Azure uses.
+
+Template Information
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Azure QuickStart Templates are written by community therefore descriptions are
+necessary to understand resource deployments with properties and required
+parameters. Simple Azure reads template information based on the directory
+name and files in the directory. Metadata, for example, is retrieved by:
 
 .. code-block:: pycon
 
@@ -51,17 +68,34 @@ directory. Metadata, for example, is supplied by:
         itemDisplayName     Deploy a Virtual Machine with SSH rsa public key
         summary             Deploy a Virtual Machine with SSH rsa public key
 
-This output is from ``101-vm-sshkey`` template and ``metadata()`` returns
-its description such as date, description, and github username of the template.
-
-``get_templates()`` provides listing all templates which is also based on the
-diretory name and the metadata like:
-
-:
+We can find this template is about a virtual machine deployment with ssh key
+from summary and itemDisplayName. Other information such as written date,
+author, and long description is also provided. According to the description,
+SSH public key will be required as a parameter because ssh key string should be
+injected when a virtual machine is booted. Parameter options can be retrieved
+by:
 
 .. code-block:: pycon
 
-        >>> templates = aqst.get_templates()
+        >>> vm_sshkey_template.parameters()
+        adminUsername          azureuser
+        sshKeyData       GEN-SSH-PUB-KEY
+
+``101-vm-sshkey`` template requires ``sshKeyData`` parameter to obtain ssh
+public key string from users otherwise this template won't deploy a virtual
+machine with a ssh access.
+
+Template List
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+``get_templates()`` lists all templates from Azure QuickStart
+Templates github repository and ``ten()`` pages its listing with 10 counts.
+``twenty()`` is also provided with 20 counts.
+
+
+.. code-block:: pycon
+
+        >>> templates = saz.aqst.get_templates()
         >>> templates.ten()
         100-blank-template                                                                  Blank Template
         101-acs-dcos                                                       Azure Container Service - DC/OS
@@ -74,18 +108,23 @@ diretory name and the metadata like:
         101-application-gateway-public-ip-ssl-offload         Create an Application Gateway with Public IP
         101-automation-runbook-getvms                    Create Azure Automation Runbook to retrieve Az...
 
-Choose one of the templates using Python dict data format, for example,
-``101-acs-dcos`` template (2nd template in the listing) is displayed by:
-
-:
+Choose one of the templates with its directory name, for example,
+``101-acs-dcos`` template (2nd template in the listing) is selected by:
 
 .. code-block:: pycon
+
         >>> templates['101-acs-dcos'].metadata()
         dateUpdated                                               2016-02-18
         description        Deploy an Azure Container Service instance for...
         githubUsername                                              rgardler
         itemDisplayName                      Azure Container Service - DC/OS
         summary            Azure Container Service optimizes the configur...
+
+        >>> templates['101-acs-dcos'].resources()
+        Microsoft.ContainerService/containerServices    {u'properties': {u'masterProfile': {u'count': ...
+
+We find that ``101-acs-dcos`` template is a Azure Container Service from its
+description and resource definition.
 
 More options are available to search, load and deploy templates via Simple Azure
 and the following sections demonstrate these options with examples.
@@ -100,24 +139,19 @@ and the following sections demonstrate these options with examples.
 Searching Template
 -------------------------------------------------------------------------------
 
-Simple Azure supports a template search from the Azure QuickStart Templates
-with a keyword. Let's find templates that use 'rhel' (Red Hat Enterprise Linux)
-in a description. 
-
-:
+Try a template search with a keyword(s) to find an interesting template. 
+For example, search 'rhel' keyword to find Red Hat Enterprise Linux templates.
 
 .. code-block:: pycon
 
-        >>> rhel_templates = aqst.search("rhel")
+        >>> rhel_templates = saz.aqst.search("rhel")
+
+        >>> rhel_templates.count()
+        13
 
 It found 13 templates and the first ten items are: 
 
-:
-
 .. code-block:: pycon
-
-        >>> len(rhel_templates)
-        13
 
         >>> rhel_templates.ten()
         101-vm-full-disk-encrypted-rhel       Red Hat Enterprise Linux 7.2 VM (Fully Encrypted)
@@ -126,42 +160,69 @@ It found 13 templates and the first ten items are:
         create-hpc-cluster-linux-cn              Create an HPC cluster with Linux compute nodes
         intel-lustre-client-server/scripts
         intel-lustre-clients-on-centos          Intel Lustre clients using CentOS gallery image
+        intel-lustre-clients-vmss-centos       Azure VM Scale Set as clients of Intel Lustre
         openshift-origin-rhel                 OpenShift Origin on RHEL (On Demand image) or ...
         openshift-origin-rhel/nested
         sap-2-tier-marketplace-image            2-tier configuration for use with SAP NetWeaver
-        vsts-tomcat-redhat-vm                 Red Hat Tomcat server for use with Team Servic...
 
 Next items are displayed by calling ``ten()`` again:
-
-:
 
 .. code-block:: pycon
 
         >>> rhel_templates.ten()
-        intel-lustre-clients-vmss-centos       Azure VM Scale Set as clients of Intel Lustre
+        == End of page ! ==
         sap-3-tier-marketplace-image         3-tier configuration for use with SAP NetWeaver
+        vsts-tomcat-redhat-vm                 Red Hat Tomcat server for use with Team Servic...
         zabbix-monitoring-cluster/scripts
+
+Resource types can be used to search, for example, if ``virtualMachines`` and
+``publicipaddresses`` are given:
+
+.. code-block:: pycon
+
+        >>> vms_with_public_ips = saz.aqst.search('virtualMachines publicipaddresses')
+
+        >>> vms_with_public_ips.ten()
+        201-customscript-extension-azure-storage-on-ubuntu                Custom Script extension on a Ubuntu VM
+        201-customscript-extension-public-storage-on-ubuntu               Custom Script extension on a Ubuntu VM
+        201-dependency-between-scripts-using-extensions        Use script extensions to install Mongo DB on U...
+        201-oms-extension-ubuntu-vm                                    Deploy a Ubuntu VM with the OMS extension
+        201-traffic-manager-vm
+        201-vm-winrm-windows                                   Deploy a Windows VM and configures WinRM https...
+        anti-malware-extension-windows-vm                      Create a Windows VM with Anti-Malware extensio...
+        apache2-on-ubuntu-vm                                                       Apache Webserver on Ubuntu VM
+        azure-jenkins                                          Deploy instance of Jenkins targeting Azure Pla...
+        bitcore-centos-vm                                      Bitcore Node and Utilities for Bitcoin on Cent...
+        dtype: object
+
+Let's select the first template.
+
+.. code-block:: pycon
+
+        >>> vms_with_public_ips.ten['201-customscript-extension-azure-storage-on-ubuntu'].resources()
+        Microsoft.Compute/virtualMachines               {u'name': u'[variables('vmName')]', u'apiVersi...
+        Microsoft.Compute/virtualMachines/extensions    {u'name': u'[concat(variables('vmName'),'/', v...
+        Microsoft.Network/networkInterfaces             {u'name': u'[variables('nicName')]', u'apiVers...
+        Microsoft.Network/publicIPAddresses             {u'properties': {u'publicIPAllocationMethod': ...
+        Microsoft.Network/virtualNetworks               {u'properties': {u'subnets': [{u'name': u"[var...
+        Microsoft.Storage/storageAccounts               {u'properties': {u'accountType': u'[variables(...
+
+Indeed, it has virtualMachines and publicIPAddresses resource types.
 
 Template Details
 -------------------------------------------------------------------------------
 
-Simple Azure provides Template() object functions to quickly review template
-details such as required parameters, template descriptions and resource
-information. The available functions are:
+Template consists of key elements: metadata, parameters, resources, and
+dependson (dependencies) to describe resource deployments.  Simple Azure
+provides Template() object functions to quickly review template details such as
+required parameters, template descriptions and resource information. The
+available functions are:
 
 - [template object].metadata()
 - [template object].parameters()
 - [template object].resources()
 - [template object].dependson()
 - [template object].dependson_print()
-
-.. note:: each template is served with at least three files i.e. 
-
-- azuredeploy.json (service deployment)
-- azuredeploy.parameters.json (parameter information)
-- metadata.json (description of template)
-
-Simple Azure runs by loading these files when it's imported in python.
 
 Metadata
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -297,12 +358,10 @@ Template Deployment
 Simple Azure has a sub module for Azure Resource Manager (ARM) which deploys a
 template on Azure.
 
-:
-
 .. code-block:: pycon
 
-        >>> from simpleazure import arm
-        >>> arm = arm.ARM() # Azure Resource Manager object
+        >>> from simpleazure import SimpleAzure
+        >>> saz = SimpleAzure() # Azure Resource Manager object
 
 Next step is loading a template with a parameter.
 
@@ -311,11 +370,9 @@ Load Template
 
 *arm* object needs to know which template will be used to deploy and we tell:
 
-:
-
 .. code-block:: pycon
 
-        >>> arm.load_template(rhel['101-vm-simple-rhel'])
+        >>> saz.arm.load_template(rhel['101-vm-simple-rhel'])
 
 Set Parameter
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -323,11 +380,9 @@ Set Parameter
 In our example of RHEL, three parameters need to be set before its deployment,
 ``adminPassword``, ``adminUsername`` and ``vmName``:
 
-:
-
 .. code-block:: pycon
 
-        >>> arm.set_parameters(
+        >>> saz.arm.set_parameters(
                        {"adminPassword":"xxxxx",
                         "adminUsername":"azureuser",
                         "vmName":"simpleazure-quickstart"}
@@ -349,19 +404,16 @@ Deployment
 
 ``deploy()`` function runs a template with a parameter if they are already set.
 
-:
-
 .. code-block:: pycon
 
-        >>> arm.deploy()
+        >>> saz.arm.deploy()
 
 Or you can directly deploy a template with parameters.
 
-:
-
 .. code-block:: pycon
 
-        >>> arm.deploy(rhel['101-vm-simple-rhel'], {"adminPassword":"xxxxx", "adminUsername":"azureuser", "vmName":"saz-quickstart"})
+        >>> saz.arm.deploy(rhel['101-vm-simple-rhel'], {"adminPassword":"xxxxx",
+        "adminUsername":"azureuser", "vmName":"saz-quickstart"})
 
 It may take a few minutes to complete a deployment and give access to a virtual
 machine.
@@ -374,17 +426,13 @@ public IP addresses, ``view_info()`` returns an ip address in a same resource
 group. ``Microsoft.Network/PublicIPAddresses`` service is fetched in this
 example.
 
-:
-
 .. code-block:: pycon
 
-        >>> arm.view_info()
+        >>> saz.arm.view_info()
         [u'40.77.103.150']
 
 
 Use the same login user name and password from the parameters defined earlier:
-
-:
 
 .. code-block:: console
   
@@ -410,11 +458,9 @@ Termination
 Deleting a resource group where deployment is made terminates all
 services in the resource group.
 
-:
-
 .. code-block:: pycon
 
-        >>> arm.remove_resource_group()
+        >>> saz.arm.remove_resource_group()
 
 
 .. comments::

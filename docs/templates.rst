@@ -6,14 +6,16 @@ Deploying Azure Virtual Machine in Simple Azure ARM Mode
 Simpla Azure deploys a Ubuntu 16.04 VM using `the sample template
 <https://github.com/Azure-Samples/resource-manager-python-template-deployment/blob/master/templates/template.json>`_
 from `Azure-Samples
-<https://github.com/Azure-Samples/resource-manager-python-template-deployment/>`_ like this:
+<https://github.com/Azure-Samples/resource-manager-python-template-deployment/>`_
+like this:
 
 .. code-block:: pycon
 
-  >>> import simpleazure as saz
-  >>> arm = saz.arm()
+  >>> from simpleazure import SimpleAzure
+  >>> saz = SimpleAzure()
   >>> url = "https://raw.githubusercontent.com/Azure-Samples/resource-manager-python-template-deployment/master/templates/template.json"
-  >>> arm.deploy(template = url, param = { "sshKeyData": "ssh-rsa AAAB3Nza..." })
+  >>> saz.arm.deploy(template = url, param = { "sshKeyData": "ssh-rsa
+      AAAB3Nza..." })
 
 .. info:: ``>>>`` indicates Python interactive shell and ``$`` indicates bash
         shell in this document.
@@ -27,13 +29,13 @@ Deleting a deployment is:
 
 .. code-block:: pycon
 
-  >>> a.terminate_deployment()
+  >>> saz.arm.terminate_deployment()
 
 Or removing a resource group is:
 
 .. code-block:: pycon
 
-  >>> a.remove_resource_group()
+  >>> saz.arm.remove_resource_group()
 
 .. note:: Use 'remove_resource_group()' if you force to stop and remove all
         running services. 'terminate_deployment()' does not remove services in
@@ -101,8 +103,9 @@ Starting a VM with Simple Azure (step-by-step)
 
 .. code-block:: pycon
 
-  >>> import simpleazure
-  >>> arm = simpleazure.arm()
+  >>> from simpleazure import SimpleAzure
+  >>> saz = SimpleAzure()
+  >>> saz.arm
 
 Credentials
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -128,7 +131,8 @@ You can deliver credential values as parameters in Python Shell like:
   >>> cid = "5c5a3ea3-ap34-4pd0-xxxx-2p38ac00aap1"
   >>> secret = "xxxxxxxxxxxxxxxxx"
   >>> tid = "5e39a20e-c55a-53de-xxxx-2503a55et6ta"
-  >>> arm.set_credential(subscription = sid, client_id = cid, secret = secret, tenant = tid)
+  >>> saz.arm.set_credential(subscription = sid, client_id = cid, secret =
+      secret, tenant = tid)
 
 It is actually recommended to use environment variables. Create a file for credentials like:
 
@@ -153,7 +157,7 @@ Now. no parameters are necessary. Simple Azure loads credentials from environmen
 
 .. code-block:: pycon
 
-  >>> arm.set_credential()
+  >>> saz.arm.set_credential()
 
 Load Template
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -169,14 +173,14 @@ From URL:
 .. code-block:: pycon
 
         >>> template_url = 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/101-vm-sshkey/azuredeploy.json'
-        >>> arm.set_template(template_url)
+        >>> saz.arm.set_template(template_url)
 
 From FILE:
 
 .. code-block:: pycon
 
         >>> template_path = "~/101-vm-sshkey/azuredeploy.json"
-        >>> arm.set_template(template_path)
+        >>> saz.arm.set_template(template_path)
 
 Set Parameters
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -193,7 +197,7 @@ object contains public key string like:
 
 .. code-block:: pycon
         
-        >>> arm.sshkey.pubkey
+        >>> saz.arm.sshkey.pubkey
         ssh-rsa AAAAB3... hrlee@quickstart
 
 
@@ -203,7 +207,7 @@ We provide this as a parameter like:
 
 .. code-block:: pycon
 
-        >>> arm.set_parameter({"sshKeyData": arm.sshkey.pubkey})
+        >>> saz.arm.set_parameter({"sshKeyData": arm.sshkey.pubkey})
 
 .. note:: sshKeyData is a parameter name defined in the template
 
@@ -228,7 +232,7 @@ resources by:
 
 .. code-block:: pycon
 
-        >>> arm.deploy()
+        >>> saz.arm.deploy()
 
 You can directly call ``deploy()`` function without setting template
 (set_template()) and parameters (set_parameter()) but sending them as function
@@ -238,7 +242,7 @@ parameters like (Both ways work same):
 
 .. code-block:: pycon
 
-  >>> arm.deploy(template_url, parameters)
+  >>> saz.arm.deploy(template_url, parameters)
 
 The status of a deployment is visible on the Azure Portal like:
 
@@ -261,13 +265,13 @@ Deleting a deployment is:
 
 .. code-block:: pycon
 
-  >>> arm.terminate_deployment()
+  >>> saz.arm.terminate_deployment()
 
 Removing a resource group is :
 
 .. code-block:: pycon
 
-  >>> arm.remove_resource_group()
+  >>> saz.arm.remove_resource_group()
 
 Deployment name or resource group name can be specified as a parameter, if you
 want to clean up other resources as well.
