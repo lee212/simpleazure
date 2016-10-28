@@ -54,11 +54,3 @@ use cases of Galaxy on IPython Notebook.
 
 * `BioBlend (Galaxy Python library) with IPython <https://nbviewer.jupyter.org/github/lee212/simpleazure/blob/master/ipynb/classic/Tutorial%20%28classic%29%20-%20BioBlend%20%28Galaxy%20Python%20library%29%20with%20IPython.ipynb>`_
 * `Finding coding exon which has the highest number of single nucleotide polymorphisms on chromosome 22 <https://nbviewer.jupyter.org/github/lee212/simpleazure/blob/master/ipynb/classic/Example%20%28Galaxy%20Workflow%29%20-%20finding%20coding%20exon%20which%20has%20the%20highest%20number%20of%20single%20nucleotide%20polymorphisms%20on%20chromosome%2022.ipynb>`_
-
-IPython
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-This tutorial shows how to have IPython installed on Windows Azure with a
-normal linux distribution.
-
-* `Enabling IPython Cluster with Simple Azure <https://nbviewer.jupyter.org/github/lee212/simpleazure/blob/master/ipynb/classic/Tutorial%20%28classic%29%20-%20Enabling%20IPython%20cluster%20with%20Simple%20Azure.ipynb>`_
