@@ -6,7 +6,7 @@ These are based on Azure Resource Manager mode (ARM).
 
 * `Tutorial - Account Setup for Azure Resource Manager (ARM) <https://nbviewer.jupyter.org/github/lee212/simpleazure/blob/master/ipynb/Tutorial%20-%20Account%20Setup%20for%20Azure%20Resource%20Manager%20%28ARM%29.ipynb>`_ (Mandatory for the FIRST user)
 * `Tutorial - Modifying a Template in Python <https://nbviewer.jupyter.org/github/lee212/simpleazure/blob/master/ipynb/Tutorial%20-%20Modifying%20a%20Template%20in%20Python.ipynb>`_
-* `Tutorial - Deploying Software Stacks after Provisiong <https://raw.githubusercontent.com/lee212/simpleazure/master/ipynb/Use%20Case%20-%20NIST%20Pedestrian%20and%20Face%20Detection%20on%20Simple%20Azure%20(under%20development).ipynb>`_ 
+* `Tutorial - Deploying Software Stacks after Provisiong <https://nbviewer.jupyter.org/github/lee212/simpleazure/blob/master/ipynb/Use%20Case%20-%20NIST%20Pedestrian%20and%20Face%20Detection%20on%20Simple%20Azure%20%28under%20development%29.ipynb>`_
 
 Tutorial (classic mode)
 ===============================================================================
