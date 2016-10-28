@@ -26,7 +26,7 @@ You can import, export, search, modify, review and deploy these templates using
 Simple Azure and get information about deployed services in resource groups.
 Initial scripts or automation tools can be triggered after a completion of
 deployements therefore your software stacks and applications are installed and
-configured to run your jobs or launch your services.
+configured to run your jobs or start your services.
 
 A classic virtual machine service is supported with the azure-sdk-for-python
 legacy package to create a single virtual machine (VM) and multiple VMs.
