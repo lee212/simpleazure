@@ -63,15 +63,13 @@ template:
         >>> saz.arm.deploy()
 
 
-.. comments::
 
-        Caveats
-        -------------------------------------------------------------------------------
+Caveats
+-------------------------------------------------------------------------------
 
-        - Classic (legacy) Python SDK is used from
-          https://github.com/Azure/azure-sdk-for-python/blob/master/azure-servicemanagement-legacy
-        - Virtual Machines, Cloud Services and Storage are only used in Microsoft Azure
-          services.
+- Classic (legacy) Python SDK is based on
+  https://github.com/Azure/azure-sdk-for-python/blob/master/azure-servicemanagement-legacy
+- Virtual Machines, Cloud Services and Storage are only used in the classic mode to deploy virtrual machines.
 
 Prerequisite
 -------------------------------------------------------------------------------
