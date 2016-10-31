@@ -7,18 +7,18 @@ class SimpleAzureInstall(bdist_egg):
         bdist_egg.run(self)
 
 def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+    return open(os.path.join(os.path.dirname(__file__), fname)).read().decode('utf8')
 
 #reqs = [line.strip() for line in open('requirements.txt')]
 setup(
         name = "simpleazure",
-        version = "0.0.9",
+        version = "0.1.0",
         author = "Hyungro Lee",
         author_email = "hroe.lee@gmail.com",
         description = ("Python Library for Windows Azure"),
         license = "GPLv3",
         keywords = "SimpleAzure, Azure, Template deployment",
-        url = "https://github.com/lee212/simpleazure",
+        url = "http://simple-azure.readthedocs.io/",
         packages = [
             'simpleazure',
             'simpleazure/ext',
