@@ -12,13 +12,13 @@ Simple Azure is available in Docker image to run.
 
 - Simple Azure only:
 
-.. code-block:: console
+.. code-block:: 
 
         docker run -i -t lee212/simpleazure
 
 - With IPython Notebook:
 
-.. code-block:: console
+.. code-block::
 
         docker run -d -p 8888:8888 lee212/simpleazure_with_ipython
 
@@ -29,7 +29,7 @@ Installation
 
 From github.com:
 
-.. code-block:: console
+.. code-block::
 
    git clone https://github.com/lee212/simpleazure.git
    cd simpleazure
@@ -38,7 +38,7 @@ From github.com:
 
 from Pypi:
 
-.. code-block:: console
+.. code-block::
 
    pip install simpleazure
 
@@ -49,7 +49,7 @@ Starting `101-vm-sshkey
 <https://github.com/Azure/azure-quickstart-templates/tree/master/101-vm-sshkey>`_
 template:
 
-.. code-block:: pycon
+.. code-block::
 
         >>> from simpleazure import SimpleAzure
         >>> saz = SimpleAzure()
@@ -76,7 +76,7 @@ Prerequisite
 
 - Azure Cli installation
 
-.. code-block:: console
+.. code-block::
 
     sudo apt-get install nodejs-legacy
     sudo apt-get install npm
@@ -99,7 +99,7 @@ Example (classic mode for launching VMs)
 Create a VM on Windows Azure
 (ubuntu 14.04 is a default image)
 
-.. code-block:: python
+.. code-block::
 
         from simpleazure import SimpleAzure as saz
 
@@ -108,13 +108,14 @@ Create a VM on Windows Azure
 
 Status can be seen here.
 
-.. code-block:: pycon
+.. code-block::
 
         print vars(azure.get_status())
         {'error': None, 'http_status_code': u'200', 'id': u'', 'status': u'Succeeded'}
+
 or
 
-.. code-block:: pycon
+.. code-block::
 
         print vars(azure.get_deployment())
         {'configuration': u'<ServiceConfiguration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration">\r\n  <Role name="myvm-20735">\r\n    <Instances count="1" />\r\n  </Role>\r\n</ServiceConfiguration>',
@@ -143,7 +144,7 @@ Example for multiple deployment (classic)
 cluster() function helps to deploy several VMs at once.
 
 
-.. code-block:: python
+.. code-block::
 
         azure = saz()
         azure.asm.create_cluster()
@@ -163,7 +164,7 @@ Example for multiple deployment with Azure Data Science Core
 Deploy 5 VMs with Azure Data Science Core at West Europe 
 
 
-.. code-block:: python
+.. code-block::
 
         azure = saz()
         q = azure.asm.get_registered_image(name="Azure-Data-Science-Core")
@@ -174,20 +175,20 @@ Deploy 5 VMs with Azure Data Science Core at West Europe
 List of VMs
 -------------------------------------------------------------------------------
 
-.. code-block:: python
+.. code-block::
 
         vars(azure.asm.list_deployments().hosted_services)
 
 Terminating VM
 -------------------------------------------------------------------------------
 
-.. code-block:: python
+.. code-block::
 
         azure.asm.delete_vm()
 
 or
 
-.. code-block:: python
+.. code-block::
 
         azure.asm.delete_vm('vm-name')
 
