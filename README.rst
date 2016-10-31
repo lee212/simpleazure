@@ -1,9 +1,29 @@
 Simple Azure
 ===============================================================================
 
-Simple Azure deploys Azure Templates and launches Virtual Machine with Service
+Simple Azure deploys Azure Templates and launches Virtual Machines with Service
 Management API with a few steps like other cloud providers e.g. AWS.
 [Documentation](https://simple-azure.readthedocs.org/)
+
+QuickStart
+-------------------------------------------------------------------------------
+
+Starting `101-vm-sshkey
+<https://github.com/Azure/azure-quickstart-templates/tree/master/101-vm-sshkey>`_
+template:
+
+.. code-block::
+
+        >>> from simpleazure import SimpleAzure
+        >>> saz = SimpleAzure()
+
+        # aqst is for Azure QuickStart Templates
+        >>> vm_sshkey_template = saz.aqst.get_template('101-vm-sshkey')
+
+        # arm is for Azure Resource Manager
+        >>> saz.arm.set_template(vm_sshkey_template)
+        >>> saz.arm.set_parameter("sshKeyData", "ssh-rsa AAAB... hrlee@quickstart")
+        >>> saz.arm.deploy()
 
 Docker Image 
 -------------------------------------------------------------------------------
@@ -41,28 +61,6 @@ from Pypi:
 .. code-block::
 
    pip install simpleazure
-
-QuickStart
--------------------------------------------------------------------------------
-
-Starting `101-vm-sshkey
-<https://github.com/Azure/azure-quickstart-templates/tree/master/101-vm-sshkey>`_
-template:
-
-.. code-block::
-
-        >>> from simpleazure import SimpleAzure
-        >>> saz = SimpleAzure()
-
-        # aqst is for Azure QuickStart Templates
-        >>> vm_sshkey_template = saz.aqst.get_template('101-vm-sshkey')
-
-        # arm is for Azure Resource Manager
-        >>> saz.arm.set_template(vm_sshkey_template)
-        >>> saz.arm.set_parameter("sshKeyData", "ssh-rsa AAAB... hrlee@quickstart")
-        >>> saz.arm.deploy()
-
-
 
 Caveats
 -------------------------------------------------------------------------------
