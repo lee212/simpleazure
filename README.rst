@@ -1,12 +1,12 @@
 Simple Azure
-============
+===============================================================================
 
 Simple Azure deploys Azure Templates and launches Virtual Machine with Service
 Management API with a few steps like other cloud providers e.g. AWS.
 [Documentation](https://simple-azure.readthedocs.org/)
 
 Docker Image 
-------------
+-------------------------------------------------------------------------------
 
 Simple Azure is available in Docker image to run.
 
@@ -25,7 +25,7 @@ Simple Azure is available in Docker image to run.
 Open a browser with the port number **8888**.
 
 Installation
-------------
+-------------------------------------------------------------------------------
 
 From github.com:
 
@@ -43,7 +43,7 @@ from Pypi:
    pip install simpleazure
 
 QuickStart
-----------
+-------------------------------------------------------------------------------
 
 Starting `101-vm-sshkey
 <https://github.com/Azure/azure-quickstart-templates/tree/master/101-vm-sshkey>`_
@@ -74,7 +74,7 @@ template:
           services.
 
 Prerequisite
-------------
+-------------------------------------------------------------------------------
 
 - Azure Cli installation
 
@@ -85,7 +85,7 @@ Prerequisite
     sudo npm install -g azure-cli
 
 Account Setup for ASM
----------------------
+-------------------------------------------------------------------------------
 
 - Open a browser to http://go.microsoft.com/fwlink/?LinkId=254432
 - ``*-DD-MM-YYYY-credentials.publishsettings`` is downloaded on a local
@@ -96,7 +96,7 @@ Account Setup for ASM
 - Run ``azure account cert export ~/.azure/managementCertificate.pem``
 
 Example (classic mode for launching VMs)
-----------------------------------------
+-------------------------------------------------------------------------------
 
 Create a VM on Windows Azure
 (ubuntu 14.04 is a default image)
@@ -140,7 +140,7 @@ or
          'url': u'http://myvm-20735.cloudapp.net/'}
 
 Example for multiple deployment (classic)
------------------------------------------
+-------------------------------------------------------------------------------
 
 cluster() function helps to deploy several VMs at once.
 
@@ -160,7 +160,7 @@ cluster() function helps to deploy several VMs at once.
         {'request_id': 'b1a3446ebafe47a295df4c9d1b7d743c'}
 
 Example for multiple deployment with Azure Data Science Core
-------------------------------------------------------------
+-------------------------------------------------------------------------------
 
 Deploy 5 VMs with Azure Data Science Core at West Europe 
 
@@ -174,14 +174,14 @@ Deploy 5 VMs with Azure Data Science Core at West Europe
         azure.asm.create_cluster(num=5)
 
 List of VMs
------------
+-------------------------------------------------------------------------------
 
 .. code-block:: python
 
         vars(azure.asm.list_deployments().hosted_services)
 
 Terminating VM
---------------
+-------------------------------------------------------------------------------
 
 .. code-block:: python
 
@@ -194,13 +194,12 @@ or
         azure.asm.delete_vm('vm-name')
 
 Clustering
-----------
+-------------------------------------------------------------------------------
 
 TBD
 
 
 Contact
--------
+-------------------------------------------------------------------------------
 
 hroe.lee at gmail.com
-
