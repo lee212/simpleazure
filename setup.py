@@ -12,7 +12,7 @@ def read(fname):
 #reqs = [line.strip() for line in open('requirements.txt')]
 setup(
         name = "simpleazure",
-        version = "0.1.2",
+        version = "0.1.5",
         author = "Hyungro Lee",
         author_email = "hroe.lee@gmail.com",
         description = ("Python Library for Windows Azure"),
