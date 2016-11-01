@@ -21,7 +21,7 @@ template:
         >>> vm_sshkey_template = saz.aqst.get_template('101-vm-sshkey')
 
         # arm is for Azure Resource Manager
-        >>> saz.arm.set_template(vm_sshkey_template)
+        >>> saz.arm.load_template(vm_sshkey_template)
         >>> saz.arm.set_parameter("sshKeyData", "ssh-rsa AAAB... hrlee@quickstart")
         >>> saz.arm.deploy()
 
