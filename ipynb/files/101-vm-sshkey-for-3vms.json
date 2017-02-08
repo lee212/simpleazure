@@ -240,10 +240,10 @@
         ]
     }, 
     "metadata": {
-        "githubUsername": "squillace", 
-        "dateUpdated": "2015-06-05", 
-        "itemDisplayName": "Deploy a Virtual Machine with SSH rsa public key", 
-        "description": "This template allows you to create a Virtual Machine with SSH rsa public key", 
-        "summary": "Deploy a Virtual Machine with SSH rsa public key"
+        "githubUsername": "lee212", 
+        "dateUpdated": "2016-09-21", 
+        "itemDisplayName": "Deploy 3 Virtual Machines with SSH rsa public key", 
+        "description": "This template allows you to create 3 Virtual Machines with SSH rsa public key", 
+        "summary": "Deploy 3 Virtual Machines with SSH rsa public key"
     }
 }
